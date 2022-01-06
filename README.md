@@ -1,2 +1,2 @@
 # protoc-gen-gorm
-Generate GORM Models and APIs from your .proto files.
+Generate GORM v2 Models and APIs from your .proto files.
