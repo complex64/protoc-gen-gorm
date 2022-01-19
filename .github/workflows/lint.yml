@@ -1,4 +1,4 @@
-name: Linter
+name: Lint
 on:
   push:
     tags:
@@ -10,7 +10,7 @@ permissions:
   contents: read
 jobs:
   golangci:
-    name: lint
+    name: golangci-lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
         with:
           go-version: '^1.17'
 
-      - name: golangci-lint
+      - name: 'Run Linters Aggregator'
         uses: golangci/golangci-lint-action@v2
         with:
           version: latest
