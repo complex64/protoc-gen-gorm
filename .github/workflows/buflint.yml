@@ -1,7 +1,11 @@
 name: Buf Linter
 on:
   push:
+    paths-ignore:
+      - '**.md'
   pull_request:
+    paths-ignore:
+      - '**.md'
 jobs:
   buf:
     name: buf-lint-action

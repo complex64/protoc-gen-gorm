@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
