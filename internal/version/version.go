@@ -1,3 +1,4 @@
+// Package version records versioning information about this module.
 package version
 
 import (
