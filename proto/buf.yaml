@@ -1,0 +1,8 @@
+# https://docs.buf.build/lint/usage
+version: v1
+lint:
+  use:
+    - DEFAULT
+breaking:
+  use:
+    - FILE

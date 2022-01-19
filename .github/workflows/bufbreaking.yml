@@ -1,0 +1,16 @@
+name: Buf Breaking Changes
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  buf:
+    name: buf-breaking-action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bufbuild/buf-setup-action@v0.5.0
+      - uses: bufbuild/buf-breaking-action@v1
+        with:
+          against: 'https://github.com/complex64/protoc-gen-gorm#branch=main,subdir=proto'
+          input: proto

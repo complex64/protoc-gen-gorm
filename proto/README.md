@@ -1,0 +1,3 @@
+- To be copied/imported into your project
+- Show example file with import statement and use of a few options
+- Link to main documentation for more
