@@ -1,0 +1,20 @@
+# Auto-manage dependencies with Dependabot
+# https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates
+version: 2
+updates:
+  # Go dependencies
+  - package-ecosystem: gomod
+    directory: '/'
+    schedule:
+      interval: weekly
+  # GitHub Action versions
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+  # Go Docker Build Image
+  - package-ecosystem: docker
+    directory: '/'
+    schedule:
+      interval: weekly
+
