@@ -17,3 +17,7 @@ docker:
 l: lint
 lint: build
 	golangci-lint run
+
+# Remove all generated files.
+clean:
+	find -name '*.pb.go' -delete
