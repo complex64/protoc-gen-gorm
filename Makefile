@@ -18,6 +18,17 @@ l: lint
 lint: build
 	golangci-lint run
 
+# Generate files used in tests.
+gen: generate
+generate:
+	cd proto && buf generate
+	mv gormpb/v2/gorm/v2/*.pb.go gormpb/v2
+	rm -r gormpb/v2/gorm
+	cd gormpb/v2 && go mod tidy
+
+	cd cmd/protoc-gen-gorm/test && buf generate
+	rm proto/gorm/v2/options.pb.go
+
 # Remove all generated files.
 clean:
 	find -name '*.pb.go' -delete

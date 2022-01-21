@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package gorm.v2;
+
+option go_package = "github.com/complex64/protoc-gen-gorm/gormpb/v2;gormpb";
