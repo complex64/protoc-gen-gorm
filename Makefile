@@ -1,8 +1,13 @@
 IMAGE=complex64/protoc-gen-gorm
 
-all: build
+all: lint test
 build:
 	go build ./...
+
+# Run all tests.
+t :test
+test:
+	go test ./...
 
 # Build containerized `protoc-gen-gorm`.
 docker:
