@@ -6,3 +6,4 @@ plugins:
     opt: paths=source_relative
   - name: gorm
     out: .
+    opt: paths=source_relative
