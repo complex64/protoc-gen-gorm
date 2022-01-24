@@ -5,7 +5,7 @@ site_url: https://complex64.github.io/protoc-gen-gorm/
 copyright: Copyright &copy; 2022 Johannes Huning
 repo_name: complex64/protoc-gen-gorm
 repo_url: https://github.com/complex64/protoc-gen-gorm
-edit_uri: edit/main/docs/
+edit_uri: edit/main/docs/docs/
 theme:
   name: material
   language: en
@@ -45,6 +45,5 @@ markdown_extensions:
   - toc:
       title: On This Page
       permalink: true
-docs_dir: .
 nav:
   - Introduction: index.md
