@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+import "gorm/v2/options.proto";
+
+package options;
+
+/*
+Test: Exercise all options types.
+*/
+
+option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/options";
+
+option (gorm.v2.file) = {};
+
+message MyMessage {
+  option (gorm.v2.message) = {
+    enabled: true
+  };
+
+  string field_1 = 1 [(gorm.v2.field) = {}];
+
+  oneof oneof {
+    option (gorm.v2.oneof) = {};
+
+    string field_2 = 2;
+    int32 field_3 = 3;
+  }
+}
+
+enum MyEnum {
+  option (gorm.v2.enum) = {};
+
+  MY_ENUM_UNSPECIFIED = 0 [(gorm.v2.enum_value) = {}];
+}
+
+service MyService {
+  option (gorm.v2.service) = {};
+
+  rpc MyMethod(MyMethodRequest) returns (MyMethodResponse) {
+    option (gorm.v2.method) = {};
+  }
+}
+
+message MyMethodRequest{}
+message MyMethodResponse{}

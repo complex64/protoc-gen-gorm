@@ -43,5 +43,5 @@ func readOpt(name protoreflect.FullName, msg proto.Message) (opt proto.Message) 
 func EqualProtos(t require.TestingT, expected, actual proto.Message) {
 	equal := cmp.Equal(expected.ProtoReflect().New(), actual, protocmp.Transform())
 	diff := cmp.Diff(expected, actual, protocmp.Transform())
-	require.True(t, equal && diff == "" || diff == "", diff, diff)
+	require.True(t, equal && diff == "" || diff == "", diff)
 }
