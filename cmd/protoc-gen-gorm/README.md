@@ -2,9 +2,7 @@
 
 This is the plugin itself.
 
-Simply speaking, a plugin is any program that reads [CodeGeneratorRequests](https://pkg.go.dev/github.com/golang/protobuf/protoc-gen-go/plugin#CodeGeneratorRequest) on standard input, and returns [CodeGeneratorResponses](https://pkg.go.dev/github.com/golang/protobuf/protoc-gen-go/plugin#CodeGeneratorResponse) on standard output.
-
-The Go authors support writing plugins with their [protogen package](https://pkg.go.dev/google.golang.org/protobuf/compiler/protogen).
+A plugin is any program that reads [CodeGeneratorRequests](https://pkg.go.dev/github.com/golang/protobuf/protoc-gen-go/plugin#CodeGeneratorRequest) on standard input, and returns [CodeGeneratorResponses](https://pkg.go.dev/github.com/golang/protobuf/protoc-gen-go/plugin#CodeGeneratorResponse) on standard output. The Go authors support writing plugins with their [protogen package](https://pkg.go.dev/google.golang.org/protobuf/compiler/protogen).
 
 ## Example
 
