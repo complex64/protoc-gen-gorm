@@ -7,6 +7,10 @@ updates:
     directory: '/'
     schedule:
       interval: weekly
+  - package-ecosystem: gomod
+    directory: '/gormpb/v2'
+    schedule:
+      interval: weekly
   # GitHub Action versions
   - package-ecosystem: github-actions
     directory: '/'
