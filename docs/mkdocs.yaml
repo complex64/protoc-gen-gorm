@@ -26,7 +26,14 @@ theme:
     - search.suggest
     - search.highlight
     - search.share
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
 plugins:
+  - git-revision-date
   - search
 extra:
   social:
