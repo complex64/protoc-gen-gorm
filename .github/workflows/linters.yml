@@ -7,11 +7,11 @@ on:
       - main
     paths-ignore:
       - '**.md'
-      - '**/mkdocs.yml'
+      - 'docs/mkdocs.yml'
   pull_request:
     paths-ignore:
       - '**.md'
-      - '**/mkdocs.yml'
+      - 'docs/mkdocs.yml'
 permissions:
   contents: read
 jobs:

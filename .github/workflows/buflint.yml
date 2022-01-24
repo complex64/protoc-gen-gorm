@@ -3,10 +3,11 @@ on:
   push:
     paths-ignore:
       - '**.md'
+      - 'docs/mkdocs.yml'
   pull_request:
     paths-ignore:
       - '**.md'
-      - '**/mkdocs.yml'
+      - 'docs/mkdocs.yml'
 jobs:
   buf:
     name: buf-lint-action
