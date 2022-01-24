@@ -6,7 +6,7 @@ A plugin is any program that reads [CodeGeneratorRequests](https://pkg.go.dev/gi
 
 ## Example
 
-A simple does-nothing plugin:
+A simple _does-nothing_ plugin:
 
 ```go
 package main
