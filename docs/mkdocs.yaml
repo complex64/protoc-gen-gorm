@@ -28,7 +28,6 @@ theme:
     - search.share
     - navigation.instant
     - navigation.tracking
-    - navigation.tabs
     - navigation.sections
     - navigation.indexes
     - navigation.top
