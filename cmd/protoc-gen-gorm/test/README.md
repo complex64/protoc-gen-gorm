@@ -6,7 +6,7 @@ A test case consists of:
 
 - A `.proto` file that makes use of a feature
 - The generated code (`make gen`)
-- A test that asserts compilation, types, and anything else
+- A test that asserts compilation, types, and so on
 
 ## Including `options.proto`
 
