@@ -45,5 +45,6 @@ markdown_extensions:
   - toc:
       title: On This Page
       permalink: true
+docs_dir: .
 nav:
   - Introduction: index.md
