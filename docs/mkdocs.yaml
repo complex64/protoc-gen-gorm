@@ -1,0 +1,49 @@
+site_name: protoc-gen-gorm
+site_description: Generate GORM v2 Models and APIs from your .proto files.
+site_author: Johannes Huning
+site_url: https://complex64.github.io/protoc-gen-gorm/
+copyright: Copyright &copy; 2022 Johannes Huning
+repo_name: complex64/protoc-gen-gorm
+repo_url: https://github.com/complex64/protoc-gen-gorm
+edit_uri: edit/main/docs/
+theme:
+  name: material
+  language: en
+  include_search_page: false
+  search_index_only: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Light Mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Dark Mode
+  features:
+    - search.suggest
+    - search.highlight
+    - search.share
+plugins:
+  - search
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/complex64
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path:
+        - . # local
+        - docs # repository
+  - pymdownx.tabbed
+  - toc:
+      title: On This Page
+      permalink: true
+nav:
+  - Introduction: index.md
