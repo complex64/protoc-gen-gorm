@@ -29,6 +29,14 @@ generate:
 	cd cmd/protoc-gen-gorm/test && buf generate
 	rm proto/gorm/v2/options.pb.go
 
+	cd internal/require && buf generate
+
 # Remove all generated files.
 clean:
 	find -name '*.pb.go' -delete
+
+p: proto
+.PHONY: proto
+proto:
+	buf lint proto
+	cd internal/require && buf lint
