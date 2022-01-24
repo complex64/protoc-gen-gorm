@@ -18,18 +18,28 @@ l: lint
 lint: build
 	golangci-lint run
 
-# Generate files used in tests.
+# Assumes $GOPATH/bin is in your $PATH!
 gen: generate
-generate:
+generate: install
+	# Generate the standalone module and update/lock dependencies.
 	cd proto && buf generate
 	mv gormpb/v2/gorm/v2/*.pb.go gormpb/v2
 	rm -r gormpb/v2/gorm
 	cd gormpb/v2 && go mod tidy
 
+	# Files used by tests of the plugin implementation.
 	cd cmd/protoc-gen-gorm/test && buf generate
-	rm proto/gorm/v2/options.pb.go
 
+	# Remove code generated from tests.
+	find proto -name '*.go' -delete
+
+	# Files used by tests of the internal packages.
 	cd internal/require && buf generate
+
+# Install `protoc-gen-go` into $GOPATH/bin.
+i: install
+install:
+	go install ./cmd/...
 
 # Remove all generated files.
 clean:
