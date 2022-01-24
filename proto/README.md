@@ -19,4 +19,4 @@ You have multiple options, depending what tools you use:
 
 ## Companion Go Module
 
-Any `.proto` file that references this file will generate a Go package that imports `github.com/complex64/protoc-gen-gorm/gormpb/v2`. This package is a [minimal standalone Go module](../gormpb).
+Any `.proto` file that references this file will generate a Go package that imports `github.com/complex64/protoc-gen-gorm/gormpb/v2`. This package is a [minimal standalone Go module](../gormpb/v2).
