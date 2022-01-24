@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+
+package testdata;
+
+option go_package = "github.com/complex64/protoc-gen-gorm/internal/require/testdata;testdata";
+
+extend google.protobuf.MessageOptions {
+  MessageOptions message = 50000;
+}
+
+message MessageOptions {
+  string option_field_1 = 1;
+}
+
+message MyMessage {
+  option (testdata.message).option_field_1 = "option value 1";
+  string message_field_1 = 1;
+}
