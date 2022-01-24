@@ -1,12 +1,65 @@
 syntax = "proto3";
 
-package gorm.v2;
+import "google/protobuf/descriptor.proto";
 
-option go_package = "github.com/complex64/protoc-gen-gorm/gormpb/v2;gormpb";
+package gorm.v2;
 
 /*
 NOTE: Field numbers in the range 50000-99999 are reserved for internal use within individual organizations,
 so we can use numbers in this range freely for in-house applications.
 
+Start with 50100 to prevent trivial collisions.
+
 Global Extension Registry: https://github.com/protocolbuffers/protobuf/blob/master/docs/options.md
 */
+
+option go_package = "github.com/complex64/protoc-gen-gorm/gormpb/v2;gormpb";
+
+/*
+Allocate field numbers and register extensions for all proto types, even if empty for now.
+*/
+
+extend google.protobuf.FileOptions {
+  FileOptions file = 50100;
+}
+
+extend google.protobuf.MessageOptions {
+  MessageOptions message = 50101;
+}
+
+extend google.protobuf.FieldOptions {
+  FieldOptions field = 50102;
+}
+
+extend google.protobuf.OneofOptions {
+  OneofOptions oneof = 50103;
+}
+
+extend google.protobuf.EnumOptions {
+  EnumOptions enum = 50104;
+}
+
+extend google.protobuf.EnumValueOptions {
+  EnumValueOptions enum_value = 50105;
+}
+
+extend google.protobuf.ServiceOptions {
+  ServiceOptions service = 50106;
+}
+
+extend google.protobuf.MethodOptions {
+  MethodOptions method = 50107;
+}
+
+message FileOptions {/* Reserved */}
+
+message MessageOptions {
+  bool enabled = 1;
+}
+
+message FieldOptions {/* Reserved */}
+message OneofOptions {/* Reserved */}
+message EnumOptions {/* Reserved */}
+message EnumValueOptions {/* Reserved */}
+message ServiceOptions {/* Reserved */}
+message MethodOptions {/* Reserved */}

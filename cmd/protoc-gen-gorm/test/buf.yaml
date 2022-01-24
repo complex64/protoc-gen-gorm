@@ -1,2 +1,7 @@
-# https://docs.buf.build/configuration/v1/buf-yaml
+# Lint the test .proto files.
 version: v1
+lint:
+  use:
+    - DEFAULT
+  except:
+    - PACKAGE_VERSION_SUFFIX

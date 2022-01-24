@@ -39,4 +39,5 @@ p: proto
 .PHONY: proto
 proto:
 	buf lint proto
+	cd cmd/protoc-gen-gorm/test && buf lint
 	cd internal/require && buf lint

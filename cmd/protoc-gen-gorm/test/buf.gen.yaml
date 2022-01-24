@@ -1,3 +1,4 @@
+# Generates Go code for the test cases with .proto files.
 version: v1
 plugins:
   - name: go
