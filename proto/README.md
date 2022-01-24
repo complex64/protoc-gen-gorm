@@ -1,6 +1,6 @@
 # About
 
-This module declares and documents the options you can use in your .proto files.
+This module declares and documents the options you can use in your `.proto` files.
 
 # Usage
 
