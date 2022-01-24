@@ -3,3 +3,10 @@ syntax = "proto3";
 package gorm.v2;
 
 option go_package = "github.com/complex64/protoc-gen-gorm/gormpb/v2;gormpb";
+
+/*
+NOTE: Field numbers in the range 50000-99999 are reserved for internal use within individual organizations,
+so we can use numbers in this range freely for in-house applications.
+
+Global Extension Registry: https://github.com/protocolbuffers/protobuf/blob/master/docs/options.md
+*/
