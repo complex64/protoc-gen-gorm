@@ -5,6 +5,7 @@ on:
       - main
     paths-ignore:
       - '**.md'
+      - '**/mkdocs.yml'
 jobs:
   buf:
     name: buf-breaking-action
