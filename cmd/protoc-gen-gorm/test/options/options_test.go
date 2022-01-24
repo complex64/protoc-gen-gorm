@@ -10,7 +10,7 @@ import (
 	"github.com/complex64/protoc-gen-gorm/internal/require"
 )
 
-// Test that all options in the .proto file are present as expected
+// Test that all options in the .proto file are present as expected.
 func TestMyMessage(t *testing.T) {
 	t.Run("message options", func(t *testing.T) {
 		msg := &options.MyMessage{}
