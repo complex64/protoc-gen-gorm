@@ -11,6 +11,7 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
+// FileOptions asserts that message has options set for its protobuf message options.
 func FileOptions(t require.TestingT, options, message proto.Message) {
 	if haveOpts := fileOpts(options, message); haveOpts != nil {
 		EqualProtos(t, options, haveOpts)
@@ -20,6 +21,7 @@ func FileOptions(t require.TestingT, options, message proto.Message) {
 	}
 }
 
+// MessageOption asserts that message's parent file descriptor has options set for its protobuf file options.
 func MessageOption(t require.TestingT, options, message proto.Message) {
 	if haveOpts := msgOpts(options, message); haveOpts != nil {
 		EqualProtos(t, options, haveOpts)
