@@ -14,7 +14,12 @@ import (
 func TestMyMessage(t *testing.T) {
 	t.Run("message options", func(t *testing.T) {
 		msg := &options.MyMessage{}
-		opt := &gormpb.MessageOptions{Enabled: true}
+		opt := &gormpb.MessageOptions{
+			Model:    true,
+			Hooks:    true,
+			Validate: true,
+			Crud:     true,
+		}
 		require.MessageOption(t, msg, opt)
 	})
 }

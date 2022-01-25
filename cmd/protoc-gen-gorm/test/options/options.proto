@@ -10,16 +10,29 @@ Test: Exercise all options types.
 
 option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/options";
 
-option (gorm.v2.file) = {};
+option (gorm.v2.file) = {
+  model: true;
+  hooks: true;
+  validate: true;
+  crud: true;
+};
 
 message MyMessage {
   option (gorm.v2.message) = {
-    enabled: true
+    model: true;
+    hooks: true;
+    validate: true;
+    crud: true;
   };
 
-  string field_1 = 1 [(gorm.v2.field) = {}];
+
+  string field_1 = 1 [
+    // No field options defined yet.
+    (gorm.v2.field) = {}
+  ];
 
   oneof oneof {
+    // No oneof options defined yet.
     option (gorm.v2.oneof) = {};
 
     string field_2 = 2;
@@ -28,15 +41,21 @@ message MyMessage {
 }
 
 enum MyEnum {
+  // No enum options defined yet.
   option (gorm.v2.enum) = {};
 
-  MY_ENUM_UNSPECIFIED = 0 [(gorm.v2.enum_value) = {}];
+  MY_ENUM_UNSPECIFIED = 0 [
+    // No enum value options defined yet.
+    (gorm.v2.enum_value) = {}
+  ];
 }
 
 service MyService {
+  // No service options defined yet.
   option (gorm.v2.service) = {};
 
   rpc MyMethod(MyMethodRequest) returns (MyMethodResponse) {
+    // No method options defined yet.
     option (gorm.v2.method) = {};
   }
 }
