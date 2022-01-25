@@ -11,20 +11,20 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
-func FileOptions(t require.TestingT, option, message proto.Message) {
-	if haveOpt := fileOpt(option, message); haveOpt != nil {
-		EqualProtos(t, option, haveOpt)
+func FileOptions(t require.TestingT, options, message proto.Message) {
+	if haveOpts := fileOpts(options, message); haveOpts != nil {
+		EqualProtos(t, options, haveOpts)
 	} else {
-		msg := fmt.Sprintf("missing file option: %+v", option)
+		msg := fmt.Sprintf("missing file options: %+v", options)
 		require.Fail(t, msg)
 	}
 }
 
-func MessageOption(t require.TestingT, option, message proto.Message) {
-	if haveOpt := msgOpt(option, message); haveOpt != nil {
-		EqualProtos(t, option, haveOpt)
+func MessageOption(t require.TestingT, options, message proto.Message) {
+	if haveOpts := msgOpts(options, message); haveOpts != nil {
+		EqualProtos(t, options, haveOpts)
 	} else {
-		msg := fmt.Sprintf("missing message option: %+v", option)
+		msg := fmt.Sprintf("missing message options: %+v", options)
 		require.Fail(t, msg)
 	}
 }
@@ -33,28 +33,28 @@ func name(msg proto.Message) protoreflect.FullName {
 	return msg.ProtoReflect().Descriptor().FullName()
 }
 
-func fileOpt(option, msg proto.Message) proto.Message {
+func fileOpts(option, msg proto.Message) proto.Message {
 	fd := msg.ProtoReflect().Descriptor().Parent().(protoreflect.FileDescriptor)
-	optName := name(option)
-	optMsg := fd.Options().ProtoReflect()
-	return opt(optName, optMsg)
+	optsName := name(option)
+	optsMsg := fd.Options().ProtoReflect()
+	return opts(optsName, optsMsg)
 }
 
-func msgOpt(option, msg proto.Message) proto.Message {
-	optName := name(option)
-	optMsg := msg.ProtoReflect().Descriptor().Options().ProtoReflect()
-	return opt(optName, optMsg)
+func msgOpts(options, msg proto.Message) proto.Message {
+	optsName := name(options)
+	optsMsg := msg.ProtoReflect().Descriptor().Options().ProtoReflect()
+	return opts(optsName, optsMsg)
 }
 
-func opt(name protoreflect.FullName, msg protoreflect.Message) (opt proto.Message) {
+func opts(name protoreflect.FullName, msg protoreflect.Message) (opts proto.Message) {
 	msg.Range(func(d protoreflect.FieldDescriptor, v protoreflect.Value) bool {
 		if d.Message() == nil || d.Message().FullName() != name {
 			return true // continue
 		}
-		opt = v.Message().Interface()
+		opts = v.Message().Interface()
 		return false // break
 	})
-	return opt
+	return opts
 }
 
 func EqualProtos(t require.TestingT, expected, actual proto.Message) {
