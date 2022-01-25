@@ -11,32 +11,49 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
-func MessageOption(t require.TestingT, message, option proto.Message) {
-	optKind := option.ProtoReflect().Descriptor()
-	optName := optKind.FullName()
-
-	if haveOpt := readOpt(optName, message); haveOpt != nil {
+func FileOptions(t require.TestingT, option, message proto.Message) {
+	if haveOpt := fileOpt(option, message); haveOpt != nil {
 		EqualProtos(t, option, haveOpt)
 	} else {
-		msg := fmt.Sprintf("option %s is not present on %+v", optName, message)
+		msg := fmt.Sprintf("missing file option: %+v", option)
 		require.Fail(t, msg)
 	}
 }
 
-func readOpt(name protoreflect.FullName, msg proto.Message) (opt proto.Message) {
-	msg.ProtoReflect().
-		Descriptor().
-		Options().
-		ProtoReflect().
-		Range(func(d protoreflect.FieldDescriptor, v protoreflect.Value) bool {
-			if d.Message().FullName() != name {
-				return true // continue
-			}
+func MessageOption(t require.TestingT, option, message proto.Message) {
+	if haveOpt := msgOpt(option, message); haveOpt != nil {
+		EqualProtos(t, option, haveOpt)
+	} else {
+		msg := fmt.Sprintf("missing message option: %+v", option)
+		require.Fail(t, msg)
+	}
+}
 
-			opt = v.Message().Interface()
-			return false // break
-		})
+func name(msg proto.Message) protoreflect.FullName {
+	return msg.ProtoReflect().Descriptor().FullName()
+}
 
+func fileOpt(option, msg proto.Message) proto.Message {
+	fd := msg.ProtoReflect().Descriptor().Parent().(protoreflect.FileDescriptor)
+	optName := name(option)
+	optMsg := fd.Options().ProtoReflect()
+	return opt(optName, optMsg)
+}
+
+func msgOpt(option, msg proto.Message) proto.Message {
+	optName := name(option)
+	optMsg := msg.ProtoReflect().Descriptor().Options().ProtoReflect()
+	return opt(optName, optMsg)
+}
+
+func opt(name protoreflect.FullName, msg protoreflect.Message) (opt proto.Message) {
+	msg.Range(func(d protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		if d.Message() == nil || d.Message().FullName() != name {
+			return true // continue
+		}
+		opt = v.Message().Interface()
+		return false // break
+	})
 	return opt
 }
 

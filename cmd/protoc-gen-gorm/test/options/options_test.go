@@ -11,15 +11,15 @@ import (
 )
 
 // Test that all options in the .proto file are present as expected.
-func TestMyMessage(t *testing.T) {
-	t.Run("message options", func(t *testing.T) {
-		msg := &options.MyMessage{}
-		opt := &gormpb.MessageOptions{
-			Model:    true,
-			Hooks:    true,
-			Validate: true,
-			Crud:     true,
-		}
-		require.MessageOption(t, msg, opt)
-	})
+
+func TestMessageOptions(t *testing.T) {
+	msg := &options.MyMessage{}
+	opts := &gormpb.MessageOptions{ /* Expect all to be present and false by default. */ }
+	require.MessageOption(t, opts, msg)
+}
+
+func TestFileOptions(t *testing.T) {
+	msg := &options.MyMessage{}
+	opts := &gormpb.FileOptions{ /* Expect all to be present and false by default. */ }
+	require.FileOptions(t, opts, msg)
 }

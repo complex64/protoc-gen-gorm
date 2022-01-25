@@ -6,15 +6,25 @@ package testdata;
 
 option go_package = "github.com/complex64/protoc-gen-gorm/internal/require/testdata;testdata";
 
+extend google.protobuf.FileOptions {
+  FileOptions file = 50000;
+}
+
 extend google.protobuf.MessageOptions {
-  MessageOptions message = 50000;
+  MessageOptions message = 50001;
+}
+
+message FileOptions {
+  string file_option = 1;
 }
 
 message MessageOptions {
-  string option_field_1 = 1;
+  string message_option = 1;
 }
 
+option (testdata.file).file_option = "file option value";
+
 message MyMessage {
-  option (testdata.message).option_field_1 = "option value 1";
-  string message_field_1 = 1;
+  option (testdata.message).message_option = "message option value";
+  string message_field = 1;
 }
