@@ -51,10 +51,36 @@ extend google.protobuf.MethodOptions {
   MethodOptions method = 50107;
 }
 
-message FileOptions {/* Reserved */}
+message FileOptions {
+  // Set `model: true` for all messages.
+  bool model = 1;
+
+  // Set `hooks: true` for all messages.
+  bool hooks = 2;
+
+  // Set `validate: true` for all messages.
+  bool validate = 3;
+
+  // Set `crud: true` for all messages.
+  bool crud = 4;
+}
 
 message MessageOptions {
-  bool enabled = 1;
+  // Generate a GORM model for this message.
+  bool model = 1;
+
+  // Generate functions to defined hooks for this message;
+  // Implies `model: true`.
+  bool hooks = 2;
+
+  // Validate the model before saving.
+  // Expects usage of https://github.com/envoyproxy/protoc-gen-validate.
+  // Implies `model: true`.
+  bool validate = 3;
+
+  // Generate functions to create, read, update, and delete (CRUD) objects.
+  // Implies `model: true`.
+  bool crud = 4;
 }
 
 message FieldOptions {/* Reserved */}
