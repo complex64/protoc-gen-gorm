@@ -14,12 +14,16 @@ import (
 
 func TestMessageOptions(t *testing.T) {
 	msg := &options.MyMessage{}
-	opts := &gormpb.MessageOptions{ /* Expect all to be present and false by default. */ }
+	opts := &gormpb.MessageOptions{
+		// Expect all to be present and false by default.
+	}
 	require.MessageOption(t, opts, msg)
 }
 
 func TestFileOptions(t *testing.T) {
 	msg := &options.MyMessage{}
-	opts := &gormpb.FileOptions{ /* Expect all to be present and false by default. */ }
+	opts := &gormpb.FileOptions{
+		// Expect all to be present and false by default.
+	}
 	require.FileOptions(t, opts, msg)
 }
