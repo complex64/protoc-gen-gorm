@@ -74,9 +74,10 @@ func genHeader(plugin *protogen.Plugin, g *protogen.GeneratedFile, f *fileInfo) 
 	g.P()
 }
 
+// genImport adds necessary import statements to the generated file.
 func genImport(gen *protogen.Plugin, g *protogen.GeneratedFile, f *fileInfo, imp protoreflect.FileImport) {
 	if imp.IsPublic {
-		panic("TODO: Support for public imports")
+		panic("TODO: Implement support for public imports")
 	}
 
 	impFile, ok := gen.FilesByPath[imp.Path()]
@@ -92,7 +93,7 @@ func genImport(gen *protogen.Plugin, g *protogen.GeneratedFile, f *fileInfo, imp
 	g.P()
 }
 
-// fileInfo wraps and organizes the input .proto file to generate code.
+// fileInfo wraps the input .proto file and keeps information to generate code.
 type fileInfo struct {
 	*protogen.File
 
@@ -112,11 +113,8 @@ func newFileInfo(file *protogen.File) (*fileInfo, error) {
 		f.genModel = opts.Model || implyModel
 	}
 
-	// TODO
-	// Collect all enums, messages, and extensions in "flattened ordering".
-	// See filetype.TypeBuilder.
+	// Collect all messages recursively.
 	var walkMessages func([]*protogen.Message, func(*protogen.Message) error) error
-
 	walkMessages = func(messages []*protogen.Message, f func(*protogen.Message) error) error {
 		for _, m := range messages {
 			if err := f(m); err != nil {
@@ -129,12 +127,6 @@ func newFileInfo(file *protogen.File) (*fileInfo, error) {
 		return nil
 	}
 
-	//	initEnumInfos := func(enums []*protogen.Enum) {
-	//		for _, enum := range enums {
-	//			f.allEnums = append(f.allEnums, newEnumInfo(f, enum))
-	//		}
-	//	}
-
 	initMessageInfos := func(messages []*protogen.Message) error {
 		for _, message := range messages {
 			m, err := newMessageInfo(f, message)
@@ -146,54 +138,25 @@ func newFileInfo(file *protogen.File) (*fileInfo, error) {
 		return nil
 	}
 
-	//	initExtensionInfos := func(extensions []*protogen.Extension) {
-	//		for _, extension := range extensions {
-	//			f.allExtensions = append(f.allExtensions, newExtensionInfo(f, extension))
-	//		}
-	//	}
-	//	initEnumInfos(f.Enums)
-	//	initMessageInfos(f.Messages)
-	//	initExtensionInfos(f.Extensions)
-
 	if err := initMessageInfos(f.Messages); err != nil {
 		return nil, err
 	}
 
 	err := walkMessages(f.Messages, func(m *protogen.Message) error {
-		// initEnumInfos(m.Enums)
 		if err := initMessageInfos(m.Messages); err != nil {
 			return err
 		}
-		// initExtensionInfos(m.Extensions)
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	//
-	//	// Derive a reverse mapping of enum and message pointers to their index
-	//	// in allEnums and allMessages.
-	//	if len(f.allEnums) > 0 {
-	//		f.allEnumsByPtr = make(map[*enumInfo]int)
-	//		for i, e := range f.allEnums {
-	//			f.allEnumsByPtr[e] = i
-	//		}
-	//	}
-	//	if len(f.allMessages) > 0 {
-	//		f.allMessagesByPtr = make(map[*messageInfo]int)
-	//		f.allMessageFieldsByPtr = make(map[*messageInfo]*structFields)
-	//		for i, m := range f.allMessages {
-	//			f.allMessagesByPtr[m] = i
-	//			f.allMessageFieldsByPtr[m] = new(structFields)
-	//		}
-	//	}
-	//
-	//	return f
-
 	return f, nil
 }
 
+// fileOptions returns the protoc-gen-gorm options for file.
+// Example: option (gorm.v2.file).model = true;
 func fileOptions(file *protogen.File) *gormpb.FileOptions {
 	opts := file.Desc.Options()
 	o, ok := proto.GetExtension(opts, gormpb.E_File).(*gormpb.FileOptions)
@@ -203,6 +166,7 @@ func fileOptions(file *protogen.File) *gormpb.FileOptions {
 	return o
 }
 
+// messageInfo wraps a message from the input .proto file and keeps information to generate code.
 type messageInfo struct {
 	*protogen.Message
 
@@ -215,12 +179,14 @@ type messageInfo struct {
 func newMessageInfo(f *fileInfo, message *protogen.Message) (*messageInfo, error) {
 	m := &messageInfo{Message: message}
 
+	// File flags override message flags.
 	m.genModel = f.genModel
 	m.genHooks = f.genHooks
 	m.genValidate = f.genValidate
 	m.genCRUD = f.genCRUD
 
 	if opts := messageOptions(message); opts != nil {
+		// Generate a model when using features that need the model.
 		m.genModel = m.genModel || opts.Model || opts.Hooks || opts.Validate || opts.Crud
 		m.genHooks = m.genHooks || opts.Hooks
 		m.genValidate = m.genValidate || opts.Validate
@@ -230,6 +196,8 @@ func newMessageInfo(f *fileInfo, message *protogen.Message) (*messageInfo, error
 	return m, nil
 }
 
+// messageOptions returns the protoc-gen-gorm options set for message.
+// Example: message MyMessage { option (gorm.v2.message).model = true; }
 func messageOptions(message *protogen.Message) *gormpb.MessageOptions {
 	opts := message.Desc.Options()
 	o, ok := proto.GetExtension(opts, gormpb.E_Message).(*gormpb.MessageOptions)
@@ -239,6 +207,7 @@ func messageOptions(message *protogen.Message) *gormpb.MessageOptions {
 	return o
 }
 
+// genModels generates GORM models and supporting APIs.
 func genModels(g *protogen.GeneratedFile, f *fileInfo, m *messageInfo) {
 	if !m.genModel {
 		return
@@ -262,18 +231,17 @@ func genModels(g *protogen.GeneratedFile, f *fileInfo, m *messageInfo) {
 
 	g.P(leadingComments,
 		"type ", modelName, " struct {")
+
+	// TODO: Continue with fields here.
 	// genMessageFields(g, f, m)
+
 	g.P("}")
 	g.P()
 
-	//
-	// genMessageKnownFunctions(g, f, m)
-	// genMessageDefaultDecls(g, f, m)
-	// genMessageMethods(g, f, m)
-	// genMessageOneofWrapperTypes(g, f, m)
+	// TODO: Continue with APIs here.
+	// genConverters(g, f, m)
 }
 
-// TODO
 // appendDeprecationSuffix optionally appends a deprecation notice as a suffix.
 func appendDeprecationSuffix(prefix protogen.Comments, deprecated bool) protogen.Comments {
 	if !deprecated {
