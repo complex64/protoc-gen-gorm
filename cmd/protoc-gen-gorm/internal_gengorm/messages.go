@@ -27,7 +27,8 @@ func newMessageInfo(f *fileInfo, message *protogen.Message) (*messageInfo, error
 
 	if opts := messageOptions(message); opts != nil {
 		// Generate a model when using features that need the model.
-		m.genModel = m.genModel || opts.Model || opts.Hooks || opts.Validate || opts.Crud
+		implyModel := opts.Hooks || opts.Validate || opts.Crud
+		m.genModel = m.genModel || opts.Model || implyModel
 		m.genHooks = m.genHooks || opts.Hooks
 		m.genValidate = m.genValidate || opts.Validate
 		m.genCRUD = m.genCRUD || opts.Crud
