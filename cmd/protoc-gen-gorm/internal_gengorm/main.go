@@ -4,10 +4,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/complex64/protoc-gen-gorm/gormpb/v2"
 	"github.com/complex64/protoc-gen-gorm/internal/version"
 	"google.golang.org/protobuf/compiler/protogen"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
@@ -91,120 +89,6 @@ func genImport(gen *protogen.Plugin, g *protogen.GeneratedFile, f *fileInfo, imp
 
 	g.Import(impFile.GoImportPath)
 	g.P()
-}
-
-// fileInfo wraps the input .proto file and keeps information to generate code.
-type fileInfo struct {
-	*protogen.File
-
-	allMessages []*messageInfo
-
-	genModel    bool
-	genHooks    bool
-	genValidate bool
-	genCRUD     bool
-}
-
-func newFileInfo(file *protogen.File) (*fileInfo, error) {
-	f := &fileInfo{File: file}
-
-	if opts := fileOptions(file); opts != nil {
-		implyModel := opts.Hooks || opts.Validate || opts.Crud
-		f.genModel = opts.Model || implyModel
-	}
-
-	// Collect all messages recursively.
-	var walkMessages func([]*protogen.Message, func(*protogen.Message) error) error
-	walkMessages = func(messages []*protogen.Message, f func(*protogen.Message) error) error {
-		for _, m := range messages {
-			if err := f(m); err != nil {
-				return err
-			}
-			if err := walkMessages(m.Messages, f); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-
-	initMessageInfos := func(messages []*protogen.Message) error {
-		for _, message := range messages {
-			m, err := newMessageInfo(f, message)
-			if err != nil {
-				return err
-			}
-			f.allMessages = append(f.allMessages, m)
-		}
-		return nil
-	}
-
-	if err := initMessageInfos(f.Messages); err != nil {
-		return nil, err
-	}
-
-	err := walkMessages(f.Messages, func(m *protogen.Message) error {
-		if err := initMessageInfos(m.Messages); err != nil {
-			return err
-		}
-		return nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	return f, nil
-}
-
-// fileOptions returns the protoc-gen-gorm options for file.
-// Example: option (gorm.v2.file).model = true;
-func fileOptions(file *protogen.File) *gormpb.FileOptions {
-	opts := file.Desc.Options()
-	o, ok := proto.GetExtension(opts, gormpb.E_File).(*gormpb.FileOptions)
-	if !ok || o == nil {
-		return nil
-	}
-	return o
-}
-
-// messageInfo wraps a message from the input .proto file and keeps information to generate code.
-type messageInfo struct {
-	*protogen.Message
-
-	genModel    bool
-	genHooks    bool
-	genValidate bool
-	genCRUD     bool
-}
-
-func newMessageInfo(f *fileInfo, message *protogen.Message) (*messageInfo, error) {
-	m := &messageInfo{Message: message}
-
-	// File flags override message flags.
-	m.genModel = f.genModel
-	m.genHooks = f.genHooks
-	m.genValidate = f.genValidate
-	m.genCRUD = f.genCRUD
-
-	if opts := messageOptions(message); opts != nil {
-		// Generate a model when using features that need the model.
-		m.genModel = m.genModel || opts.Model || opts.Hooks || opts.Validate || opts.Crud
-		m.genHooks = m.genHooks || opts.Hooks
-		m.genValidate = m.genValidate || opts.Validate
-		m.genCRUD = m.genCRUD || opts.Crud
-	}
-
-	return m, nil
-}
-
-// messageOptions returns the protoc-gen-gorm options set for message.
-// Example: message MyMessage { option (gorm.v2.message).model = true; }
-func messageOptions(message *protogen.Message) *gormpb.MessageOptions {
-	opts := message.Desc.Options()
-	o, ok := proto.GetExtension(opts, gormpb.E_Message).(*gormpb.MessageOptions)
-	if !ok || o == nil {
-		return nil
-	}
-	return o
 }
 
 // genModels generates GORM models and supporting APIs.
