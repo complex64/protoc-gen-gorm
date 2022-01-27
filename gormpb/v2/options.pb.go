@@ -26,13 +26,13 @@ type FileOptions struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Set `model: true` for all messages.
+	// Set model=true for all messages.
 	Model bool `protobuf:"varint,1,opt,name=model,proto3" json:"model,omitempty"`
-	// Set `hooks: true` for all messages.
+	// Set hooks=true for all messages.
 	Hooks bool `protobuf:"varint,2,opt,name=hooks,proto3" json:"hooks,omitempty"`
-	// Set `validate: true` for all messages.
+	// Set validate=true for all messages.
 	Validate bool `protobuf:"varint,3,opt,name=validate,proto3" json:"validate,omitempty"`
-	// Set `crud: true` for all messages.
+	// Set crud=true for all messages.
 	Crud bool `protobuf:"varint,4,opt,name=crud,proto3" json:"crud,omitempty"`
 }
 
@@ -104,14 +104,14 @@ type MessageOptions struct {
 	// Generate a GORM model for this message.
 	Model bool `protobuf:"varint,1,opt,name=model,proto3" json:"model,omitempty"`
 	// Generate functions to defined hooks for this message;
-	// Implies `model: true`.
+	// Implies model=true.
 	Hooks bool `protobuf:"varint,2,opt,name=hooks,proto3" json:"hooks,omitempty"`
 	// Validate the model before saving.
 	// Expects usage of https://github.com/envoyproxy/protoc-gen-validate.
-	// Implies `model: true`.
+	// Implies model=true.
 	Validate bool `protobuf:"varint,3,opt,name=validate,proto3" json:"validate,omitempty"`
 	// Generate functions to create, read, update, and delete (CRUD) objects.
-	// Implies `model: true`.
+	// Implies model=true.
 	Crud bool `protobuf:"varint,4,opt,name=crud,proto3" json:"crud,omitempty"`
 }
 
