@@ -14,6 +14,10 @@ extend google.protobuf.MessageOptions {
   MessageOptions message = 50001;
 }
 
+extend google.protobuf.FieldOptions {
+  FieldOptions field = 50002;
+}
+
 message FileOptions {
   string file_option = 1;
 }
@@ -22,9 +26,15 @@ message MessageOptions {
   string message_option = 1;
 }
 
+message FieldOptions {
+  string field_option = 1;
+}
+
 option (testdata.file).file_option = "file option value";
 
 message MyMessage {
   option (testdata.message).message_option = "message option value";
-  string message_field = 1;
+  string message_field = 1 [
+    (testdata.field).field_option = "field option value"
+  ];
 }
