@@ -18,6 +18,11 @@ l: lint
 lint: build
 	golangci-lint run
 
+# Lint the .proto files with buf.
+b: buf
+buf:
+	cd proto && buf lint
+
 # Assumes $GOPATH/bin is in your $PATH!
 gen: generate
 generate: gormpb install
