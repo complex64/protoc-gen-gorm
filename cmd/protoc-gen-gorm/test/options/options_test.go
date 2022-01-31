@@ -37,10 +37,6 @@ func TestMessageOptions(t *testing.T) {
 		}
 		require.MessageOption(t, defaults, msg)
 	})
-	t.Run("table name", func(t *testing.T) {
-		opts := &gormpb.MessageOptions{Table: "tableName"}
-		require.MessageOption(t, opts, msg)
-	})
 }
 
 func TestFieldOptions(t *testing.T) {
