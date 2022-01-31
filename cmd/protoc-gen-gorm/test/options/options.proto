@@ -5,18 +5,13 @@ option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/te
 
 // Exercise all options types:
 
-option (gorm.v2.file) = {
-  // Fields not set implies a default of `false`.
-};
+option (gorm.v2.file) = {/* Defaults */};
 
 message MyMessage {
-  option (gorm.v2.message) = {
-    // Fields not set imply a default of `false`.
-  };
+  option (gorm.v2.message) = {/* Defaults */};
 
   string field_1 = 1 [
-    // No field options defined yet.
-    (gorm.v2.field) = {}
+    (gorm.v2.field) = {/* Defaults */}
   ];
 
   oneof oneof {

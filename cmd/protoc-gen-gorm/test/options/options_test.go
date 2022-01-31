@@ -12,18 +12,57 @@ import (
 
 // Test that all options in the .proto file are present as expected.
 
-func TestMessageOptions(t *testing.T) {
-	msg := &options.MyMessage{}
-	opts := &gormpb.MessageOptions{
-		// Expect all to be present and false by default.
-	}
-	require.MessageOption(t, opts, msg)
-}
-
 func TestFileOptions(t *testing.T) {
 	msg := &options.MyMessage{}
-	opts := &gormpb.FileOptions{
-		// Expect all to be present and false by default.
+	defaults := &gormpb.FileOptions{
+		Model:    false,
+		Hooks:    false,
+		Validate: false,
+		Crud:     false,
 	}
-	require.FileOptions(t, opts, msg)
+	require.FileOptions(t, defaults, msg)
+}
+
+func TestMessageOptions(t *testing.T) {
+	var (
+		msg = &options.MyMessage{}
+	)
+	t.Run("defaults", func(t *testing.T) {
+		defaults := &gormpb.MessageOptions{
+			Model:    false,
+			Hooks:    false,
+			Validate: false,
+			Crud:     false,
+			Table:    "",
+		}
+		require.MessageOption(t, defaults, msg)
+	})
+	t.Run("table name", func(t *testing.T) {
+		opts := &gormpb.MessageOptions{Table: "tableName"}
+		require.MessageOption(t, opts, msg)
+	})
+}
+
+func TestFieldOptions(t *testing.T) {
+	var (
+		msg = &options.MyMessage{}
+	)
+	t.Run("defaults", func(t *testing.T) {
+		defaults := &gormpb.FieldOptions{
+			Column:             "",
+			NotNull:            false,
+			Default:            "",
+			Unique:             false,
+			PrimaryKey:         false,
+			Index:              nil,
+			UniqueIndex:        nil,
+			AutoCreateTime:     false,
+			AutoCreateTimeType: gormpb.TimeType_GO_TIME_TIME,
+			AutoUpdateTime:     false,
+			AutoUpdateTimeType: gormpb.TimeType_GO_TIME_TIME,
+			Permissions:        nil,
+			Comment:            "",
+		}
+		require.FieldOption(t, defaults, msg, "field_1")
+	})
 }
