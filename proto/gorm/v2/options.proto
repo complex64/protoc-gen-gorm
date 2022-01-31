@@ -11,13 +11,13 @@ so we can use numbers in this range freely for in-house applications.
 Start with 50100 to prevent trivial collisions.
 
 Global Extension Registry: https://github.com/protocolbuffers/protobuf/blob/master/docs/options.md
-*/
+ */
 
 option go_package = "github.com/complex64/protoc-gen-gorm/gormpb/v2;gormpb";
 
 /*
 Allocate field numbers and register extensions for all proto types, even if empty for now.
-*/
+ */
 
 extend google.protobuf.FileOptions {
   FileOptions file = 50100;
@@ -81,9 +81,138 @@ message MessageOptions {
   // Generate functions to create, read, update, and delete (CRUD) objects.
   // Implies model=true.
   bool crud = 4;
+
+  // Override the table name.
+  string table = 5;
 }
 
-message FieldOptions {/* Reserved */}
+/*
+https://gorm.io/docs/models.html#Fields-Tags
+ */
+
+message FieldOptions {
+  // Name of the column in the database.
+  string column = 1;
+
+  // The column's data type.
+  reserved "type";
+  reserved 2;
+
+  // Data size, or length.
+  reserved "size";
+  reserved 3;
+
+  // The number of digits on both sides of the decimal point.
+  reserved "precision";
+  reserved 4;
+
+  // The number of digits to the right of the decimal point.
+  reserved "scale";
+  reserved 5;
+
+  // The field must not be null.
+  bool not_null = 6;
+
+  // Use this default value for this column.
+  // Note that zero values (0, "", false) are not supported by GORM.
+  string default = 7;
+
+  // Require the column's data to be unique among all the rows in the table.
+  bool unique = 8;
+
+  // Mark the column as primary key.
+  // Multiple primary keys create a composite primary key.
+  // Implies auto_increment=true for integer columns.
+  bool primary_key = 9;
+
+  repeated Index index = 10;
+
+  // Let the index enforce uniqueness of the column's value.
+  repeated Index unique_index = 11;
+
+  // Auto-generate a unique identity for new rows.
+  reserved "auto_increment", "auto_increment_step";
+  reserved 12, 13;
+
+  // Let this field track the creation time as time.Time.
+  bool auto_create_time = 14;
+  TimeType auto_create_time_type = 15;
+
+  // Let this field track the update time as time.Time.
+  bool auto_update_time = 16;
+  TimeType auto_update_time_type = 17;
+
+  reserved "embedded", "embedded_prefix";
+  reserved 18, 19;
+
+  reserved "foreign_key";
+  reserved  20;
+
+  reserved "checks";
+  reserved 21;
+
+  oneof permissions {
+    // Equivalent to gorm:"-"
+    bool ignore = 22;
+    FieldPermissionsDenyList deny = 23;
+  };
+
+  // Comment used in migrations.
+  string comment = 24;
+}
+
+/*
+https://gorm.io/docs/indexes.html
+ */
+
+message Index {
+  // Generate the default index.
+  // Equivalent to gorm:"index"`.
+  bool default = 1;
+
+  // Set the index name.
+  // Equivalent to gorm:"index:<name>"`.
+  string name = 2;
+
+  reserved "priority";
+  reserved  3;
+
+  reserved "class", "type", "where", "comment", "expression", "sort", "collate", "options";
+  reserved 4, 5, 6, 7, 8, 9, 10, 11;
+}
+
+/*
+https://gorm.io/docs/v2_release_note.html#Field-permissions
+ */
+
+message FieldPermissionsDenyList {
+  // Deny creation, allow updates.
+  // Equivalent to gorm:"<-:update".
+  bool create = 2;
+
+  // Deny updates, allow creation.
+  // Equivalent to gorm:"<-:create".
+  bool update = 3;
+
+  // Deny reads.
+  // Equivalent to gorm:"->:false".
+  bool read = 4;
+}
+
+/*
+https://gorm.io/docs/models.html#Creating-Updating-Time-Unix-Milli-Nano-Seconds-Tracking
+ */
+
+enum TimeType  {
+  // Default. Store times as Go's time.Time.
+  GO_TIME_TIME = 0;
+
+  // Store times as integers instead of time.Time.
+  SECONDS = 1;
+  MILLISECONDS = 2;
+  NANOSECONDS = 3;
+}
+
 message OneofOptions {/* Reserved */}
 message EnumOptions {/* Reserved */}
 message EnumValueOptions {/* Reserved */}
