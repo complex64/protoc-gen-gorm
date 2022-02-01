@@ -3,7 +3,6 @@ module github.com/complex64/protoc-gen-gorm
 go 1.17
 
 require (
-	github.com/complex64/protoc-gen-gorm/gormpb/v2 v2.0.0-00010101000000-000000000000
 	github.com/google/go-cmp v0.5.7
 	github.com/stretchr/testify v1.7.0
 	google.golang.org/protobuf v1.27.1
