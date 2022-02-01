@@ -15,6 +15,3 @@ require (
 	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
-
-// Uncomment to run tests against the local version of options.proto during feature development.
-//replace github.com/complex64/protoc-gen-gorm/gormpb => ./gormpb
