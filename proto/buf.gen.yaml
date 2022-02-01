@@ -1,8 +1,8 @@
-# Proto files that include `gorm/v2/options.proto` compile to Go code
-# that imports "github.com/complex64/protoc-gen-gorm/gormpb/v2";
+# Proto files which include `gorm/v2/options.proto`
+# compile to Go code that imports "github.com/complex64/protoc-gen-gorm/gormpb";
 # Generate the package:
 version: v1
 plugins:
   - name: go
-    out: ../gormpb/v2
+    out: .
     opt: paths=source_relative

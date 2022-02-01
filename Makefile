@@ -39,9 +39,8 @@ generate: gormpb install
 gormpb:
 	# Generate the standalone module and update/lock dependencies.
 	cd proto && buf generate
-	mv gormpb/v2/gorm/v2/*.pb.go gormpb/v2
-	rm -r gormpb/v2/gorm
-	cd gormpb/v2 && go mod tidy
+	find proto -type f -name "*.pb.go" -exec mv {} gormpb \;
+	cd gormpb && go mod tidy
 
 # Install `protoc-gen-go` into $GOPATH/bin.
 i: install

@@ -1,22 +1,22 @@
 syntax = "proto3";
-import "gorm/v2/options.proto";
+import "gorm/options.proto";
 package options;
 option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/options";
 
 // Exercise all options types:
 
-option (gorm.v2.file) = {/* Defaults */};
+option (gorm.file) = {/* Defaults */};
 
 message MyMessage {
-  option (gorm.v2.message) = {/* Defaults */};
+  option (gorm.message) = {/* Defaults */};
 
   string field_1 = 1 [
-    (gorm.v2.field) = {/* Defaults */}
+    (gorm.field) = {/* Defaults */}
   ];
 
   oneof oneof {
     // No oneof options defined yet.
-    option (gorm.v2.oneof) = {};
+    option (gorm.oneof) = {};
 
     string field_2 = 2;
     int32 field_3 = 3;
@@ -25,21 +25,21 @@ message MyMessage {
 
 enum MyEnum {
   // No enum options defined yet.
-  option (gorm.v2.enum) = {};
+  option (gorm.enum) = {};
 
   MY_ENUM_UNSPECIFIED = 0 [
     // No enum value options defined yet.
-    (gorm.v2.enum_value) = {}
+    (gorm.enum_value) = {}
   ];
 }
 
 service MyService {
   // No service options defined yet.
-  option (gorm.v2.service) = {};
+  option (gorm.service) = {};
 
   rpc MyMethod(MyMethodRequest) returns (MyMethodResponse) {
     // No method options defined yet.
-    option (gorm.v2.method) = {};
+    option (gorm.method) = {};
   }
 }
 

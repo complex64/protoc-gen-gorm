@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/options"
-	"github.com/complex64/protoc-gen-gorm/gormpb/v2"
+	"github.com/complex64/protoc-gen-gorm/gormpb"
 	"github.com/complex64/protoc-gen-gorm/internal/require"
 )
 

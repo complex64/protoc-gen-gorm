@@ -7,7 +7,7 @@ This module declares and documents the options you can use in your `.proto` file
 Include `options.proto` in your own `.proto` files and apply options to the file, your messages, or fields to control what `proto-gen-gorm` generates.
 
 ```proto
-import "gorm/v2/options.proto";
+import "gorm/options.proto";
 ```
 
 Your editor and build setup needs to reference this file.

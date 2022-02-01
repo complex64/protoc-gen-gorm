@@ -1,23 +1,23 @@
 syntax = "proto3";
-import "gorm/v2/options.proto";
+import "gorm/options.proto";
 package modelflags;
 option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/modelflags";
 
 message MyMessage {
-  option (gorm.v2.message).model = true;
+  option (gorm.message).model = true;
 }
 
 message MyHooksMessage {
   // Implies model=true.
-  option (gorm.v2.message).hooks = true;
+  option (gorm.message).hooks = true;
 }
 
 message MyValidateMessage {
   // Implies model=true.
-  option (gorm.v2.message).validate = true;
+  option (gorm.message).validate = true;
 }
 
 message MyCrudMessage {
   // Implies model=true.
-  option (gorm.v2.message).crud = true;
+  option (gorm.message).crud = true;
 }

@@ -1,7 +1,7 @@
 package internal_gengorm
 
 import (
-	"github.com/complex64/protoc-gen-gorm/gormpb/v2"
+	"github.com/complex64/protoc-gen-gorm/gormpb"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
 )
@@ -65,7 +65,7 @@ func walkMessages(messages []*protogen.Message, walkFuncs []func(*protogen.Messa
 }
 
 // fileOptions returns the protoc-gen-gorm options for file.
-// Example: option (gorm.v2.file).model = true;
+// Example: option (gorm.file).model = true;
 func fileOptions(file *protogen.File) *gormpb.FileOptions {
 	opts := file.Desc.Options()
 	o, ok := proto.GetExtension(opts, gormpb.E_File).(*gormpb.FileOptions)

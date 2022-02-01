@@ -1,7 +1,7 @@
 package internal_gengorm
 
 import (
-	"github.com/complex64/protoc-gen-gorm/gormpb/v2"
+	"github.com/complex64/protoc-gen-gorm/gormpb"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
 )
@@ -38,7 +38,7 @@ func newMessageInfo(f *fileInfo, message *protogen.Message) (*messageInfo, error
 }
 
 // messageOptions returns the protoc-gen-gorm options set for message.
-// Example: message MyMessage { option (gorm.v2.message).model = true; }
+// Example: message MyMessage { option (gorm.message).model = true; }
 func messageOptions(message *protogen.Message) *gormpb.MessageOptions {
 	opts := message.Desc.Options()
 	o, ok := proto.GetExtension(opts, gormpb.E_Message).(*gormpb.MessageOptions)
