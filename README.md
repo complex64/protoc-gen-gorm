@@ -5,5 +5,5 @@
 Generate GORM v2 Models and APIs from your .proto files.
 
 ```
-go install github.com/complex64/protoc-gen-gorm
+go install github.com/complex64/protoc-gen-gorm@latest
 ```
