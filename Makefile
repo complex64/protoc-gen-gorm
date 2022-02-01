@@ -27,7 +27,7 @@ buf:
 gen: generate
 generate: gormpb install
 	# Files used by tests of the plugin implementation.
-	cd cmd/protoc-gen-gorm/test && buf generate
+	cd internal/gengorm/test && buf generate
 
 	# Remove code generated from tests.
 	find proto -name '*.go' -delete
@@ -45,10 +45,11 @@ gormpb:
 # Install `protoc-gen-go` into $GOPATH/bin.
 i: install
 install:
-	go install ./cmd/...
+	go install
 
 # Remove all generated files.
 clean:
+	go clean
 	find -name '*.pb.go' -delete
 	$(MAKE) gormpb
 

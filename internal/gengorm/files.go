@@ -1,4 +1,4 @@
-package internal_gengorm
+package gengorm
 
 import (
 	"github.com/complex64/protoc-gen-gorm/gormpb"

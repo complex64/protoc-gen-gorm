@@ -2,7 +2,7 @@
 FROM golang:1.17 as buildenv
 WORKDIR /go/src/app
 ADD . .
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o /bin/protoc-gen-gorm ./cmd/protoc-gen-gorm
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o /bin/protoc-gen-gorm ./
 
 # Stage 2: Deliver in minimal image.
 FROM gcr.io/distroless/static

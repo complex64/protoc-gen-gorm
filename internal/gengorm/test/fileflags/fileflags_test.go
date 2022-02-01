@@ -3,7 +3,7 @@ package fileflags_test
 import (
 	"testing"
 
-	"github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/fileflags"
+	"github.com/complex64/protoc-gen-gorm/internal/gengorm/test/fileflags"
 )
 
 func TestGenerateFile(t *testing.T) {

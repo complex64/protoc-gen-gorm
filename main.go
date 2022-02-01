@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	gengorm "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/internal_gengorm"
+	"github.com/complex64/protoc-gen-gorm/internal/gengorm"
 	"github.com/complex64/protoc-gen-gorm/internal/version"
 	"google.golang.org/protobuf/compiler/protogen"
 )

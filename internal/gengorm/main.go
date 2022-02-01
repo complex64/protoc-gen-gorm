@@ -1,4 +1,4 @@
-package internal_gengorm
+package gengorm
 
 import (
 	"flag"

@@ -3,7 +3,7 @@ package modelflags_test
 import (
 	"testing"
 
-	"github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/modelflags"
+	"github.com/complex64/protoc-gen-gorm/internal/gengorm/test/modelflags"
 )
 
 func TestGenerateFile(t *testing.T) {
