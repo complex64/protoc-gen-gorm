@@ -5,4 +5,4 @@ option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/te
 
 // Implies model=true on all messages.
 option (gorm.file) = {crud: true};
-message MyCrudMessage {}
+message ImplicitCRUD {}

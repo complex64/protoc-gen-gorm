@@ -2,14 +2,15 @@
 // versions:
 // 	protoc-gen-gorm v0.0.0
 // 	protoc          (unknown)
-// source: fileflags/hooks.proto
+// source: fieldtypes/fieldtypes.proto
 
-package fileflags
+package fieldtypes
 
 import (
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
-// MyHooksMessageModel is the GORM model for fileflags.MyHooksMessage.
-type MyHooksMessageModel struct {
+// MyMessageModel is the GORM model for fieldtypes.MyMessage.
+type MyMessageModel struct {
+	StringField string
 }

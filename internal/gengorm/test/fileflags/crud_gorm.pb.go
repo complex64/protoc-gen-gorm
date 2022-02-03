@@ -10,6 +10,6 @@ import (
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
-// MyCrudMessageModel is the GORM model for fileflags.MyCrudMessage.
-type MyCrudMessageModel struct {
+// ImplicitCRUDModel is the GORM model for fileflags.ImplicitCRUD.
+type ImplicitCRUDModel struct {
 }
