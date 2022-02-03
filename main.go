@@ -35,7 +35,7 @@ func main() {
 		flags flag.FlagSet
 	)
 	protogen.Options{
-		// Call `flags.Set(param, value)` for each from `--gorm_out=<param1>=<value1>,...`.
+		// Calls `flags.Set(param, value)` for each from `--gorm_out=<param1>=<value1>,...`.
 		ParamFunc: flags.Set,
 	}.Run(func(plugin *protogen.Plugin) error {
 		for _, f := range plugin.Files {
