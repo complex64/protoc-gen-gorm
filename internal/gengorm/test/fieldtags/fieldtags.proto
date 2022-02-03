@@ -1,0 +1,127 @@
+syntax = "proto3";
+import "gorm/options.proto";
+package fieldtags;
+option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/fieldtags";
+
+// Options iterates all common options to assert on the resulting GORM tags.
+message Options {
+  option (gorm.message).model = true;
+
+  // `gorm:"column:my_column"`
+  string column = 1 [
+    (gorm.field).column = "my_column"
+  ];
+
+  // `gorm:"not null"`
+  string not_null = 6 [
+    (gorm.field).not_null = true
+  ];
+
+  // `gorm:"default:value"`
+  string default = 7 [
+    (gorm.field).default = "value"
+  ];
+
+  // `gorm:"unique"`
+  string unique = 8 [
+    (gorm.field).unique = true
+  ];
+
+  // `gorm:"primaryKey"`
+  string primary_key = 9 [
+    (gorm.field).column = "my_column"
+  ];
+
+  // `gorm:"index"`
+  string default_index = 10 [
+    (gorm.field).index = {default: true}
+  ];
+
+  // `gorm:"index:my_index"`
+  string named_index = 101 [
+    (gorm.field).index = {name: "my_index"}
+  ];
+
+  // `gorm:"uniqueIndex"`
+  string unique_default_index = 11 [
+    (gorm.field).unique_index = {default: true}
+  ];
+
+  // `gorm:"uniqueIndex:my_unique_index"`
+  string unique_named_index = 111 [
+    (gorm.field).unique_index = {name: "my_unique_index"}
+  ];
+
+  // `gorm:"autoCreateTime"`
+  string auto_create_time = 14 [
+    (gorm.field).auto_create_time = true
+  ];
+
+  // `gorm:"autoUpdateTime"`
+  string auto_update_time = 16 [
+    (gorm.field).auto_update_time = true
+  ];
+
+  // `gorm:"-"`
+  string ignore = 22 [
+    (gorm.field) = {
+      ignore: true,
+    }];
+}
+
+// DenyOptions iterates all permissions to assert on the resulting tags.
+message DenyOptions {
+  option (gorm.message).model = true;
+
+  // `gorm:"-"`
+  string ignore = 1 [
+    (gorm.field).deny = {
+      read: true
+      create: true
+      update: true
+    }
+  ];
+
+  // `gorm:"->:false;<-:update"`
+  string update_only = 2 [
+    (gorm.field).deny = {
+      read: true
+      create: true
+    }
+  ];
+
+  // `gorm:"->:false;<-:create"`
+  string create_only = 3 [
+    (gorm.field).deny = {
+      read: true
+      update: true
+    }
+  ];
+
+  // `gorm:"->:false;<-"`
+  string write_only = 4 [
+    (gorm.field).deny.read = true
+  ];
+
+  // `gorm:"->"`
+  string read_only = 5 [
+    (gorm.field).deny = {
+      create: true,
+      update: true,
+    }
+  ];
+
+  // `gorm:"<-:update"`
+  string read_update = 6 [
+    (gorm.field).deny = {
+      create: true,
+    }
+  ];
+
+  // `gorm:"<-:create"`
+  string read_create = 7 [
+    (gorm.field).deny = {
+      update: true,
+    }
+  ];
+}

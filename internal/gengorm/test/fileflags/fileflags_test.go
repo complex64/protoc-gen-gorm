@@ -9,16 +9,13 @@ import (
 func TestGenerateFile(t *testing.T) {
 	t.Run("", func(t *testing.T) {
 		t.Run("file-level model=true implies model=true", func(t *testing.T) {
-			_ = &fileflags.MyMessageModel{}
-		})
-		t.Run("file-level hooks=true implies model=true", func(t *testing.T) {
-			_ = &fileflags.MyHooksMessageModel{}
+			_ = &fileflags.ImplicitModel{}
 		})
 		t.Run("file-level validate=true implies model=true", func(t *testing.T) {
-			_ = &fileflags.MyValidateMessageModel{}
+			_ = &fileflags.ImplicitValidate{}
 		})
 		t.Run("file-level crud=true implies model=true", func(t *testing.T) {
-			_ = &fileflags.MyCrudMessageModel{}
+			_ = &fileflags.ImplicitCRUD{}
 		})
 	})
 }

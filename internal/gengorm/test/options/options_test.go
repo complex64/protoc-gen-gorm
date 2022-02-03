@@ -13,10 +13,9 @@ import (
 // Test that all options in the .proto file are present as expected.
 
 func TestFileOptions(t *testing.T) {
-	msg := &options.MyMessage{}
+	msg := &options.Message{}
 	defaults := &gormpb.FileOptions{
 		Model:    false,
-		Hooks:    false,
 		Validate: false,
 		Crud:     false,
 	}
@@ -25,12 +24,11 @@ func TestFileOptions(t *testing.T) {
 
 func TestMessageOptions(t *testing.T) {
 	var (
-		msg = &options.MyMessage{}
+		msg = &options.Message{}
 	)
 	t.Run("defaults", func(t *testing.T) {
 		defaults := &gormpb.MessageOptions{
 			Model:    false,
-			Hooks:    false,
 			Validate: false,
 			Crud:     false,
 			Table:    "",
@@ -41,24 +39,21 @@ func TestMessageOptions(t *testing.T) {
 
 func TestFieldOptions(t *testing.T) {
 	var (
-		msg = &options.MyMessage{}
+		msg = &options.Message{}
 	)
 	t.Run("defaults", func(t *testing.T) {
 		defaults := &gormpb.FieldOptions{
-			Column:             "",
-			NotNull:            false,
-			Default:            "",
-			Unique:             false,
-			PrimaryKey:         false,
-			Index:              nil,
-			UniqueIndex:        nil,
-			AutoCreateTime:     false,
-			AutoCreateTimeType: gormpb.TimeType_GO_TIME_TIME,
-			AutoUpdateTime:     false,
-			AutoUpdateTimeType: gormpb.TimeType_GO_TIME_TIME,
-			Permissions:        nil,
-			Comment:            "",
+			Column:         "",
+			NotNull:        false,
+			Default:        "",
+			Unique:         false,
+			PrimaryKey:     false,
+			Index:          nil,
+			UniqueIndex:    nil,
+			AutoCreateTime: false,
+			AutoUpdateTime: false,
+			Permissions:    nil,
 		}
-		require.FieldOption(t, defaults, msg, "field_1")
+		require.FieldOption(t, defaults, msg, "field")
 	})
 }

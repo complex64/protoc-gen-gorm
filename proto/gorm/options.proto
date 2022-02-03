@@ -56,7 +56,8 @@ message FileOptions {
   bool model = 1;
 
   // Set hooks=true for all messages.
-  bool hooks = 2;
+  reserved "hooks";
+  reserved 2;
 
   // Set validate=true for all messages.
   bool validate = 3;
@@ -71,7 +72,8 @@ message MessageOptions {
 
   // Generate functions to defined hooks for this message;
   // Implies model=true.
-  bool hooks = 2;
+  reserved "hooks";
+  reserved 2;
 
   // Validate the model before saving.
   // Expects usage of https://github.com/envoyproxy/protoc-gen-validate.

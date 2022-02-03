@@ -8,15 +8,12 @@ import (
 
 func TestGenerateFile(t *testing.T) {
 	t.Run("generates model type when model=true", func(t *testing.T) {
-		_ = &modelflags.MyMessageModel{}
-	})
-	t.Run("hooks=true implies model=true", func(t *testing.T) {
-		_ = &modelflags.MyHooksMessageModel{}
+		_ = &modelflags.ModelOption{}
 	})
 	t.Run("validate=true implies model=true", func(t *testing.T) {
-		_ = &modelflags.MyValidateMessageModel{}
+		_ = &modelflags.ValidateImpliesModel{}
 	})
 	t.Run("crud=true implies model=true", func(t *testing.T) {
-		_ = &modelflags.MyCrudMessageModel{}
+		_ = &modelflags.CRUDImpliesModel{}
 	})
 }

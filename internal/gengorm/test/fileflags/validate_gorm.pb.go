@@ -10,6 +10,6 @@ import (
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
-// MyValidateMessageModel is the GORM model for fileflags.MyValidateMessage.
-type MyValidateMessageModel struct {
+// ImplicitValidateModel is the GORM model for fileflags.ImplicitValidate.
+type ImplicitValidateModel struct {
 }

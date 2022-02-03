@@ -21,14 +21,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type MyMessage struct {
+// ModelOption flags the message for model generation.
+type ModelOption struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MyMessage) Reset() {
-	*x = MyMessage{}
+func (x *ModelOption) Reset() {
+	*x = ModelOption{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_modelflags_modelflags_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -36,13 +37,13 @@ func (x *MyMessage) Reset() {
 	}
 }
 
-func (x *MyMessage) String() string {
+func (x *ModelOption) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MyMessage) ProtoMessage() {}
+func (*ModelOption) ProtoMessage() {}
 
-func (x *MyMessage) ProtoReflect() protoreflect.Message {
+func (x *ModelOption) ProtoReflect() protoreflect.Message {
 	mi := &file_modelflags_modelflags_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -54,19 +55,20 @@ func (x *MyMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MyMessage.ProtoReflect.Descriptor instead.
-func (*MyMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use ModelOption.ProtoReflect.Descriptor instead.
+func (*ModelOption) Descriptor() ([]byte, []int) {
 	return file_modelflags_modelflags_proto_rawDescGZIP(), []int{0}
 }
 
-type MyHooksMessage struct {
+// ValidateImpliesModel sets model=true implicitly.
+type ValidateImpliesModel struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MyHooksMessage) Reset() {
-	*x = MyHooksMessage{}
+func (x *ValidateImpliesModel) Reset() {
+	*x = ValidateImpliesModel{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_modelflags_modelflags_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -74,13 +76,13 @@ func (x *MyHooksMessage) Reset() {
 	}
 }
 
-func (x *MyHooksMessage) String() string {
+func (x *ValidateImpliesModel) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MyHooksMessage) ProtoMessage() {}
+func (*ValidateImpliesModel) ProtoMessage() {}
 
-func (x *MyHooksMessage) ProtoReflect() protoreflect.Message {
+func (x *ValidateImpliesModel) ProtoReflect() protoreflect.Message {
 	mi := &file_modelflags_modelflags_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -92,19 +94,20 @@ func (x *MyHooksMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MyHooksMessage.ProtoReflect.Descriptor instead.
-func (*MyHooksMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use ValidateImpliesModel.ProtoReflect.Descriptor instead.
+func (*ValidateImpliesModel) Descriptor() ([]byte, []int) {
 	return file_modelflags_modelflags_proto_rawDescGZIP(), []int{1}
 }
 
-type MyValidateMessage struct {
+// CRUDImpliesModel sets model=true implicitly.
+type CRUDImpliesModel struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MyValidateMessage) Reset() {
-	*x = MyValidateMessage{}
+func (x *CRUDImpliesModel) Reset() {
+	*x = CRUDImpliesModel{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_modelflags_modelflags_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -112,13 +115,13 @@ func (x *MyValidateMessage) Reset() {
 	}
 }
 
-func (x *MyValidateMessage) String() string {
+func (x *CRUDImpliesModel) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MyValidateMessage) ProtoMessage() {}
+func (*CRUDImpliesModel) ProtoMessage() {}
 
-func (x *MyValidateMessage) ProtoReflect() protoreflect.Message {
+func (x *CRUDImpliesModel) ProtoReflect() protoreflect.Message {
 	mi := &file_modelflags_modelflags_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -130,47 +133,9 @@ func (x *MyValidateMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MyValidateMessage.ProtoReflect.Descriptor instead.
-func (*MyValidateMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use CRUDImpliesModel.ProtoReflect.Descriptor instead.
+func (*CRUDImpliesModel) Descriptor() ([]byte, []int) {
 	return file_modelflags_modelflags_proto_rawDescGZIP(), []int{2}
-}
-
-type MyCrudMessage struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *MyCrudMessage) Reset() {
-	*x = MyCrudMessage{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_modelflags_modelflags_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *MyCrudMessage) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MyCrudMessage) ProtoMessage() {}
-
-func (x *MyCrudMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_modelflags_modelflags_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MyCrudMessage.ProtoReflect.Descriptor instead.
-func (*MyCrudMessage) Descriptor() ([]byte, []int) {
-	return file_modelflags_modelflags_proto_rawDescGZIP(), []int{3}
 }
 
 var File_modelflags_modelflags_proto protoreflect.FileDescriptor
@@ -179,19 +144,18 @@ var file_modelflags_modelflags_proto_rawDesc = []byte{
 	0x0a, 0x1b, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x66, 0x6c, 0x61, 0x67, 0x73, 0x2f, 0x6d, 0x6f, 0x64,
 	0x65, 0x6c, 0x66, 0x6c, 0x61, 0x67, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0a, 0x6d,
 	0x6f, 0x64, 0x65, 0x6c, 0x66, 0x6c, 0x61, 0x67, 0x73, 0x1a, 0x12, 0x67, 0x6f, 0x72, 0x6d, 0x2f,
-	0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x13, 0x0a,
-	0x09, 0x4d, 0x79, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x3a, 0x06, 0xaa, 0xbb, 0x18, 0x02,
-	0x08, 0x01, 0x22, 0x18, 0x0a, 0x0e, 0x4d, 0x79, 0x48, 0x6f, 0x6f, 0x6b, 0x73, 0x4d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x3a, 0x06, 0xaa, 0xbb, 0x18, 0x02, 0x10, 0x01, 0x22, 0x1b, 0x0a, 0x11,
-	0x4d, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x3a, 0x06, 0xaa, 0xbb, 0x18, 0x02, 0x18, 0x01, 0x22, 0x17, 0x0a, 0x0d, 0x4d, 0x79, 0x43,
-	0x72, 0x75, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x3a, 0x06, 0xaa, 0xbb, 0x18, 0x02,
-	0x20, 0x01, 0x42, 0x4a, 0x5a, 0x48, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x78, 0x36, 0x34, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x63, 0x2d, 0x67, 0x65, 0x6e, 0x2d, 0x67, 0x6f, 0x72, 0x6d, 0x2f, 0x63, 0x6d, 0x64, 0x2f, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x2d, 0x67, 0x65, 0x6e, 0x2d, 0x67, 0x6f, 0x72, 0x6d, 0x2f, 0x74,
-	0x65, 0x73, 0x74, 0x2f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x66, 0x6c, 0x61, 0x67, 0x73, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x15, 0x0a,
+	0x0b, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x06, 0xaa, 0xbb,
+	0x18, 0x02, 0x08, 0x01, 0x22, 0x1e, 0x0a, 0x14, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65,
+	0x49, 0x6d, 0x70, 0x6c, 0x69, 0x65, 0x73, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x3a, 0x06, 0xaa, 0xbb,
+	0x18, 0x02, 0x18, 0x01, 0x22, 0x1a, 0x0a, 0x10, 0x43, 0x52, 0x55, 0x44, 0x49, 0x6d, 0x70, 0x6c,
+	0x69, 0x65, 0x73, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x3a, 0x06, 0xaa, 0xbb, 0x18, 0x02, 0x20, 0x01,
+	0x42, 0x4a, 0x5a, 0x48, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63,
+	0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x78, 0x36, 0x34, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x2d,
+	0x67, 0x65, 0x6e, 0x2d, 0x67, 0x6f, 0x72, 0x6d, 0x2f, 0x63, 0x6d, 0x64, 0x2f, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x63, 0x2d, 0x67, 0x65, 0x6e, 0x2d, 0x67, 0x6f, 0x72, 0x6d, 0x2f, 0x74, 0x65, 0x73,
+	0x74, 0x2f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x66, 0x6c, 0x61, 0x67, 0x73, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -206,12 +170,11 @@ func file_modelflags_modelflags_proto_rawDescGZIP() []byte {
 	return file_modelflags_modelflags_proto_rawDescData
 }
 
-var file_modelflags_modelflags_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_modelflags_modelflags_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_modelflags_modelflags_proto_goTypes = []interface{}{
-	(*MyMessage)(nil),         // 0: modelflags.MyMessage
-	(*MyHooksMessage)(nil),    // 1: modelflags.MyHooksMessage
-	(*MyValidateMessage)(nil), // 2: modelflags.MyValidateMessage
-	(*MyCrudMessage)(nil),     // 3: modelflags.MyCrudMessage
+	(*ModelOption)(nil),          // 0: modelflags.ModelOption
+	(*ValidateImpliesModel)(nil), // 1: modelflags.ValidateImpliesModel
+	(*CRUDImpliesModel)(nil),     // 2: modelflags.CRUDImpliesModel
 }
 var file_modelflags_modelflags_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -228,7 +191,7 @@ func file_modelflags_modelflags_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_modelflags_modelflags_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MyMessage); i {
+			switch v := v.(*ModelOption); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -240,7 +203,7 @@ func file_modelflags_modelflags_proto_init() {
 			}
 		}
 		file_modelflags_modelflags_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MyHooksMessage); i {
+			switch v := v.(*ValidateImpliesModel); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -252,19 +215,7 @@ func file_modelflags_modelflags_proto_init() {
 			}
 		}
 		file_modelflags_modelflags_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MyValidateMessage); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_modelflags_modelflags_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MyCrudMessage); i {
+			switch v := v.(*CRUDImpliesModel); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -282,7 +233,7 @@ func file_modelflags_modelflags_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_modelflags_modelflags_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

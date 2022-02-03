@@ -10,18 +10,14 @@ import (
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
-// MyMessageModel is the GORM model for modelflags.MyMessage.
-type MyMessageModel struct {
+// ModelOptionModel is the GORM model for modelflags.ModelOption.
+type ModelOptionModel struct {
 }
 
-// MyHooksMessageModel is the GORM model for modelflags.MyHooksMessage.
-type MyHooksMessageModel struct {
+// ValidateImpliesModelModel is the GORM model for modelflags.ValidateImpliesModel.
+type ValidateImpliesModelModel struct {
 }
 
-// MyValidateMessageModel is the GORM model for modelflags.MyValidateMessage.
-type MyValidateMessageModel struct {
-}
-
-// MyCrudMessageModel is the GORM model for modelflags.MyCrudMessage.
-type MyCrudMessageModel struct {
+// CRUDImpliesModelModel is the GORM model for modelflags.CRUDImpliesModel.
+type CRUDImpliesModelModel struct {
 }

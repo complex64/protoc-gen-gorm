@@ -1,0 +1,10 @@
+syntax = "proto3";
+import "gorm/options.proto";
+package fieldtypes;
+option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/fieldtypes";
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string string_field = 1;
+}

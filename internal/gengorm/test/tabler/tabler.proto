@@ -1,0 +1,13 @@
+syntax = "proto3";
+import "gorm/options.proto";
+package tabler;
+option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/tabler";
+
+// ImplementsTabler applies the table option; Expect generation of `TableName() string`.
+// https://gorm.io/docs/conventions.html#TableName
+message ImplementsTabler {
+  option (gorm.message) = {
+    model: true,
+    table: "name"
+  };
+}
