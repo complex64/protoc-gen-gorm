@@ -136,11 +136,13 @@ message FieldOptions {
 
   // Let this field track the creation time as time.Time.
   bool auto_create_time = 14;
-  TimeType auto_create_time_type = 15;
+  reserved "auto_create_time_type";
+  reserved 15;
 
   // Let this field track the update time as time.Time.
   bool auto_update_time = 16;
-  TimeType auto_update_time_type = 17;
+  reserved "auto_update_time_type";
+  reserved 17;
 
   reserved "embedded", "embedded_prefix";
   reserved 18, 19;
@@ -158,7 +160,8 @@ message FieldOptions {
   };
 
   // Comment used in migrations.
-  string comment = 24;
+  reserved "comment";
+  reserved 24;
 }
 
 /*
