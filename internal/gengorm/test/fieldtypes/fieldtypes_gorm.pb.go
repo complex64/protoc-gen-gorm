@@ -8,9 +8,36 @@ package fieldtypes
 
 import (
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
+	_ "google.golang.org/protobuf/types/known/durationpb"
+	_ "google.golang.org/protobuf/types/known/timestamppb"
+	time "time"
 )
 
-// MyMessageModel is the GORM model for fieldtypes.MyMessage.
-type MyMessageModel struct {
-	StringField string
+// WithScalarValuesModel is the GORM model for fieldtypes.WithScalarValues.
+type WithScalarValuesModel struct {
+	DoubleField   float64
+	FloatField    float32
+	Int32Field    int32
+	Int64Field    int64
+	Uint32Field   uint32
+	Uint64Field   uint64
+	Sint32Field   int32
+	Sint64Field   int64
+	Fixed32Field  uint32
+	Fixed64Field  uint64
+	Sfixed32Field int32
+	Sfixed64Field int64
+	BoolField     bool
+	StringField   string
+	BytesField    []byte
+}
+
+// WithKnownTypesModel is the GORM model for fieldtypes.WithKnownTypes.
+type WithKnownTypesModel struct {
+	TimestampField time.Time
+}
+
+// WithEnumModel is the GORM model for fieldtypes.WithEnum.
+type WithEnumModel struct {
+	EnumField int32
 }
