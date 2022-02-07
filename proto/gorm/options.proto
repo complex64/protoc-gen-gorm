@@ -164,6 +164,9 @@ message FieldOptions {
   // Comment used in migrations.
   reserved "comment";
   reserved 24;
+
+  // Custom types: Encode the field inline as JSON.
+  bool json = 25;
 }
 
 /*
