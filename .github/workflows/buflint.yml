@@ -21,10 +21,10 @@ jobs:
         with:
           input: proto
 
-      # The test cases.
+      # Test cases for protoc-gen-gorm.
       - uses: bufbuild/buf-lint-action@v1
         with:
-          input: cmd/protoc-gen-gorm/test
+          input: internal/gengorm/test
 
       # Internal definitions used in tests.
       - uses: bufbuild/buf-lint-action@v1

@@ -22,6 +22,8 @@ lint: build
 b: buf
 buf:
 	cd proto && buf lint
+	cd internal/gengorm/test && buf lint
+	cd internal/require && buf lint
 
 # Assumes $GOPATH/bin is in your $PATH!
 gen: generate
