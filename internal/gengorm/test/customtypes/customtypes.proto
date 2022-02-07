@@ -1,0 +1,43 @@
+syntax = "proto3";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "gorm/options.proto";
+package customtypes;
+option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/customtypes";
+
+// Assert generation of custom type encoders/decoders.
+
+message WithCustomType {
+  option (gorm.message).model = true;
+
+  message NestedMessage {
+    string value = 1;
+  }
+
+  NestedMessage message_field = 1;
+  NestedMessage nested_message_field = 2;
+  map<string, string> map_field = 3;
+  repeated string repeated_field = 4;
+}
+
+// Assert generation and use of inline-JSON encoders/decoders.
+
+message WithInlineJson {
+  option (gorm.message).model = true;
+
+  message NestedMessage {
+    string value = 1;
+  }
+
+  Message message_field = 1 [(gorm.field).json = true];
+  NestedMessage nested_message_field = 2 [(gorm.field).json = true];
+  map<string, string> map_field = 3 [(gorm.field).json = true];
+  repeated string repeated_field = 4 [(gorm.field).json = true];
+  string string_field = 5 [(gorm.field).json = true];
+  int32 int32_field = 6 [(gorm.field).json = true];
+  bool bool_field = 7 [(gorm.field).json = true];
+}
+
+message Message {
+  string value = 1;
+}
