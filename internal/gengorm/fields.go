@@ -23,7 +23,7 @@ func genMessageField(g *protogen.GeneratedFile, f *fileInfo, m *messageInfo, fie
 		panic("TODO: maps")
 	}
 
-	goType, pointer := fieldGoType(g, f, field.Field)
+	goType, pointer := fieldGormType(g, f, field.Field)
 	if pointer {
 		goType = "*" + goType
 	}
@@ -63,16 +63,16 @@ func fieldOptions(field *protogen.Field) *gormpb.FieldOptions {
 }
 
 // TODO
-// fieldGoType returns the Go type used for a field.
+// fieldGormType returns the Go type used for a field.
 //
 // If it returns pointer=true, the struct field is a pointer to the type.
-func fieldGoType(g *protogen.GeneratedFile, f *fileInfo, field *protogen.Field) (goType string, pointer bool) {
+func fieldGormType(g *protogen.GeneratedFile, f *fileInfo, field *protogen.Field) (goType string, pointer bool) {
 	pointer = field.Desc.HasPresence()
 	switch field.Desc.Kind() {
 	case protoreflect.BoolKind:
 		goType = "bool"
 	case protoreflect.EnumKind:
-		goType = g.QualifiedGoIdent(field.Enum.GoIdent)
+		goType = "int32"
 	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind:
 		goType = "int32"
 	case protoreflect.Uint32Kind, protoreflect.Fixed32Kind:
@@ -91,16 +91,30 @@ func fieldGoType(g *protogen.GeneratedFile, f *fileInfo, field *protogen.Field) 
 		goType = "[]byte"
 		pointer = false // rely on nullability of slices for presence
 	case protoreflect.MessageKind, protoreflect.GroupKind:
-		goType = "*" + g.QualifiedGoIdent(field.Message.GoIdent)
-		pointer = false // pointer captured as part of the type
+		// TODO: Refactor!
+		if string(field.Message.GoIdent.GoImportPath) == "google.golang.org/protobuf/types/known/timestamppb" &&
+			string(field.Message.GoIdent.GoName) == "Timestamp" {
+			g.QualifiedGoIdent(protogen.GoIdent{
+				GoName:       "Time",
+				GoImportPath: "time",
+			})
+			goType = "time.Time"
+			pointer = false
+		} else {
+			panic("TODO: message/oneof fields: " + field.Message.GoIdent.String())
+			// goType = "*" + g.QualifiedGoIdent(field.Message.GoIdent)
+			// pointer = false // pointer captured as part of the type
+		}
 	}
 	switch {
 	case field.Desc.IsList():
-		return "[]" + goType, false
+		panic("TODO: slice fields: " + field.GoName)
+		// return "[]" + goType, false
 	case field.Desc.IsMap():
-		keyType, _ := fieldGoType(g, f, field.Message.Fields[0])
-		valType, _ := fieldGoType(g, f, field.Message.Fields[1])
-		return fmt.Sprintf("map[%v]%v", keyType, valType), false
+		panic("TODO: map fields: " + field.GoName)
+		// keyType, _ := fieldGormType(g, f, field.Message.Fields[0])
+		// valType, _ := fieldGormType(g, f, field.Message.Fields[1])
+		// return fmt.Sprintf("map[%v]%v", keyType, valType), false
 	}
 	return goType, pointer
 }
