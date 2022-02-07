@@ -57,7 +57,7 @@ func fieldOptions(field *protogen.Field) *gormpb.FieldOptions {
 	opts := field.Desc.Options()
 	o, ok := proto.GetExtension(opts, gormpb.E_Field).(*gormpb.FieldOptions)
 	if !ok || o == nil {
-		return nil
+		return new(gormpb.FieldOptions)
 	}
 	return o
 }
