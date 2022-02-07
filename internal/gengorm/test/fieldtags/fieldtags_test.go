@@ -7,6 +7,8 @@ import (
 	"github.com/complex64/protoc-gen-gorm/internal/require"
 )
 
+// Assert generation of expected GORM field tags.
+
 func TestOptions(t *testing.T) {
 	msg := &fieldtags.OptionsModel{}
 	require.StructFieldTags(t, msg, "Column", map[string]string{"gorm": "column:my_column"})
