@@ -2,10 +2,15 @@
 // versions:
 // 	protoc-gen-gorm v0.0.0
 // 	protoc          (unknown)
-// source: fileflags/model.proto
+// source: crud/crud.proto
 
-package fileflags
+package crud
 
 import (
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
+	_ "google.golang.org/protobuf/types/known/timestamppb"
 )
+
+// CrudModel is the GORM model for crud.Crud.
+type CrudModel struct {
+}

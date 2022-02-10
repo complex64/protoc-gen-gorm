@@ -40,7 +40,7 @@ func main() {
 	}.Run(func(plugin *protogen.Plugin) error {
 		for _, f := range plugin.Files {
 			if f.Generate {
-				if _, err := gengorm.GenerateFile(flags, plugin, f); err != nil {
+				if err := gengorm.GenerateFile(flags, plugin, f); err != nil {
 					return err
 				}
 			}

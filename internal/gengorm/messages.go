@@ -9,101 +9,142 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
-// genModels generates GORM models and supporting APIs.
-func genModels(g *protogen.GeneratedFile, f *fileInfo, m *messageInfo) {
-	if !m.genModel {
-		return
+func NewMessage(file *File, proto *protogen.Message) (*Message, error) {
+	msg := &Message{
+		file:  file,
+		proto: proto,
 	}
-
-	// Message type declaration.
-	g.Annotate(m.modelName, m.Location)
-	g.P(m.leadingComment(f), "type ", m.modelName, " struct {")
-	genMessageFields(g, f, m)
-	g.P("}")
-	g.P()
-
-	// TODO: Decide what to do about hooks.
-	genTabler(g, f, m)
-	genConverters(g, f, m)
-	genCRUD(g, f, m)
-}
-
-// messageInfo wraps a message from the input .proto file and keeps information to generate code.
-type messageInfo struct {
-	*protogen.Message
-
-	opts   *gormpb.MessageOptions
-	fields []*fieldInfo
-
-	modelName   string
-	genModel    bool
-	genValidate bool
-	genCRUD     bool
-}
-
-func newMessageInfo(f *fileInfo, message *protogen.Message) (*messageInfo, error) {
-	m := &messageInfo{
-		Message: message,
-		opts:    &gormpb.MessageOptions{},
-	}
-
-	m.modelName = fmt.Sprintf("%sModel", m.GoIdent.GoName)
-
-	// File flags override message flags.
-	m.genModel = f.genModel
-	m.genValidate = f.genValidate
-	m.genCRUD = f.genCRUD
-
-	if opts := messageOptions(message); opts != nil {
-		m.opts = opts
-
-		// Generate a model when using features that need the model.
-		implyModel := opts.Validate || opts.Crud
-		m.genModel = m.genModel || opts.Model || implyModel
-		m.genValidate = m.genValidate || opts.Validate
-		m.genCRUD = m.genCRUD || opts.Crud
-	}
-
-	if err := m.initMessageInfo(); err != nil {
+	if err := msg.init(); err != nil {
 		return nil, err
 	}
-
-	return m, nil
+	return msg, nil
 }
 
-func (m *messageInfo) initMessageInfo() error {
-	for _, field := range m.Fields {
-		if f, err := newFieldInfo(m, field); err != nil {
+type Message struct {
+	file  *File
+	proto *protogen.Message
+
+	opts   *gormpb.MessageOptions
+	fields []*Field
+}
+
+func (m *Message) init() error {
+	m.initOpts()
+	if err := m.initFields(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *Message) initFields() error {
+	if !m.model() {
+		return nil
+	}
+
+	for _, f := range m.proto.Fields {
+		if err := m.initField(f); err != nil {
 			return err
-		} else {
-			m.fields = append(m.fields, f)
 		}
 	}
 	return nil
 }
 
-// messageOptions returns the protoc-gen-gorm options set for message.
-// Example: message MyMessage { option (gorm.message).model = true; }
-func messageOptions(message *protogen.Message) *gormpb.MessageOptions {
-	opts := message.Desc.Options()
-	o, ok := proto.GetExtension(opts, gormpb.E_Message).(*gormpb.MessageOptions)
-	if !ok || o == nil {
-		return nil
+func (m *Message) initField(proto *protogen.Field) error {
+	field, err := NewField(m, proto)
+	if err != nil {
+		return err
 	}
-	return o
+	m.fields = append(m.fields, field)
+	return nil
 }
 
-func (m *messageInfo) leadingComment(f *fileInfo) protogen.Comments {
-	leading := protogen.Comments(
-		fmt.Sprintf(
-			" %s is the GORM model for %s.%s.",
-			m.modelName,
-			f.GoPackageName,
-			m.GoIdent.GoName,
-		),
-	)
+// initOpts reads the protoc-gen-gorm options set for this message.
+// Example: message MyMessage { option (gorm.message).model = true; }
+func (m *Message) initOpts() {
+	descOpts := m.proto.Desc.Options()
+	opts, ok := proto.GetExtension(descOpts, gormpb.E_Message).(*gormpb.MessageOptions)
+	if ok && opts != nil {
+		m.opts = opts
+	} else {
+		m.opts = &gormpb.MessageOptions{}
+	}
+}
+
+// Gen generates GORM models and supporting APIs.
+func (m *Message) Gen() {
+	if !m.model() {
+		return
+	}
+	m.genStruct()
+	m.genCustomTypes()
+	m.genConverters()
+	m.genTabler()
+	m.genCRUD()
+}
+
+func (m *Message) genStruct() {
+	m.Annotate(m.ModelName(), m.proto.Location) // Message/model type declaration.
+	m.P(m.leadingComment(), "type ", m.ModelName(), " struct {")
+	m.genFields()
+	m.P("}")
+	m.P()
+}
+
+func (m *Message) leadingComment() protogen.Comments {
 	return appendDeprecationNotice(
-		leading,
-		m.Desc.Options().(*descriptorpb.MessageOptions).GetDeprecated(),
+		protogen.Comments(
+			fmt.Sprintf(
+				" %s is the GORM model for %s.%s.",
+				m.ModelName(),
+				m.file.proto.GoPackageName,
+				m.proto.GoIdent.GoName,
+			),
+		),
+		m.deprecated(),
 	)
 }
+
+func (m *Message) deprecated() bool {
+	return m.proto.Desc.Options().(*descriptorpb.MessageOptions).GetDeprecated()
+}
+
+func (m *Message) genFields() {
+	for _, field := range m.fields {
+		field.Gen()
+	}
+}
+
+func (m *Message) genCustomTypes() {
+	// TODO
+}
+
+func (m *Message) genConverters() {
+	// TODO
+
+}
+
+// genTabler implements the Tabler interface if a custom table name is set.
+// https://gorm.io/docs/conventions.html#TableName
+func (m *Message) genTabler() {
+	if m.opts.Table == "" {
+		return
+	}
+	m.P("func (m *", m.ModelName(), ") TableName() string {")
+	m.P(`return "`, m.opts.Table, `"`)
+	m.P("}")
+}
+
+func (m *Message) genCRUD() {
+
+}
+
+func (m *Message) ModelName() string {
+	return fmt.Sprintf("%sModel", m.proto.GoIdent.GoName)
+}
+
+func (m *Message) crud() bool     { return m.opts.Crud || m.file.CRUD() }
+func (m *Message) validate() bool { return m.opts.Validate || m.file.Validate() }
+func (m *Message) model() bool    { return m.crud() || m.validate() || m.opts.Model }
+
+func (m *Message) Annotate(symbol string, loc protogen.Location) { m.file.Annotate(symbol, loc) }
+func (m *Message) P(v ...interface{})                            { m.file.P(v...) }
