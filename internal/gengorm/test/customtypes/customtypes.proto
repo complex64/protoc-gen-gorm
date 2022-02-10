@@ -5,18 +5,28 @@ option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/te
 
 // Assert generation of custom type encoders/decoders.
 
-message WithCustomType {
-  option (gorm.message).model = true;
+// TODO: Let users pick how to generate custom types
+// - Per message type (easiest to implement)
+// - Per package (need to collect custom types across all files/packages)
 
-  message NestedMessage {
-    string value = 1;
-  }
-
-  NestedMessage message_field = 1;
-  NestedMessage nested_message_field = 2;
-  map<string, string> map_field = 3;
-  repeated string repeated_field = 4;
-}
+//message WithCustomType {
+//  option (gorm.message).model = true;
+//
+//  message NestedMessage {
+//    string value = 1;
+//  }
+//
+//  Message message_field = 1;
+//  NestedMessage nested_message_field = 2;
+//  //  map<string, string> map_field = 3; // TODO: Uncomment!
+//  repeated string repeated_field = 4;
+//}
+//
+//message WithExternalCustomType {
+//  option (gorm.message).model = true;
+//
+//  gorm.MessageOptions message_field = 1;
+//}
 
 // Assert generation and use of inline-JSON encoders/decoders.
 

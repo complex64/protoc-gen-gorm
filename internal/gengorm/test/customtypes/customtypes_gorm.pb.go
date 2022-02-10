@@ -10,14 +10,6 @@ import (
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
-// WithCustomTypeModel is the GORM model for customtypes.WithCustomType.
-type WithCustomTypeModel struct {
-	MessageField       WithCustomType_NestedMessage
-	NestedMessageField WithCustomType_NestedMessage
-	MapField           WithCustomType_MapFieldEntry
-	RepeatedField      string
-}
-
 // WithInlineJsonModel is the GORM model for customtypes.WithInlineJson.
 type WithInlineJsonModel struct {
 	MessageField       string
@@ -25,6 +17,6 @@ type WithInlineJsonModel struct {
 	MapField           string
 	RepeatedField      string
 	StringField        string
-	Int32Field         int32
-	BoolField          bool
+	Int32Field         string
+	BoolField          string
 }

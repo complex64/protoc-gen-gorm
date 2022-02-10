@@ -60,7 +60,7 @@ func (f *Field) Gen() {
 	name := f.proto.GoName
 
 	f.Annotate(f.msg.ModelName()+"."+name, f.proto.Location)
-	f.P(name, " ", f.types.Gorm(), f.tags())
+	f.P(name, " ", f.types.String(), f.tags())
 }
 
 func (f *Field) tags() string {
