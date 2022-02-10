@@ -15,7 +15,7 @@ func TestOptions(t *testing.T) {
 	require.StructFieldTags(t, msg, "NotNull", map[string]string{"gorm": "not null"})
 	require.StructFieldTags(t, msg, "Default", map[string]string{"gorm": "default:value"})
 	require.StructFieldTags(t, msg, "Unique", map[string]string{"gorm": "unique"})
-	require.StructFieldTags(t, msg, "PrimaryKey", map[string]string{"gorm": "column:my_column"})
+	require.StructFieldTags(t, msg, "PrimaryKey", map[string]string{"gorm": "primaryKey"})
 	require.StructFieldTags(t, msg, "DefaultIndex", map[string]string{"gorm": "index"})
 	require.StructFieldTags(t, msg, "NamedIndex", map[string]string{"gorm": "index:my_index"})
 	require.StructFieldTags(t, msg, "UniqueDefaultIndex", map[string]string{"gorm": "uniqueIndex"})

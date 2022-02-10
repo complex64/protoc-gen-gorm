@@ -7,6 +7,7 @@
 package fieldtags
 
 import (
+	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
@@ -16,7 +17,7 @@ type OptionsModel struct {
 	NotNull            string `gorm:"not null"`
 	Default            string `gorm:"default:value"`
 	Unique             string `gorm:"unique"`
-	PrimaryKey         string `gorm:"column:my_column"`
+	PrimaryKey         string `gorm:"primaryKey"`
 	DefaultIndex       string `gorm:"index"`
 	NamedIndex         string `gorm:"index:my_index"`
 	UniqueDefaultIndex string `gorm:"uniqueIndex"`
@@ -25,6 +26,26 @@ type OptionsModel struct {
 	AutoUpdateTime     string `gorm:"autoUpdateTime"`
 	Ignore             string `gorm:"-"`
 }
+
+// ToProto converts a OptionsModel to its protobuf representation.
+func (m *OptionsModel) ToProto() Options {
+	panic(true)
+}
+
+// ToModel converts a Options to its GORM model.
+func (x *Options) ToModel() OptionsModel {
+	panic(true)
+}
+
+func CreateOptionsModel(ctx context.Context) {}
+
+func GetOptionsModel(ctx context.Context) {}
+
+func ListOptionsModel(ctx context.Context) {}
+
+func UpdateOptionsModel(ctx context.Context) {}
+
+func DeleteOptionsModel(ctx context.Context) {}
 
 // DenyOptionsModel is the GORM model for fieldtags.DenyOptions.
 type DenyOptionsModel struct {
@@ -36,3 +57,23 @@ type DenyOptionsModel struct {
 	ReadUpdate string `gorm:"<-:update"`
 	ReadCreate string `gorm:"<-:create"`
 }
+
+// ToProto converts a DenyOptionsModel to its protobuf representation.
+func (m *DenyOptionsModel) ToProto() DenyOptions {
+	panic(true)
+}
+
+// ToModel converts a DenyOptions to its GORM model.
+func (x *DenyOptions) ToModel() DenyOptionsModel {
+	panic(true)
+}
+
+func CreateDenyOptionsModel(ctx context.Context) {}
+
+func GetDenyOptionsModel(ctx context.Context) {}
+
+func ListDenyOptionsModel(ctx context.Context) {}
+
+func UpdateDenyOptionsModel(ctx context.Context) {}
+
+func DeleteDenyOptionsModel(ctx context.Context) {}

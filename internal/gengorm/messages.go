@@ -76,7 +76,7 @@ func (m *Message) Gen() {
 		return
 	}
 	m.genStruct()
-	m.genCustomTypes()
+	// m.genCustomTypes() // TODO
 	m.genConverters()
 	m.genTabler()
 	m.genCRUD()
@@ -92,14 +92,10 @@ func (m *Message) genStruct() {
 
 func (m *Message) leadingComment() protogen.Comments {
 	return appendDeprecationNotice(
-		protogen.Comments(
-			fmt.Sprintf(
-				" %s is the GORM model for %s.%s.",
-				m.ModelName(),
-				m.file.proto.GoPackageName,
-				m.proto.GoIdent.GoName,
-			),
-		),
+		Comment(" %s is the GORM model for %s.%s.",
+			m.ModelName(),
+			m.file.proto.GoPackageName,
+			m.proto.GoIdent.GoName),
 		m.deprecated(),
 	)
 }
@@ -114,29 +110,9 @@ func (m *Message) genFields() {
 	}
 }
 
-func (m *Message) genCustomTypes() {
-	// TODO
-}
-
-func (m *Message) genConverters() {
-	// TODO
-
-}
-
-// genTabler implements the Tabler interface if a custom table name is set.
-// https://gorm.io/docs/conventions.html#TableName
-func (m *Message) genTabler() {
-	if m.opts.Table == "" {
-		return
-	}
-	m.P("func (m *", m.ModelName(), ") TableName() string {")
-	m.P(`return "`, m.opts.Table, `"`)
-	m.P("}")
-}
-
-func (m *Message) genCRUD() {
-
-}
+// func (m *Message) genCustomTypes() {
+// 	// TODO
+// }
 
 func (m *Message) ModelName() string {
 	return fmt.Sprintf("%sModel", m.proto.GoIdent.GoName)
