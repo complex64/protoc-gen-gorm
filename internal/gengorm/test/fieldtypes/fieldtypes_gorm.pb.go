@@ -10,7 +10,6 @@ import (
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	_ "google.golang.org/protobuf/types/known/durationpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
-	time "time"
 )
 
 // WithScalarValuesModel is the GORM model for fieldtypes.WithScalarValues.

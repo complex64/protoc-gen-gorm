@@ -1,0 +1,12 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "gorm/options.proto";
+package crud;
+option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/crud";
+
+// Assert generation of standard CRUD (create, read, update, and delete) functions.
+
+message Crud {
+  option (gorm.message).crud = true;
+
+}
