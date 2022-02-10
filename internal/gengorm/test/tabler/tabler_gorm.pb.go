@@ -7,6 +7,7 @@
 package tabler
 
 import (
+	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
@@ -14,6 +15,25 @@ import (
 type ImplementsTablerModel struct {
 }
 
+// ToProto converts a ImplementsTablerModel to its protobuf representation.
+func (m *ImplementsTablerModel) ToProto() ImplementsTabler {
+	panic(true)
+}
+
+// ToModel converts a ImplementsTabler to its GORM model.
+func (x *ImplementsTabler) ToModel() ImplementsTablerModel {
+	panic(true)
+}
+
 func (m *ImplementsTablerModel) TableName() string {
 	return "name"
 }
+func CreateImplementsTablerModel(ctx context.Context) {}
+
+func GetImplementsTablerModel(ctx context.Context) {}
+
+func ListImplementsTablerModel(ctx context.Context) {}
+
+func UpdateImplementsTablerModel(ctx context.Context) {}
+
+func DeleteImplementsTablerModel(ctx context.Context) {}

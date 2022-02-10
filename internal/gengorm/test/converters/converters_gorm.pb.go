@@ -7,6 +7,7 @@
 package converters
 
 import (
+	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	_ "google.golang.org/protobuf/types/known/durationpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
@@ -15,3 +16,23 @@ import (
 // ConvertibleModel is the GORM model for converters.Convertible.
 type ConvertibleModel struct {
 }
+
+// ToProto converts a ConvertibleModel to its protobuf representation.
+func (m *ConvertibleModel) ToProto() Convertible {
+	panic(true)
+}
+
+// ToModel converts a Convertible to its GORM model.
+func (x *Convertible) ToModel() ConvertibleModel {
+	panic(true)
+}
+
+func CreateConvertibleModel(ctx context.Context) {}
+
+func GetConvertibleModel(ctx context.Context) {}
+
+func ListConvertibleModel(ctx context.Context) {}
+
+func UpdateConvertibleModel(ctx context.Context) {}
+
+func DeleteConvertibleModel(ctx context.Context) {}

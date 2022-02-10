@@ -98,6 +98,9 @@ func (f *Field) tagVals() (values []string) {
 	if f.opts.Unique {
 		values = append(values, "unique")
 	}
+	if f.opts.PrimaryKey {
+		values = append(values, "primaryKey")
+	}
 	for _, idx := range f.opts.Index {
 		value := "index"
 		if idx.Name != "" {

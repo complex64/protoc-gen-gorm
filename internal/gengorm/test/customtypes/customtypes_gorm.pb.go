@@ -7,6 +7,7 @@
 package customtypes
 
 import (
+	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
@@ -20,3 +21,23 @@ type WithInlineJsonModel struct {
 	Int32Field         string
 	BoolField          string
 }
+
+// ToProto converts a WithInlineJsonModel to its protobuf representation.
+func (m *WithInlineJsonModel) ToProto() WithInlineJson {
+	panic(true)
+}
+
+// ToModel converts a WithInlineJson to its GORM model.
+func (x *WithInlineJson) ToModel() WithInlineJsonModel {
+	panic(true)
+}
+
+func CreateWithInlineJsonModel(ctx context.Context) {}
+
+func GetWithInlineJsonModel(ctx context.Context) {}
+
+func ListWithInlineJsonModel(ctx context.Context) {}
+
+func UpdateWithInlineJsonModel(ctx context.Context) {}
+
+func DeleteWithInlineJsonModel(ctx context.Context) {}

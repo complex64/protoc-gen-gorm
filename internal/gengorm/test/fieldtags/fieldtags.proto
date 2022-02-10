@@ -29,7 +29,7 @@ message Options {
 
   // `gorm:"primaryKey"`
   string primary_key = 9 [
-    (gorm.field).column = "my_column"
+    (gorm.field).primary_key = true
   ];
 
   // `gorm:"index"`

@@ -7,6 +7,7 @@
 package fieldtypes
 
 import (
+	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	_ "google.golang.org/protobuf/types/known/durationpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
@@ -32,12 +33,72 @@ type WithScalarValuesModel struct {
 	BytesField    []byte
 }
 
+// ToProto converts a WithScalarValuesModel to its protobuf representation.
+func (m *WithScalarValuesModel) ToProto() WithScalarValues {
+	panic(true)
+}
+
+// ToModel converts a WithScalarValues to its GORM model.
+func (x *WithScalarValues) ToModel() WithScalarValuesModel {
+	panic(true)
+}
+
+func CreateWithScalarValuesModel(ctx context.Context) {}
+
+func GetWithScalarValuesModel(ctx context.Context) {}
+
+func ListWithScalarValuesModel(ctx context.Context) {}
+
+func UpdateWithScalarValuesModel(ctx context.Context) {}
+
+func DeleteWithScalarValuesModel(ctx context.Context) {}
+
 // WithKnownTypesModel is the GORM model for fieldtypes.WithKnownTypes.
 type WithKnownTypesModel struct {
 	TimestampField time.Time
 }
 
+// ToProto converts a WithKnownTypesModel to its protobuf representation.
+func (m *WithKnownTypesModel) ToProto() WithKnownTypes {
+	panic(true)
+}
+
+// ToModel converts a WithKnownTypes to its GORM model.
+func (x *WithKnownTypes) ToModel() WithKnownTypesModel {
+	panic(true)
+}
+
+func CreateWithKnownTypesModel(ctx context.Context) {}
+
+func GetWithKnownTypesModel(ctx context.Context) {}
+
+func ListWithKnownTypesModel(ctx context.Context) {}
+
+func UpdateWithKnownTypesModel(ctx context.Context) {}
+
+func DeleteWithKnownTypesModel(ctx context.Context) {}
+
 // WithEnumModel is the GORM model for fieldtypes.WithEnum.
 type WithEnumModel struct {
 	EnumField int32
 }
+
+// ToProto converts a WithEnumModel to its protobuf representation.
+func (m *WithEnumModel) ToProto() WithEnum {
+	panic(true)
+}
+
+// ToModel converts a WithEnum to its GORM model.
+func (x *WithEnum) ToModel() WithEnumModel {
+	panic(true)
+}
+
+func CreateWithEnumModel(ctx context.Context) {}
+
+func GetWithEnumModel(ctx context.Context) {}
+
+func ListWithEnumModel(ctx context.Context) {}
+
+func UpdateWithEnumModel(ctx context.Context) {}
+
+func DeleteWithEnumModel(ctx context.Context) {}

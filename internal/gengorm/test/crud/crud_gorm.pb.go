@@ -7,10 +7,32 @@
 package crud
 
 import (
+	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // CrudModel is the GORM model for crud.Crud.
 type CrudModel struct {
+	Uuid string `gorm:"primaryKey"`
 }
+
+// ToProto converts a CrudModel to its protobuf representation.
+func (m *CrudModel) ToProto() Crud {
+	panic(true)
+}
+
+// ToModel converts a Crud to its GORM model.
+func (x *Crud) ToModel() CrudModel {
+	panic(true)
+}
+
+func CreateCrudModel(ctx context.Context) {}
+
+func GetCrudModel(ctx context.Context) {}
+
+func ListCrudModel(ctx context.Context) {}
+
+func UpdateCrudModel(ctx context.Context) {}
+
+func DeleteCrudModel(ctx context.Context) {}

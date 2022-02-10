@@ -2,6 +2,7 @@ package gengorm
 
 import (
 	"flag"
+	"fmt"
 
 	"google.golang.org/protobuf/compiler/protogen"
 )
@@ -15,6 +16,10 @@ func GenerateFile(fs flag.FlagSet, plugin *protogen.Plugin, proto *protogen.File
 	return nil
 }
 
+func Comment(format string, args ...interface{}) protogen.Comments {
+	return protogen.Comments(fmt.Sprintf(format, args...))
+}
+
 func appendDeprecationNotice(prefix protogen.Comments, deprecated bool) protogen.Comments {
 	if !deprecated {
 		return prefix
@@ -24,3 +29,10 @@ func appendDeprecationNotice(prefix protogen.Comments, deprecated bool) protogen
 	}
 	return prefix + " Deprecated: Do not use.\n"
 }
+
+var (
+	pkgCtx = protogen.GoIdent{
+		GoName:       "Context",
+		GoImportPath: "context",
+	}
+)

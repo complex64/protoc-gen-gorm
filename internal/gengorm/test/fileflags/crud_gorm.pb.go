@@ -7,9 +7,30 @@
 package fileflags
 
 import (
+	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
 // ImplicitCRUDModel is the GORM model for fileflags.ImplicitCRUD.
 type ImplicitCRUDModel struct {
 }
+
+// ToProto converts a ImplicitCRUDModel to its protobuf representation.
+func (m *ImplicitCRUDModel) ToProto() ImplicitCRUD {
+	panic(true)
+}
+
+// ToModel converts a ImplicitCRUD to its GORM model.
+func (x *ImplicitCRUD) ToModel() ImplicitCRUDModel {
+	panic(true)
+}
+
+func CreateImplicitCRUDModel(ctx context.Context) {}
+
+func GetImplicitCRUDModel(ctx context.Context) {}
+
+func ListImplicitCRUDModel(ctx context.Context) {}
+
+func UpdateImplicitCRUDModel(ctx context.Context) {}
+
+func DeleteImplicitCRUDModel(ctx context.Context) {}
