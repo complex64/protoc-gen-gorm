@@ -135,23 +135,6 @@ func (f *Field) Name() string { return f.proto.GoName }
 func (f *Field) Annotate(symbol string, loc protogen.Location) { f.msg.Annotate(symbol, loc) }
 func (f *Field) P(v ...interface{})                            { f.msg.P(v...) }
 
-// fieldInfo wraps a message's fields from the input .proto file
-// and keeps information to generate code.
-type fieldInfo struct {
-	*protogen.Field
-
-	opts *gormpb.FieldOptions
-
-	gormType   string
-	customType bool
-	pointer    bool
-	json       bool
-}
-
-func customTypeAlias(g *protogen.GeneratedFile, field *fieldInfo) string {
-	return "*ALIAS_" + g.QualifiedGoIdent(field.Message.GoIdent)
-}
-
 func permTags(denyRead, denyCreate, denyUpdate bool) (tag string) {
 	type allowed struct{ read, create, update bool }
 	perms := allowed{

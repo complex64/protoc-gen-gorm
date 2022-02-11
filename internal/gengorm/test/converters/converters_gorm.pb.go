@@ -167,12 +167,10 @@ func (m *JsonModel) ToProto() (*Json, error) {
 // ToModel converts a Json to its GORM model.
 func (x *Json) ToModel() (*JsonModel, error) {
 	m := new(JsonModel)
-	{
-		if bs, err := json.Marshal(&x.MapField); err != nil {
-			return nil, err
-		} else {
-			m.MapField = bs
-		}
+	if bs, err := json.Marshal(&x.MapField); err != nil {
+		return nil, err
+	} else {
+		m.MapField = bs
 	}
 	return m, nil
 }

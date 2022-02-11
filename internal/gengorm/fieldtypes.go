@@ -92,7 +92,7 @@ func (t *FieldType) init() error {
 	return nil
 }
 
-// TODO :REfactor
+// TODO: Refactor
 func (t *FieldType) String() string {
 	if t.Gorm.GoImportPath != "" {
 		id := t.field.msg.file.out.QualifiedGoIdent(t.Gorm)
@@ -105,10 +105,6 @@ func (t *FieldType) String() string {
 		return "*" + t.Gorm.GoName
 	}
 	return t.Gorm.GoName
-}
-
-func (t *FieldType) alias() string {
-	return fmt.Sprintf("%s%s", t.field.msg.ModelName(), t.Go.GoName)
 }
 
 func (t *FieldType) isTimestamp() bool {

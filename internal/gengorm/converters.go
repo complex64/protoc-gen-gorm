@@ -102,13 +102,11 @@ func (f *Field) genConvertJsonToModel() {
 		GoName:       "Marshal",
 		GoImportPath: "encoding/json",
 	})
-	f.P("{")
 	f.P("if bs, err := ", marshal, "(&x.", f.Name(), "); err != nil {")
 	f.P("return nil, err")
 	f.P("} else {")
 	f.P("m.", f.Name(), " = bs")
 	f.P("}") // if
-	f.P("}")
 }
 
 func (f *Field) genEnumToModel() {
