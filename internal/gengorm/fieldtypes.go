@@ -82,11 +82,11 @@ func (t *FieldType) init() error {
 
 	switch {
 	case t.Custom && t.External:
-		panic("TODO: External custom types")
+		panic(fmt.Sprintf("TODO: External custom types: %+v", t.Go))
 		// t.Gorm.GoName = t.alias()
 
 	case t.Custom && !t.External:
-		panic("TODO: External custom types")
+		panic(fmt.Sprintf("TODO: Internal custom types: %+v", t.Go))
 		// t.Gorm.GoName = t.Go.GoName
 	}
 	return nil
