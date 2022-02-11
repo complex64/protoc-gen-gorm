@@ -16,13 +16,15 @@ type ImplicitCRUDModel struct {
 }
 
 // ToProto converts a ImplicitCRUDModel to its protobuf representation.
-func (m *ImplicitCRUDModel) ToProto() ImplicitCRUD {
-	panic(true)
+func (m *ImplicitCRUDModel) ToProto() (*ImplicitCRUD, error) {
+	x := new(ImplicitCRUD)
+	return x, nil
 }
 
 // ToModel converts a ImplicitCRUD to its GORM model.
-func (x *ImplicitCRUD) ToModel() ImplicitCRUDModel {
-	panic(true)
+func (x *ImplicitCRUD) ToModel() (*ImplicitCRUDModel, error) {
+	m := new(ImplicitCRUDModel)
+	return m, nil
 }
 
 func CreateImplicitCRUDModel(ctx context.Context) {}

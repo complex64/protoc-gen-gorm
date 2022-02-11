@@ -16,7 +16,7 @@ func Field(t require.TestingT, value interface{}, name string) *reflect.StructFi
 }
 
 func FieldType(t require.TestingT, value interface{}, name string, sample interface{}) {
-	if sample == nil {
+	if reflect.TypeOf(sample) == nil {
 		t.Errorf("nil sample")
 		t.FailNow()
 		return
@@ -31,6 +31,6 @@ func FieldType(t require.TestingT, value interface{}, name string, sample interf
 		"expected struct '%+v' to have field '%s' of type '%s', not '%v'",
 		reflect.ValueOf(value),
 		name,
-		want.Name(),
-		field.Type.Name())
+		want.String(),
+		field.Type.String())
 }

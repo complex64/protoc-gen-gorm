@@ -16,13 +16,15 @@ type ImplicitValidateModel struct {
 }
 
 // ToProto converts a ImplicitValidateModel to its protobuf representation.
-func (m *ImplicitValidateModel) ToProto() ImplicitValidate {
-	panic(true)
+func (m *ImplicitValidateModel) ToProto() (*ImplicitValidate, error) {
+	x := new(ImplicitValidate)
+	return x, nil
 }
 
 // ToModel converts a ImplicitValidate to its GORM model.
-func (x *ImplicitValidate) ToModel() ImplicitValidateModel {
-	panic(true)
+func (x *ImplicitValidate) ToModel() (*ImplicitValidateModel, error) {
+	m := new(ImplicitValidateModel)
+	return m, nil
 }
 
 func CreateImplicitValidateModel(ctx context.Context) {}

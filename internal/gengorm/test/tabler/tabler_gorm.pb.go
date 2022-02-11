@@ -16,13 +16,15 @@ type ImplementsTablerModel struct {
 }
 
 // ToProto converts a ImplementsTablerModel to its protobuf representation.
-func (m *ImplementsTablerModel) ToProto() ImplementsTabler {
-	panic(true)
+func (m *ImplementsTablerModel) ToProto() (*ImplementsTabler, error) {
+	x := new(ImplementsTabler)
+	return x, nil
 }
 
 // ToModel converts a ImplementsTabler to its GORM model.
-func (x *ImplementsTabler) ToModel() ImplementsTablerModel {
-	panic(true)
+func (x *ImplementsTabler) ToModel() (*ImplementsTablerModel, error) {
+	m := new(ImplementsTablerModel)
+	return m, nil
 }
 
 func (m *ImplementsTablerModel) TableName() string {

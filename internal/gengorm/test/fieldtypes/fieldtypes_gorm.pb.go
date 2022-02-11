@@ -10,7 +10,7 @@ import (
 	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	_ "google.golang.org/protobuf/types/known/durationpb"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	time "time"
 )
 
@@ -34,13 +34,45 @@ type WithScalarValuesModel struct {
 }
 
 // ToProto converts a WithScalarValuesModel to its protobuf representation.
-func (m *WithScalarValuesModel) ToProto() WithScalarValues {
-	panic(true)
+func (m *WithScalarValuesModel) ToProto() (*WithScalarValues, error) {
+	x := new(WithScalarValues)
+	x.DoubleField = m.DoubleField
+	x.FloatField = m.FloatField
+	x.Int32Field = m.Int32Field
+	x.Int64Field = m.Int64Field
+	x.Uint32Field = m.Uint32Field
+	x.Uint64Field = m.Uint64Field
+	x.Sint32Field = m.Sint32Field
+	x.Sint64Field = m.Sint64Field
+	x.Fixed32Field = m.Fixed32Field
+	x.Fixed64Field = m.Fixed64Field
+	x.Sfixed32Field = m.Sfixed32Field
+	x.Sfixed64Field = m.Sfixed64Field
+	x.BoolField = m.BoolField
+	x.StringField = m.StringField
+	x.BytesField = m.BytesField
+	return x, nil
 }
 
 // ToModel converts a WithScalarValues to its GORM model.
-func (x *WithScalarValues) ToModel() WithScalarValuesModel {
-	panic(true)
+func (x *WithScalarValues) ToModel() (*WithScalarValuesModel, error) {
+	m := new(WithScalarValuesModel)
+	m.DoubleField = x.DoubleField
+	m.FloatField = x.FloatField
+	m.Int32Field = x.Int32Field
+	m.Int64Field = x.Int64Field
+	m.Uint32Field = x.Uint32Field
+	m.Uint64Field = x.Uint64Field
+	m.Sint32Field = x.Sint32Field
+	m.Sint64Field = x.Sint64Field
+	m.Fixed32Field = x.Fixed32Field
+	m.Fixed64Field = x.Fixed64Field
+	m.Sfixed32Field = x.Sfixed32Field
+	m.Sfixed64Field = x.Sfixed64Field
+	m.BoolField = x.BoolField
+	m.StringField = x.StringField
+	m.BytesField = x.BytesField
+	return m, nil
 }
 
 func CreateWithScalarValuesModel(ctx context.Context) {}
@@ -59,13 +91,21 @@ type WithKnownTypesModel struct {
 }
 
 // ToProto converts a WithKnownTypesModel to its protobuf representation.
-func (m *WithKnownTypesModel) ToProto() WithKnownTypes {
-	panic(true)
+func (m *WithKnownTypesModel) ToProto() (*WithKnownTypes, error) {
+	x := new(WithKnownTypes)
+	if m.TimestampField != (time.Time{}) {
+		x.TimestampField = timestamppb.New(m.TimestampField)
+	}
+	return x, nil
 }
 
 // ToModel converts a WithKnownTypes to its GORM model.
-func (x *WithKnownTypes) ToModel() WithKnownTypesModel {
-	panic(true)
+func (x *WithKnownTypes) ToModel() (*WithKnownTypesModel, error) {
+	m := new(WithKnownTypesModel)
+	if t := x.TimestampField; t != nil {
+		m.TimestampField = t.AsTime()
+	}
+	return m, nil
 }
 
 func CreateWithKnownTypesModel(ctx context.Context) {}
@@ -84,13 +124,17 @@ type WithEnumModel struct {
 }
 
 // ToProto converts a WithEnumModel to its protobuf representation.
-func (m *WithEnumModel) ToProto() WithEnum {
-	panic(true)
+func (m *WithEnumModel) ToProto() (*WithEnum, error) {
+	x := new(WithEnum)
+	x.EnumField = AnEnum(m.EnumField)
+	return x, nil
 }
 
 // ToModel converts a WithEnum to its GORM model.
-func (x *WithEnum) ToModel() WithEnumModel {
-	panic(true)
+func (x *WithEnum) ToModel() (*WithEnumModel, error) {
+	m := new(WithEnumModel)
+	m.EnumField = int32(x.EnumField)
+	return m, nil
 }
 
 func CreateWithEnumModel(ctx context.Context) {}

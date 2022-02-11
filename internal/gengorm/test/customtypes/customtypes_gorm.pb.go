@@ -8,28 +8,115 @@ package customtypes
 
 import (
 	context "context"
+	json "encoding/json"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
 // WithInlineJsonModel is the GORM model for customtypes.WithInlineJson.
 type WithInlineJsonModel struct {
-	MessageField       string
-	NestedMessageField string
-	MapField           string
-	RepeatedField      string
-	StringField        string
-	Int32Field         string
-	BoolField          string
+	MessageField       []byte
+	NestedMessageField []byte
+	MapField           []byte
+	RepeatedField      []byte
+	StringField        []byte
+	Int32Field         []byte
+	BoolField          []byte
 }
 
 // ToProto converts a WithInlineJsonModel to its protobuf representation.
-func (m *WithInlineJsonModel) ToProto() WithInlineJson {
-	panic(true)
+func (m *WithInlineJsonModel) ToProto() (*WithInlineJson, error) {
+	x := new(WithInlineJson)
+	if len(m.MessageField) > 0 {
+		if err := json.Unmarshal(m.MessageField, &x.MessageField); err != nil {
+			return nil, err
+		}
+	}
+	if len(m.NestedMessageField) > 0 {
+		if err := json.Unmarshal(m.NestedMessageField, &x.NestedMessageField); err != nil {
+			return nil, err
+		}
+	}
+	if len(m.MapField) > 0 {
+		if err := json.Unmarshal(m.MapField, &x.MapField); err != nil {
+			return nil, err
+		}
+	}
+	if len(m.RepeatedField) > 0 {
+		if err := json.Unmarshal(m.RepeatedField, &x.RepeatedField); err != nil {
+			return nil, err
+		}
+	}
+	if len(m.StringField) > 0 {
+		if err := json.Unmarshal(m.StringField, &x.StringField); err != nil {
+			return nil, err
+		}
+	}
+	if len(m.Int32Field) > 0 {
+		if err := json.Unmarshal(m.Int32Field, &x.Int32Field); err != nil {
+			return nil, err
+		}
+	}
+	if len(m.BoolField) > 0 {
+		if err := json.Unmarshal(m.BoolField, &x.BoolField); err != nil {
+			return nil, err
+		}
+	}
+	return x, nil
 }
 
 // ToModel converts a WithInlineJson to its GORM model.
-func (x *WithInlineJson) ToModel() WithInlineJsonModel {
-	panic(true)
+func (x *WithInlineJson) ToModel() (*WithInlineJsonModel, error) {
+	m := new(WithInlineJsonModel)
+	{
+		if bs, err := json.Marshal(&x.MessageField); err != nil {
+			return nil, err
+		} else {
+			m.MessageField = bs
+		}
+	}
+	{
+		if bs, err := json.Marshal(&x.NestedMessageField); err != nil {
+			return nil, err
+		} else {
+			m.NestedMessageField = bs
+		}
+	}
+	{
+		if bs, err := json.Marshal(&x.MapField); err != nil {
+			return nil, err
+		} else {
+			m.MapField = bs
+		}
+	}
+	{
+		if bs, err := json.Marshal(&x.RepeatedField); err != nil {
+			return nil, err
+		} else {
+			m.RepeatedField = bs
+		}
+	}
+	{
+		if bs, err := json.Marshal(&x.StringField); err != nil {
+			return nil, err
+		} else {
+			m.StringField = bs
+		}
+	}
+	{
+		if bs, err := json.Marshal(&x.Int32Field); err != nil {
+			return nil, err
+		} else {
+			m.Int32Field = bs
+		}
+	}
+	{
+		if bs, err := json.Marshal(&x.BoolField); err != nil {
+			return nil, err
+		} else {
+			m.BoolField = bs
+		}
+	}
+	return m, nil
 }
 
 func CreateWithInlineJsonModel(ctx context.Context) {}

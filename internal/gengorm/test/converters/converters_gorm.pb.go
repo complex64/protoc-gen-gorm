@@ -8,31 +8,181 @@ package converters
 
 import (
 	context "context"
+	json "encoding/json"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	_ "google.golang.org/protobuf/types/known/durationpb"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	time "time"
 )
 
-// ConvertibleModel is the GORM model for converters.Convertible.
-type ConvertibleModel struct {
+// ScalarsModel is the GORM model for converters.Scalars.
+type ScalarsModel struct {
+	DoubleField   float64
+	FloatField    float32
+	Int32Field    int32
+	Int64Field    int64
+	Uint32Field   uint32
+	Uint64Field   uint64
+	Sint32Field   int32
+	Sint64Field   int64
+	Fixed32Field  uint32
+	Fixed64Field  uint64
+	Sfixed32Field int32
+	Sfixed64Field int64
+	BoolField     bool
+	StringField   string
+	BytesField    []byte
 }
 
-// ToProto converts a ConvertibleModel to its protobuf representation.
-func (m *ConvertibleModel) ToProto() Convertible {
-	panic(true)
+// ToProto converts a ScalarsModel to its protobuf representation.
+func (m *ScalarsModel) ToProto() (*Scalars, error) {
+	x := new(Scalars)
+	x.DoubleField = m.DoubleField
+	x.FloatField = m.FloatField
+	x.Int32Field = m.Int32Field
+	x.Int64Field = m.Int64Field
+	x.Uint32Field = m.Uint32Field
+	x.Uint64Field = m.Uint64Field
+	x.Sint32Field = m.Sint32Field
+	x.Sint64Field = m.Sint64Field
+	x.Fixed32Field = m.Fixed32Field
+	x.Fixed64Field = m.Fixed64Field
+	x.Sfixed32Field = m.Sfixed32Field
+	x.Sfixed64Field = m.Sfixed64Field
+	x.BoolField = m.BoolField
+	x.StringField = m.StringField
+	x.BytesField = m.BytesField
+	return x, nil
 }
 
-// ToModel converts a Convertible to its GORM model.
-func (x *Convertible) ToModel() ConvertibleModel {
-	panic(true)
+// ToModel converts a Scalars to its GORM model.
+func (x *Scalars) ToModel() (*ScalarsModel, error) {
+	m := new(ScalarsModel)
+	m.DoubleField = x.DoubleField
+	m.FloatField = x.FloatField
+	m.Int32Field = x.Int32Field
+	m.Int64Field = x.Int64Field
+	m.Uint32Field = x.Uint32Field
+	m.Uint64Field = x.Uint64Field
+	m.Sint32Field = x.Sint32Field
+	m.Sint64Field = x.Sint64Field
+	m.Fixed32Field = x.Fixed32Field
+	m.Fixed64Field = x.Fixed64Field
+	m.Sfixed32Field = x.Sfixed32Field
+	m.Sfixed64Field = x.Sfixed64Field
+	m.BoolField = x.BoolField
+	m.StringField = x.StringField
+	m.BytesField = x.BytesField
+	return m, nil
 }
 
-func CreateConvertibleModel(ctx context.Context) {}
+func CreateScalarsModel(ctx context.Context) {}
 
-func GetConvertibleModel(ctx context.Context) {}
+func GetScalarsModel(ctx context.Context) {}
 
-func ListConvertibleModel(ctx context.Context) {}
+func ListScalarsModel(ctx context.Context) {}
 
-func UpdateConvertibleModel(ctx context.Context) {}
+func UpdateScalarsModel(ctx context.Context) {}
 
-func DeleteConvertibleModel(ctx context.Context) {}
+func DeleteScalarsModel(ctx context.Context) {}
+
+// KnownTypesModel is the GORM model for converters.KnownTypes.
+type KnownTypesModel struct {
+	TimestampField time.Time
+}
+
+// ToProto converts a KnownTypesModel to its protobuf representation.
+func (m *KnownTypesModel) ToProto() (*KnownTypes, error) {
+	x := new(KnownTypes)
+	if m.TimestampField != (time.Time{}) {
+		x.TimestampField = timestamppb.New(m.TimestampField)
+	}
+	return x, nil
+}
+
+// ToModel converts a KnownTypes to its GORM model.
+func (x *KnownTypes) ToModel() (*KnownTypesModel, error) {
+	m := new(KnownTypesModel)
+	if t := x.TimestampField; t != nil {
+		m.TimestampField = t.AsTime()
+	}
+	return m, nil
+}
+
+func CreateKnownTypesModel(ctx context.Context) {}
+
+func GetKnownTypesModel(ctx context.Context) {}
+
+func ListKnownTypesModel(ctx context.Context) {}
+
+func UpdateKnownTypesModel(ctx context.Context) {}
+
+func DeleteKnownTypesModel(ctx context.Context) {}
+
+// EnumModel is the GORM model for converters.Enum.
+type EnumModel struct {
+	EnumField int32
+}
+
+// ToProto converts a EnumModel to its protobuf representation.
+func (m *EnumModel) ToProto() (*Enum, error) {
+	x := new(Enum)
+	x.EnumField = AnEnum(m.EnumField)
+	return x, nil
+}
+
+// ToModel converts a Enum to its GORM model.
+func (x *Enum) ToModel() (*EnumModel, error) {
+	m := new(EnumModel)
+	m.EnumField = int32(x.EnumField)
+	return m, nil
+}
+
+func CreateEnumModel(ctx context.Context) {}
+
+func GetEnumModel(ctx context.Context) {}
+
+func ListEnumModel(ctx context.Context) {}
+
+func UpdateEnumModel(ctx context.Context) {}
+
+func DeleteEnumModel(ctx context.Context) {}
+
+// JsonModel is the GORM model for converters.Json.
+type JsonModel struct {
+	MapField []byte
+}
+
+// ToProto converts a JsonModel to its protobuf representation.
+func (m *JsonModel) ToProto() (*Json, error) {
+	x := new(Json)
+	if len(m.MapField) > 0 {
+		if err := json.Unmarshal(m.MapField, &x.MapField); err != nil {
+			return nil, err
+		}
+	}
+	return x, nil
+}
+
+// ToModel converts a Json to its GORM model.
+func (x *Json) ToModel() (*JsonModel, error) {
+	m := new(JsonModel)
+	{
+		if bs, err := json.Marshal(&x.MapField); err != nil {
+			return nil, err
+		} else {
+			m.MapField = bs
+		}
+	}
+	return m, nil
+}
+
+func CreateJsonModel(ctx context.Context) {}
+
+func GetJsonModel(ctx context.Context) {}
+
+func ListJsonModel(ctx context.Context) {}
+
+func UpdateJsonModel(ctx context.Context) {}
+
+func DeleteJsonModel(ctx context.Context) {}

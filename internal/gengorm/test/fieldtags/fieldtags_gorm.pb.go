@@ -28,13 +28,39 @@ type OptionsModel struct {
 }
 
 // ToProto converts a OptionsModel to its protobuf representation.
-func (m *OptionsModel) ToProto() Options {
-	panic(true)
+func (m *OptionsModel) ToProto() (*Options, error) {
+	x := new(Options)
+	x.Column = m.Column
+	x.NotNull = m.NotNull
+	x.Default = m.Default
+	x.Unique = m.Unique
+	x.PrimaryKey = m.PrimaryKey
+	x.DefaultIndex = m.DefaultIndex
+	x.NamedIndex = m.NamedIndex
+	x.UniqueDefaultIndex = m.UniqueDefaultIndex
+	x.UniqueNamedIndex = m.UniqueNamedIndex
+	x.AutoCreateTime = m.AutoCreateTime
+	x.AutoUpdateTime = m.AutoUpdateTime
+	x.Ignore = m.Ignore
+	return x, nil
 }
 
 // ToModel converts a Options to its GORM model.
-func (x *Options) ToModel() OptionsModel {
-	panic(true)
+func (x *Options) ToModel() (*OptionsModel, error) {
+	m := new(OptionsModel)
+	m.Column = x.Column
+	m.NotNull = x.NotNull
+	m.Default = x.Default
+	m.Unique = x.Unique
+	m.PrimaryKey = x.PrimaryKey
+	m.DefaultIndex = x.DefaultIndex
+	m.NamedIndex = x.NamedIndex
+	m.UniqueDefaultIndex = x.UniqueDefaultIndex
+	m.UniqueNamedIndex = x.UniqueNamedIndex
+	m.AutoCreateTime = x.AutoCreateTime
+	m.AutoUpdateTime = x.AutoUpdateTime
+	m.Ignore = x.Ignore
+	return m, nil
 }
 
 func CreateOptionsModel(ctx context.Context) {}
@@ -59,13 +85,29 @@ type DenyOptionsModel struct {
 }
 
 // ToProto converts a DenyOptionsModel to its protobuf representation.
-func (m *DenyOptionsModel) ToProto() DenyOptions {
-	panic(true)
+func (m *DenyOptionsModel) ToProto() (*DenyOptions, error) {
+	x := new(DenyOptions)
+	x.Ignore = m.Ignore
+	x.UpdateOnly = m.UpdateOnly
+	x.CreateOnly = m.CreateOnly
+	x.WriteOnly = m.WriteOnly
+	x.ReadOnly = m.ReadOnly
+	x.ReadUpdate = m.ReadUpdate
+	x.ReadCreate = m.ReadCreate
+	return x, nil
 }
 
 // ToModel converts a DenyOptions to its GORM model.
-func (x *DenyOptions) ToModel() DenyOptionsModel {
-	panic(true)
+func (x *DenyOptions) ToModel() (*DenyOptionsModel, error) {
+	m := new(DenyOptionsModel)
+	m.Ignore = x.Ignore
+	m.UpdateOnly = x.UpdateOnly
+	m.CreateOnly = x.CreateOnly
+	m.WriteOnly = x.WriteOnly
+	m.ReadOnly = x.ReadOnly
+	m.ReadUpdate = x.ReadUpdate
+	m.ReadCreate = x.ReadCreate
+	return m, nil
 }
 
 func CreateDenyOptionsModel(ctx context.Context) {}
