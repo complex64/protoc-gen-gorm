@@ -16,13 +16,15 @@ type ModelOptionModel struct {
 }
 
 // ToProto converts a ModelOptionModel to its protobuf representation.
-func (m *ModelOptionModel) ToProto() ModelOption {
-	panic(true)
+func (m *ModelOptionModel) ToProto() (*ModelOption, error) {
+	x := new(ModelOption)
+	return x, nil
 }
 
 // ToModel converts a ModelOption to its GORM model.
-func (x *ModelOption) ToModel() ModelOptionModel {
-	panic(true)
+func (x *ModelOption) ToModel() (*ModelOptionModel, error) {
+	m := new(ModelOptionModel)
+	return m, nil
 }
 
 func CreateModelOptionModel(ctx context.Context) {}
@@ -40,13 +42,15 @@ type ValidateImpliesModelModel struct {
 }
 
 // ToProto converts a ValidateImpliesModelModel to its protobuf representation.
-func (m *ValidateImpliesModelModel) ToProto() ValidateImpliesModel {
-	panic(true)
+func (m *ValidateImpliesModelModel) ToProto() (*ValidateImpliesModel, error) {
+	x := new(ValidateImpliesModel)
+	return x, nil
 }
 
 // ToModel converts a ValidateImpliesModel to its GORM model.
-func (x *ValidateImpliesModel) ToModel() ValidateImpliesModelModel {
-	panic(true)
+func (x *ValidateImpliesModel) ToModel() (*ValidateImpliesModelModel, error) {
+	m := new(ValidateImpliesModelModel)
+	return m, nil
 }
 
 func CreateValidateImpliesModelModel(ctx context.Context) {}
@@ -64,13 +68,15 @@ type CRUDImpliesModelModel struct {
 }
 
 // ToProto converts a CRUDImpliesModelModel to its protobuf representation.
-func (m *CRUDImpliesModelModel) ToProto() CRUDImpliesModel {
-	panic(true)
+func (m *CRUDImpliesModelModel) ToProto() (*CRUDImpliesModel, error) {
+	x := new(CRUDImpliesModel)
+	return x, nil
 }
 
 // ToModel converts a CRUDImpliesModel to its GORM model.
-func (x *CRUDImpliesModel) ToModel() CRUDImpliesModelModel {
-	panic(true)
+func (x *CRUDImpliesModel) ToModel() (*CRUDImpliesModelModel, error) {
+	m := new(CRUDImpliesModelModel)
+	return m, nil
 }
 
 func CreateCRUDImpliesModelModel(ctx context.Context) {}

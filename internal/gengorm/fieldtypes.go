@@ -9,10 +9,9 @@ import (
 
 func NewFieldType(field *Field) (*FieldType, error) {
 	types := &FieldType{
-		field:   field,
-		Go:      field.proto.GoIdent,
-		JSON:    field.opts.Json,
-		Pointer: field.proto.Desc.HasPresence(),
+		field: field,
+		Go:    field.proto.GoIdent,
+		JSON:  field.opts.Json,
 	}
 	if err := types.init(); err != nil {
 		return nil, err
@@ -21,19 +20,21 @@ func NewFieldType(field *Field) (*FieldType, error) {
 }
 
 type FieldType struct {
-	field   *Field
-	Go      protogen.GoIdent
-	JSON    bool
-	Pointer bool
+	field *Field
+	Go    protogen.GoIdent
+	JSON  bool
 
 	Gorm     protogen.GoIdent
+	Pointer  bool
+	Enum     bool
 	Custom   bool
 	External bool
 }
 
 func (t *FieldType) init() error {
 	if t.JSON {
-		t.Gorm.GoName = "string"
+		t.Gorm.GoName = "[]byte"
+		t.Pointer = false
 		return nil
 	}
 
@@ -42,6 +43,7 @@ func (t *FieldType) init() error {
 		t.Gorm.GoName = "bool"
 	case protoreflect.EnumKind:
 		t.Gorm.GoName = "int32"
+		t.Enum = true
 	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind:
 		t.Gorm.GoName = "int32"
 	case protoreflect.Uint32Kind, protoreflect.Fixed32Kind:
@@ -64,7 +66,6 @@ func (t *FieldType) init() error {
 		if t.isTimestamp() {
 			t.Gorm.GoName = "Time"
 			t.Gorm.GoImportPath = "time"
-			t.Pointer = false
 			return nil
 		}
 		nested := t.field.proto.Message
@@ -91,9 +92,17 @@ func (t *FieldType) init() error {
 	return nil
 }
 
+// TODO :REfactor
 func (t *FieldType) String() string {
 	if t.Gorm.GoImportPath != "" {
-		return t.field.msg.file.out.QualifiedGoIdent(t.Gorm)
+		id := t.field.msg.file.out.QualifiedGoIdent(t.Gorm)
+		if t.Pointer {
+			id = "*" + id
+		}
+		return id
+	}
+	if t.Pointer {
+		return "*" + t.Gorm.GoName
 	}
 	return t.Gorm.GoName
 }
@@ -103,6 +112,9 @@ func (t *FieldType) alias() string {
 }
 
 func (t *FieldType) isTimestamp() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
 	var (
 		path = t.field.proto.Message.GoIdent.GoImportPath
 		name = t.field.proto.Message.GoIdent.GoName

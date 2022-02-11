@@ -18,13 +18,17 @@ type CrudModel struct {
 }
 
 // ToProto converts a CrudModel to its protobuf representation.
-func (m *CrudModel) ToProto() Crud {
-	panic(true)
+func (m *CrudModel) ToProto() (*Crud, error) {
+	x := new(Crud)
+	x.Uuid = m.Uuid
+	return x, nil
 }
 
 // ToModel converts a Crud to its GORM model.
-func (x *Crud) ToModel() CrudModel {
-	panic(true)
+func (x *Crud) ToModel() (*CrudModel, error) {
+	m := new(CrudModel)
+	m.Uuid = x.Uuid
+	return m, nil
 }
 
 func CreateCrudModel(ctx context.Context) {}

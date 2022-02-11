@@ -7,6 +7,45 @@ option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/te
 
 // Assert generation of proto <> model converter methods.
 
-message Convertible {
+message Scalars {
   option (gorm.message).model = true;
+
+  double double_field = 1;
+  float float_field = 2;
+  int32 int32_field = 3;
+  int64 int64_field = 4;
+  uint32 uint32_field = 5;
+  uint64 uint64_field = 6;
+  sint32 sint32_field = 7;
+  sint64 sint64_field = 8;
+  fixed32 fixed32_field = 9;
+  fixed64 fixed64_field = 10;
+  sfixed32 sfixed32_field = 11;
+  sfixed64 sfixed64_field = 12;
+  bool bool_field = 13;
+  string string_field = 14;
+  bytes bytes_field = 15;
+}
+
+message KnownTypes {
+  option (gorm.message).model = true;
+
+  google.protobuf.Timestamp timestamp_field = 1;
+}
+
+message Enum {
+  option (gorm.message).model = true;
+
+  AnEnum enum_field = 1;
+}
+
+enum AnEnum {
+  AN_ENUM_UNSPECIFIED = 0;
+  AN_ENUM_VALUE = 1;
+}
+
+message Json {
+  option (gorm.message).model = true;
+
+  map<string, string> map_field = 1 [(gorm.field).json = true];
 }
