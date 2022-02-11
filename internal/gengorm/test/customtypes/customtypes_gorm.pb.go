@@ -67,54 +67,40 @@ func (m *WithInlineJsonModel) ToProto() (*WithInlineJson, error) {
 // ToModel converts a WithInlineJson to its GORM model.
 func (x *WithInlineJson) ToModel() (*WithInlineJsonModel, error) {
 	m := new(WithInlineJsonModel)
-	{
-		if bs, err := json.Marshal(&x.MessageField); err != nil {
-			return nil, err
-		} else {
-			m.MessageField = bs
-		}
+	if bs, err := json.Marshal(&x.MessageField); err != nil {
+		return nil, err
+	} else {
+		m.MessageField = bs
 	}
-	{
-		if bs, err := json.Marshal(&x.NestedMessageField); err != nil {
-			return nil, err
-		} else {
-			m.NestedMessageField = bs
-		}
+	if bs, err := json.Marshal(&x.NestedMessageField); err != nil {
+		return nil, err
+	} else {
+		m.NestedMessageField = bs
 	}
-	{
-		if bs, err := json.Marshal(&x.MapField); err != nil {
-			return nil, err
-		} else {
-			m.MapField = bs
-		}
+	if bs, err := json.Marshal(&x.MapField); err != nil {
+		return nil, err
+	} else {
+		m.MapField = bs
 	}
-	{
-		if bs, err := json.Marshal(&x.RepeatedField); err != nil {
-			return nil, err
-		} else {
-			m.RepeatedField = bs
-		}
+	if bs, err := json.Marshal(&x.RepeatedField); err != nil {
+		return nil, err
+	} else {
+		m.RepeatedField = bs
 	}
-	{
-		if bs, err := json.Marshal(&x.StringField); err != nil {
-			return nil, err
-		} else {
-			m.StringField = bs
-		}
+	if bs, err := json.Marshal(&x.StringField); err != nil {
+		return nil, err
+	} else {
+		m.StringField = bs
 	}
-	{
-		if bs, err := json.Marshal(&x.Int32Field); err != nil {
-			return nil, err
-		} else {
-			m.Int32Field = bs
-		}
+	if bs, err := json.Marshal(&x.Int32Field); err != nil {
+		return nil, err
+	} else {
+		m.Int32Field = bs
 	}
-	{
-		if bs, err := json.Marshal(&x.BoolField); err != nil {
-			return nil, err
-		} else {
-			m.BoolField = bs
-		}
+	if bs, err := json.Marshal(&x.BoolField); err != nil {
+		return nil, err
+	} else {
+		m.BoolField = bs
 	}
 	return m, nil
 }
