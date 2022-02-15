@@ -7,10 +7,8 @@
 package converters
 
 import (
-	context "context"
 	json "encoding/json"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
-	_ "google.golang.org/protobuf/types/known/durationpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	time "time"
 )
@@ -34,8 +32,8 @@ type ScalarsModel struct {
 	BytesField    []byte
 }
 
-// ToProto converts a ScalarsModel to its protobuf representation.
-func (m *ScalarsModel) ToProto() (*Scalars, error) {
+// AsProto converts a ScalarsModel to its protobuf representation.
+func (m *ScalarsModel) AsProto() (*Scalars, error) {
 	x := new(Scalars)
 	x.DoubleField = m.DoubleField
 	x.FloatField = m.FloatField
@@ -55,8 +53,8 @@ func (m *ScalarsModel) ToProto() (*Scalars, error) {
 	return x, nil
 }
 
-// ToModel converts a Scalars to its GORM model.
-func (x *Scalars) ToModel() (*ScalarsModel, error) {
+// AsModel converts a Scalars to its GORM model.
+func (x *Scalars) AsModel() (*ScalarsModel, error) {
 	m := new(ScalarsModel)
 	m.DoubleField = x.DoubleField
 	m.FloatField = x.FloatField
@@ -76,23 +74,13 @@ func (x *Scalars) ToModel() (*ScalarsModel, error) {
 	return m, nil
 }
 
-func CreateScalarsModel(ctx context.Context) {}
-
-func GetScalarsModel(ctx context.Context) {}
-
-func ListScalarsModel(ctx context.Context) {}
-
-func UpdateScalarsModel(ctx context.Context) {}
-
-func DeleteScalarsModel(ctx context.Context) {}
-
 // KnownTypesModel is the GORM model for converters.KnownTypes.
 type KnownTypesModel struct {
 	TimestampField time.Time
 }
 
-// ToProto converts a KnownTypesModel to its protobuf representation.
-func (m *KnownTypesModel) ToProto() (*KnownTypes, error) {
+// AsProto converts a KnownTypesModel to its protobuf representation.
+func (m *KnownTypesModel) AsProto() (*KnownTypes, error) {
 	x := new(KnownTypes)
 	if m.TimestampField != (time.Time{}) {
 		x.TimestampField = timestamppb.New(m.TimestampField)
@@ -100,8 +88,8 @@ func (m *KnownTypesModel) ToProto() (*KnownTypes, error) {
 	return x, nil
 }
 
-// ToModel converts a KnownTypes to its GORM model.
-func (x *KnownTypes) ToModel() (*KnownTypesModel, error) {
+// AsModel converts a KnownTypes to its GORM model.
+func (x *KnownTypes) AsModel() (*KnownTypesModel, error) {
 	m := new(KnownTypesModel)
 	if t := x.TimestampField; t != nil {
 		m.TimestampField = t.AsTime()
@@ -109,52 +97,32 @@ func (x *KnownTypes) ToModel() (*KnownTypesModel, error) {
 	return m, nil
 }
 
-func CreateKnownTypesModel(ctx context.Context) {}
-
-func GetKnownTypesModel(ctx context.Context) {}
-
-func ListKnownTypesModel(ctx context.Context) {}
-
-func UpdateKnownTypesModel(ctx context.Context) {}
-
-func DeleteKnownTypesModel(ctx context.Context) {}
-
 // EnumModel is the GORM model for converters.Enum.
 type EnumModel struct {
 	EnumField int32
 }
 
-// ToProto converts a EnumModel to its protobuf representation.
-func (m *EnumModel) ToProto() (*Enum, error) {
+// AsProto converts a EnumModel to its protobuf representation.
+func (m *EnumModel) AsProto() (*Enum, error) {
 	x := new(Enum)
 	x.EnumField = AnEnum(m.EnumField)
 	return x, nil
 }
 
-// ToModel converts a Enum to its GORM model.
-func (x *Enum) ToModel() (*EnumModel, error) {
+// AsModel converts a Enum to its GORM model.
+func (x *Enum) AsModel() (*EnumModel, error) {
 	m := new(EnumModel)
 	m.EnumField = int32(x.EnumField)
 	return m, nil
 }
-
-func CreateEnumModel(ctx context.Context) {}
-
-func GetEnumModel(ctx context.Context) {}
-
-func ListEnumModel(ctx context.Context) {}
-
-func UpdateEnumModel(ctx context.Context) {}
-
-func DeleteEnumModel(ctx context.Context) {}
 
 // JsonModel is the GORM model for converters.Json.
 type JsonModel struct {
 	MapField []byte
 }
 
-// ToProto converts a JsonModel to its protobuf representation.
-func (m *JsonModel) ToProto() (*Json, error) {
+// AsProto converts a JsonModel to its protobuf representation.
+func (m *JsonModel) AsProto() (*Json, error) {
 	x := new(Json)
 	if len(m.MapField) > 0 {
 		if err := json.Unmarshal(m.MapField, &x.MapField); err != nil {
@@ -164,8 +132,8 @@ func (m *JsonModel) ToProto() (*Json, error) {
 	return x, nil
 }
 
-// ToModel converts a Json to its GORM model.
-func (x *Json) ToModel() (*JsonModel, error) {
+// AsModel converts a Json to its GORM model.
+func (x *Json) AsModel() (*JsonModel, error) {
 	m := new(JsonModel)
 	if bs, err := json.Marshal(&x.MapField); err != nil {
 		return nil, err
@@ -174,13 +142,3 @@ func (x *Json) ToModel() (*JsonModel, error) {
 	}
 	return m, nil
 }
-
-func CreateJsonModel(ctx context.Context) {}
-
-func GetJsonModel(ctx context.Context) {}
-
-func ListJsonModel(ctx context.Context) {}
-
-func UpdateJsonModel(ctx context.Context) {}
-
-func DeleteJsonModel(ctx context.Context) {}

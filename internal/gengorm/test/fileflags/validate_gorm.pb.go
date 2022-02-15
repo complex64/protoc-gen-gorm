@@ -7,7 +7,6 @@
 package fileflags
 
 import (
-	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
@@ -15,24 +14,14 @@ import (
 type ImplicitValidateModel struct {
 }
 
-// ToProto converts a ImplicitValidateModel to its protobuf representation.
-func (m *ImplicitValidateModel) ToProto() (*ImplicitValidate, error) {
+// AsProto converts a ImplicitValidateModel to its protobuf representation.
+func (m *ImplicitValidateModel) AsProto() (*ImplicitValidate, error) {
 	x := new(ImplicitValidate)
 	return x, nil
 }
 
-// ToModel converts a ImplicitValidate to its GORM model.
-func (x *ImplicitValidate) ToModel() (*ImplicitValidateModel, error) {
+// AsModel converts a ImplicitValidate to its GORM model.
+func (x *ImplicitValidate) AsModel() (*ImplicitValidateModel, error) {
 	m := new(ImplicitValidateModel)
 	return m, nil
 }
-
-func CreateImplicitValidateModel(ctx context.Context) {}
-
-func GetImplicitValidateModel(ctx context.Context) {}
-
-func ListImplicitValidateModel(ctx context.Context) {}
-
-func UpdateImplicitValidateModel(ctx context.Context) {}
-
-func DeleteImplicitValidateModel(ctx context.Context) {}

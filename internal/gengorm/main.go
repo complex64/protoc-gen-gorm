@@ -29,10 +29,3 @@ func appendDeprecationNotice(prefix protogen.Comments, deprecated bool) protogen
 	}
 	return prefix + " Deprecated: Do not use.\n"
 }
-
-var (
-	pkgCtx = protogen.GoIdent{
-		GoName:       "Context",
-		GoImportPath: "context",
-	}
-)

@@ -7,7 +7,6 @@
 package fieldtags
 
 import (
-	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
@@ -27,8 +26,8 @@ type OptionsModel struct {
 	Ignore             string `gorm:"-"`
 }
 
-// ToProto converts a OptionsModel to its protobuf representation.
-func (m *OptionsModel) ToProto() (*Options, error) {
+// AsProto converts a OptionsModel to its protobuf representation.
+func (m *OptionsModel) AsProto() (*Options, error) {
 	x := new(Options)
 	x.Column = m.Column
 	x.NotNull = m.NotNull
@@ -45,8 +44,8 @@ func (m *OptionsModel) ToProto() (*Options, error) {
 	return x, nil
 }
 
-// ToModel converts a Options to its GORM model.
-func (x *Options) ToModel() (*OptionsModel, error) {
+// AsModel converts a Options to its GORM model.
+func (x *Options) AsModel() (*OptionsModel, error) {
 	m := new(OptionsModel)
 	m.Column = x.Column
 	m.NotNull = x.NotNull
@@ -63,16 +62,6 @@ func (x *Options) ToModel() (*OptionsModel, error) {
 	return m, nil
 }
 
-func CreateOptionsModel(ctx context.Context) {}
-
-func GetOptionsModel(ctx context.Context) {}
-
-func ListOptionsModel(ctx context.Context) {}
-
-func UpdateOptionsModel(ctx context.Context) {}
-
-func DeleteOptionsModel(ctx context.Context) {}
-
 // DenyOptionsModel is the GORM model for fieldtags.DenyOptions.
 type DenyOptionsModel struct {
 	Ignore     string `gorm:"-"`
@@ -84,8 +73,8 @@ type DenyOptionsModel struct {
 	ReadCreate string `gorm:"<-:create"`
 }
 
-// ToProto converts a DenyOptionsModel to its protobuf representation.
-func (m *DenyOptionsModel) ToProto() (*DenyOptions, error) {
+// AsProto converts a DenyOptionsModel to its protobuf representation.
+func (m *DenyOptionsModel) AsProto() (*DenyOptions, error) {
 	x := new(DenyOptions)
 	x.Ignore = m.Ignore
 	x.UpdateOnly = m.UpdateOnly
@@ -97,8 +86,8 @@ func (m *DenyOptionsModel) ToProto() (*DenyOptions, error) {
 	return x, nil
 }
 
-// ToModel converts a DenyOptions to its GORM model.
-func (x *DenyOptions) ToModel() (*DenyOptionsModel, error) {
+// AsModel converts a DenyOptions to its GORM model.
+func (x *DenyOptions) AsModel() (*DenyOptionsModel, error) {
 	m := new(DenyOptionsModel)
 	m.Ignore = x.Ignore
 	m.UpdateOnly = x.UpdateOnly
@@ -109,13 +98,3 @@ func (x *DenyOptions) ToModel() (*DenyOptionsModel, error) {
 	m.ReadCreate = x.ReadCreate
 	return m, nil
 }
-
-func CreateDenyOptionsModel(ctx context.Context) {}
-
-func GetDenyOptionsModel(ctx context.Context) {}
-
-func ListDenyOptionsModel(ctx context.Context) {}
-
-func UpdateDenyOptionsModel(ctx context.Context) {}
-
-func DeleteDenyOptionsModel(ctx context.Context) {}
