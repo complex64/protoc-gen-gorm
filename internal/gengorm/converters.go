@@ -5,34 +5,34 @@ import (
 )
 
 func (m *Message) genConverters() {
-	m.genModelToProto()
-	m.genToModel()
+	m.genModelAsProto()
+	m.genAsModel()
 }
 
-func (m *Message) genModelToProto() {
-	m.P(Comment(" ToProto converts a %s to its protobuf representation.", m.ModelName()),
-		"func (m *", m.ModelName(), ") ToProto() (*", m.proto.GoIdent.GoName, ", error) {")
+func (m *Message) genModelAsProto() {
+	m.P(Comment(" AsProto converts a %s to its protobuf representation.", m.ModelName()),
+		"func (m *", m.ModelName(), ") AsProto() (*", m.proto.GoIdent.GoName, ", error) {")
 	m.P("x := new(", m.proto.GoIdent.GoName, ")")
-	m.genModelToProtoFields()
+	m.genModelAsProtoFields()
 	m.P("return x, nil")
 	m.P("}") // func
 	m.P()
 }
 
-func (m *Message) genModelToProtoFields() {
+func (m *Message) genModelAsProtoFields() {
 	for _, field := range m.fields {
-		field.genConvertToProto()
+		field.genConvertAsProto()
 	}
 }
 
-func (f *Field) genConvertToProto() {
+func (f *Field) genConvertAsProto() {
 	switch {
 	case f.types.JSON:
-		f.genConvertJsonToProto()
+		f.genConvertJsonAsProto()
 	case f.types.Enum:
-		f.genEnumToProto()
+		f.genEnumAsProto()
 	case f.types.isTimestamp():
-		f.genConvertTimeToProto()
+		f.genConvertTimeAsProto()
 	case f.types.Pointer:
 		f.P("x.", f.Name(), " = *m.", f.Name())
 	default:
@@ -40,7 +40,7 @@ func (f *Field) genConvertToProto() {
 	}
 }
 
-func (f *Field) genConvertJsonToProto() {
+func (f *Field) genConvertJsonAsProto() {
 	unmarshal := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
 		GoName:       "Unmarshal",
 		GoImportPath: "encoding/json",
@@ -52,7 +52,7 @@ func (f *Field) genConvertJsonToProto() {
 	f.P("}")
 }
 
-func (f *Field) genConvertTimeToProto() {
+func (f *Field) genConvertTimeAsProto() {
 	newTimestamp := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
 		GoName:       "New",
 		GoImportPath: "google.golang.org/protobuf/types/known/timestamppb",
@@ -62,34 +62,34 @@ func (f *Field) genConvertTimeToProto() {
 	f.P("}")
 }
 
-func (f *Field) genEnumToProto() {
+func (f *Field) genEnumAsProto() {
 	f.P("x.", f.Name(), " = ", f.proto.Desc.Enum().Name(), "(m.", f.Name(), ")")
 }
 
-func (m *Message) genToModel() {
-	m.P(Comment(" ToModel converts a %s to its GORM model.", m.proto.GoIdent.GoName),
-		"func (x *", m.proto.GoIdent.GoName, ") ToModel() (*", m.ModelName(), ", error) {")
+func (m *Message) genAsModel() {
+	m.P(Comment(" AsModel converts a %s to its GORM model.", m.proto.GoIdent.GoName),
+		"func (x *", m.proto.GoIdent.GoName, ") AsModel() (*", m.ModelName(), ", error) {")
 	m.P("m := new(", m.ModelName(), ")")
-	m.genConvertToModelFields()
+	m.genConvertAsModelFields()
 	m.P("return m, nil")
 	m.P("}")
 	m.P()
 }
 
-func (m *Message) genConvertToModelFields() {
+func (m *Message) genConvertAsModelFields() {
 	for _, field := range m.fields {
-		field.genConvertToModel()
+		field.genConvertAsModel()
 	}
 }
 
-func (f *Field) genConvertToModel() {
+func (f *Field) genConvertAsModel() {
 	switch {
 	case f.types.JSON:
-		f.genConvertJsonToModel()
+		f.genConvertJsonAsModel()
 	case f.types.Enum:
-		f.genEnumToModel()
+		f.genEnumAsModel()
 	case f.types.isTimestamp():
-		f.genConvertTimestampToModel()
+		f.genConvertTimestampAsModel()
 	case f.types.Pointer:
 		f.P("m.", f.Name(), " = *x.", f.Name())
 	default:
@@ -97,7 +97,7 @@ func (f *Field) genConvertToModel() {
 	}
 }
 
-func (f *Field) genConvertJsonToModel() {
+func (f *Field) genConvertJsonAsModel() {
 	marshal := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
 		GoName:       "Marshal",
 		GoImportPath: "encoding/json",
@@ -109,11 +109,11 @@ func (f *Field) genConvertJsonToModel() {
 	f.P("}") // if
 }
 
-func (f *Field) genEnumToModel() {
+func (f *Field) genEnumAsModel() {
 	f.P("m.", f.Name(), " = ", "int32(x.", f.Name(), ")")
 }
 
-func (f *Field) genConvertTimestampToModel() {
+func (f *Field) genConvertTimestampAsModel() {
 	f.P("if t := x.", f.Name(), "; t != nil {")
 	f.P("m.", f.Name(), " = t.AsTime()")
 	f.P("}")

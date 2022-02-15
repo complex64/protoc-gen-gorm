@@ -7,7 +7,6 @@
 package customtypes
 
 import (
-	context "context"
 	json "encoding/json"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
@@ -23,8 +22,8 @@ type WithInlineJsonModel struct {
 	BoolField          []byte
 }
 
-// ToProto converts a WithInlineJsonModel to its protobuf representation.
-func (m *WithInlineJsonModel) ToProto() (*WithInlineJson, error) {
+// AsProto converts a WithInlineJsonModel to its protobuf representation.
+func (m *WithInlineJsonModel) AsProto() (*WithInlineJson, error) {
 	x := new(WithInlineJson)
 	if len(m.MessageField) > 0 {
 		if err := json.Unmarshal(m.MessageField, &x.MessageField); err != nil {
@@ -64,8 +63,8 @@ func (m *WithInlineJsonModel) ToProto() (*WithInlineJson, error) {
 	return x, nil
 }
 
-// ToModel converts a WithInlineJson to its GORM model.
-func (x *WithInlineJson) ToModel() (*WithInlineJsonModel, error) {
+// AsModel converts a WithInlineJson to its GORM model.
+func (x *WithInlineJson) AsModel() (*WithInlineJsonModel, error) {
 	m := new(WithInlineJsonModel)
 	if bs, err := json.Marshal(&x.MessageField); err != nil {
 		return nil, err
@@ -104,13 +103,3 @@ func (x *WithInlineJson) ToModel() (*WithInlineJsonModel, error) {
 	}
 	return m, nil
 }
-
-func CreateWithInlineJsonModel(ctx context.Context) {}
-
-func GetWithInlineJsonModel(ctx context.Context) {}
-
-func ListWithInlineJsonModel(ctx context.Context) {}
-
-func UpdateWithInlineJsonModel(ctx context.Context) {}
-
-func DeleteWithInlineJsonModel(ctx context.Context) {}

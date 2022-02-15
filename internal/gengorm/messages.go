@@ -110,12 +110,12 @@ func (m *Message) genFields() {
 	}
 }
 
-// func (m *Message) genCustomTypes() {
-// 	// TODO
-// }
+func (m *Message) ProtoName() string {
+	return m.proto.GoIdent.GoName
+}
 
 func (m *Message) ModelName() string {
-	return fmt.Sprintf("%sModel", m.proto.GoIdent.GoName)
+	return fmt.Sprintf("%sModel", m.ProtoName())
 }
 
 func (m *Message) crud() bool     { return m.opts.Crud || m.file.CRUD() }

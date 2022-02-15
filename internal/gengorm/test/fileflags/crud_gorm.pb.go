@@ -7,7 +7,6 @@
 package fileflags
 
 import (
-	context "context"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 )
 
@@ -15,24 +14,14 @@ import (
 type ImplicitCRUDModel struct {
 }
 
-// ToProto converts a ImplicitCRUDModel to its protobuf representation.
-func (m *ImplicitCRUDModel) ToProto() (*ImplicitCRUD, error) {
+// AsProto converts a ImplicitCRUDModel to its protobuf representation.
+func (m *ImplicitCRUDModel) AsProto() (*ImplicitCRUD, error) {
 	x := new(ImplicitCRUD)
 	return x, nil
 }
 
-// ToModel converts a ImplicitCRUD to its GORM model.
-func (x *ImplicitCRUD) ToModel() (*ImplicitCRUDModel, error) {
+// AsModel converts a ImplicitCRUD to its GORM model.
+func (x *ImplicitCRUD) AsModel() (*ImplicitCRUDModel, error) {
 	m := new(ImplicitCRUDModel)
 	return m, nil
 }
-
-func CreateImplicitCRUDModel(ctx context.Context) {}
-
-func GetImplicitCRUDModel(ctx context.Context) {}
-
-func ListImplicitCRUDModel(ctx context.Context) {}
-
-func UpdateImplicitCRUDModel(ctx context.Context) {}
-
-func DeleteImplicitCRUDModel(ctx context.Context) {}

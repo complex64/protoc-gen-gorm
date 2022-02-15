@@ -11,4 +11,6 @@ message Crud {
   string uuid = 1 [
     (gorm.field).primary_key = true
   ];
+
+  string string_field = 2;
 }

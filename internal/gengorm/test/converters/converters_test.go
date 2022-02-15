@@ -10,10 +10,10 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func TestScalarsModel_ToProto(t *testing.T) {
+func TestScalarsModel_AsProto(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		m := new(converters.ScalarsModel)
-		x, err := m.ToProto()
+		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.EqualValues(t, 0, x.DoubleField)
@@ -51,7 +51,7 @@ func TestScalarsModel_ToProto(t *testing.T) {
 			StringField:   "abc",
 			BytesField:    []byte("def"),
 		}
-		x, err := m.ToProto()
+		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.EqualValues(t, 1, x.DoubleField)
@@ -72,10 +72,10 @@ func TestScalarsModel_ToProto(t *testing.T) {
 	})
 }
 
-func TestScalars_ToModel(t *testing.T) {
+func TestScalars_AsModel(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		x := new(converters.Scalars)
-		m, err := x.ToModel()
+		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, 0, x.DoubleField)
@@ -113,7 +113,7 @@ func TestScalars_ToModel(t *testing.T) {
 			StringField:   "abc",
 			BytesField:    []byte("def"),
 		}
-		m, err := x.ToModel()
+		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, 1, x.DoubleField)
@@ -134,10 +134,10 @@ func TestScalars_ToModel(t *testing.T) {
 	})
 }
 
-func TestKnownTypes_ToModel(t *testing.T) {
+func TestKnownTypes_AsModel(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		x := new(converters.KnownTypes)
-		m, err := x.ToModel()
+		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.Equal(t, time.Time{}, m.TimestampField)
@@ -149,17 +149,17 @@ func TestKnownTypes_ToModel(t *testing.T) {
 		x := &converters.KnownTypes{
 			TimestampField: nowpb,
 		}
-		m, err := x.ToModel()
+		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.Equal(t, now, m.TimestampField)
 	})
 }
 
-func TestKnownTypesModel_ToProto(t *testing.T) {
+func TestKnownTypesModel_AsProto(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		m := new(converters.KnownTypesModel)
-		x, err := m.ToProto()
+		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.Nil(t, x.TimestampField)
@@ -171,17 +171,17 @@ func TestKnownTypesModel_ToProto(t *testing.T) {
 		m := &converters.KnownTypesModel{
 			TimestampField: now,
 		}
-		x, err := m.ToProto()
+		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		requirepb.EqualProtos(t, nowpb, x.TimestampField)
 	})
 }
 
-func TestEnum_ToModel(t *testing.T) {
+func TestEnum_AsModel(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		x := new(converters.Enum)
-		m, err := x.ToModel()
+		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, 0, m.EnumField)
@@ -191,17 +191,17 @@ func TestEnum_ToModel(t *testing.T) {
 		x := &converters.Enum{
 			EnumField: converters.AnEnum_AN_ENUM_VALUE,
 		}
-		m, err := x.ToModel()
+		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, converters.AnEnum_AN_ENUM_VALUE, m.EnumField)
 	})
 }
 
-func TestEnumModel_ToProto(t *testing.T) {
+func TestEnumModel_AsProto(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		m := new(converters.EnumModel)
-		x, err := m.ToProto()
+		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.Equal(t, converters.AnEnum_AN_ENUM_UNSPECIFIED, x.EnumField)
@@ -211,17 +211,17 @@ func TestEnumModel_ToProto(t *testing.T) {
 		m := &converters.EnumModel{
 			EnumField: int32(converters.AnEnum_AN_ENUM_VALUE),
 		}
-		x, err := m.ToProto()
+		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.EqualValues(t, converters.AnEnum_AN_ENUM_VALUE, x.EnumField)
 	})
 }
 
-func TestJson_ToModel(t *testing.T) {
+func TestJson_AsModel(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		x := new(converters.Json)
-		m, err := x.ToModel()
+		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, []byte("null"), m.MapField)
@@ -231,17 +231,17 @@ func TestJson_ToModel(t *testing.T) {
 		x := &converters.Json{
 			MapField: map[string]string{"foo": "bar"},
 		}
-		m, err := x.ToModel()
+		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.Equal(t, []byte(`{"foo":"bar"}`), m.MapField)
 	})
 }
 
-func TestJsonModel_ToProto(t *testing.T) {
+func TestJsonModel_AsProto(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		m := new(converters.JsonModel)
-		x, err := m.ToProto()
+		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.Nil(t, x.MapField)
@@ -251,7 +251,7 @@ func TestJsonModel_ToProto(t *testing.T) {
 		m := &converters.JsonModel{
 			MapField: []byte(`{"foo":"bar"}`),
 		}
-		x, err := m.ToProto()
+		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.Equal(t, map[string]string{"foo": "bar"}, x.MapField)

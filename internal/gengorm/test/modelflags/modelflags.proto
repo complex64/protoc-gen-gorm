@@ -18,4 +18,7 @@ message ValidateImpliesModel {
 message CRUDImpliesModel {
   // Implies model=true.
   option (gorm.message).crud = true;
+  string uuid = 1 [
+    (gorm.field).primary_key = true
+  ];
 }
