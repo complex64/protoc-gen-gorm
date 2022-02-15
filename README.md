@@ -9,3 +9,29 @@ go install github.com/complex64/protoc-gen-gorm@latest
 ```
 
 **Under active development as of February 2022.**
+
+---
+
+**Features:**
+
+Existing or planned:
+
+- [x] Uses Gorm v2 (`gorm.io/gorm`)
+- [x] Generates Gorm Models
+- [x] Generates methods to convert between proto and Gorm
+- [x] Generates CRUD methods (on demand)
+- [ ] Support for inline-JSON encoding (on demand)
+- [ ] Support for record lifecycle hooks (on demand)
+- [ ] Support for associations
+- [ ] Support for custom types
+- [ ] Support for database-specific types
+- [ ] Support for embedded structs
+- [x] All features covered by tests
+- [x] Minimal dependencies
+      - 0 baseline
+      - 1 when using hooks (Gorm)
+      - 2 when using CRUD (Gorm, fieldmaskpb)
+      - 1 implicit for validation (expects methods from protoc-gen-validate)
+- [ ] Documented proto options with examples
+- [ ] Documented code
+- [ ] Extensive documentation with examples
