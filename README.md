@@ -8,4 +8,4 @@ Generate GORM v2 Models and APIs from your .proto files.
 go install github.com/complex64/protoc-gen-gorm@latest
 ```
 
-**In active development as of February 2022.**
+**Under active development as of February 2022.**
