@@ -99,13 +99,15 @@ func (x *KnownTypes) AsModel() (*KnownTypesModel, error) {
 
 // EnumModel is the GORM model for converters.Enum.
 type EnumModel struct {
-	EnumField int32
+	EnumField       int32
+	NestedEnumField int32
 }
 
 // AsProto converts a EnumModel to its protobuf representation.
 func (m *EnumModel) AsProto() (*Enum, error) {
 	x := new(Enum)
 	x.EnumField = AnEnum(m.EnumField)
+	x.NestedEnumField = Enum_ANestedEnum(m.NestedEnumField)
 	return x, nil
 }
 
@@ -113,6 +115,7 @@ func (m *EnumModel) AsProto() (*Enum, error) {
 func (x *Enum) AsModel() (*EnumModel, error) {
 	m := new(EnumModel)
 	m.EnumField = int32(x.EnumField)
+	m.NestedEnumField = int32(x.NestedEnumField)
 	return m, nil
 }
 
