@@ -189,12 +189,14 @@ func TestEnum_AsModel(t *testing.T) {
 
 	t.Run("with values set", func(t *testing.T) {
 		x := &converters.Enum{
-			EnumField: converters.AnEnum_AN_ENUM_VALUE,
+			EnumField:       converters.AnEnum_AN_ENUM_VALUE,
+			NestedEnumField: converters.Enum_A_NESTED_ENUM_VALUE,
 		}
 		m, err := x.AsModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, converters.AnEnum_AN_ENUM_VALUE, m.EnumField)
+		require.EqualValues(t, converters.Enum_A_NESTED_ENUM_VALUE, m.NestedEnumField)
 	})
 }
 
@@ -205,16 +207,19 @@ func TestEnumModel_AsProto(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.Equal(t, converters.AnEnum_AN_ENUM_UNSPECIFIED, x.EnumField)
+		require.Equal(t, converters.Enum_A_NESTED_ENUM_UNSPECIFIED, x.NestedEnumField)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
 		m := &converters.EnumModel{
-			EnumField: int32(converters.AnEnum_AN_ENUM_VALUE),
+			EnumField:       int32(converters.AnEnum_AN_ENUM_VALUE),
+			NestedEnumField: int32(converters.Enum_A_NESTED_ENUM_VALUE),
 		}
 		x, err := m.AsProto()
 		require.NoError(t, err)
 		require.NotNil(t, x)
 		require.EqualValues(t, converters.AnEnum_AN_ENUM_VALUE, x.EnumField)
+		require.EqualValues(t, converters.Enum_A_NESTED_ENUM_VALUE, x.NestedEnumField)
 	})
 }
 

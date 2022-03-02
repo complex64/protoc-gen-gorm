@@ -2,6 +2,7 @@ package gengorm
 
 import (
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func (m *Message) genConverters() {
@@ -63,7 +64,12 @@ func (f *Field) genConvertTimeAsProto() {
 }
 
 func (f *Field) genEnumAsProto() {
-	f.P("x.", f.Name(), " = ", f.proto.Desc.Enum().Name(), "(m.", f.Name(), ")")
+	typename := f.proto.Desc.Enum().Name()
+	parent := f.proto.Desc.Enum().Parent()
+	if x, ok := parent.(protoreflect.MessageDescriptor); ok {
+		typename = x.Name() + "_" + typename
+	}
+	f.P("x.", f.Name(), " = ", typename, "(m.", f.Name(), ")")
 }
 
 func (m *Message) genAsModel() {
