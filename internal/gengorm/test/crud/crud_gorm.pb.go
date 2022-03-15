@@ -10,6 +10,7 @@ import (
 	context "context"
 	fmt "fmt"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
+	gengorm "github.com/complex64/protoc-gen-gorm/pkg/gengorm"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	gorm "gorm.io/gorm"
 )
@@ -45,7 +46,7 @@ func (x *Crud) WithDB(db *gorm.DB) CrudWithDB {
 	return CrudWithDB{x: x, db: db}
 }
 
-func (c CrudWithDB) Create(ctx context.Context) (*Crud, error) {
+func (c CrudWithDB) Create(ctx context.Context, opts ...gengorm.CreateOption) (*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -64,7 +65,7 @@ func (c CrudWithDB) Create(ctx context.Context) (*Crud, error) {
 	}
 }
 
-func (c CrudWithDB) Get(ctx context.Context) (*Crud, error) {
+func (c CrudWithDB) Get(ctx context.Context, opts ...gengorm.GetOption) (*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -88,7 +89,7 @@ func (c CrudWithDB) Get(ctx context.Context) (*Crud, error) {
 	}
 }
 
-func (c CrudWithDB) List(ctx context.Context) ([]*Crud, error) {
+func (c CrudWithDB) List(ctx context.Context, opts ...gengorm.ListOption) ([]*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -108,7 +109,7 @@ func (c CrudWithDB) List(ctx context.Context) ([]*Crud, error) {
 	return xs, nil
 }
 
-func (c CrudWithDB) Update(ctx context.Context) (*Crud, error) {
+func (c CrudWithDB) Update(ctx context.Context, opts ...gengorm.UpdateOption) (*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -127,7 +128,7 @@ func (c CrudWithDB) Update(ctx context.Context) (*Crud, error) {
 	}
 }
 
-func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask) (*Crud, error) {
+func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts ...gengorm.PatchOption) (*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -137,7 +138,7 @@ func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask) (*Cr
 	if !mask.IsValid(c.x) {
 		return nil, fmt.Errorf("invalid field mask")
 	}
-	paths := mask.GetPaths()
+	paths := mask.Paths
 	if len(paths) == 0 {
 		return c.Update(ctx)
 	}
@@ -170,7 +171,7 @@ func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask) (*Cr
 	}
 }
 
-func (c CrudWithDB) Delete(ctx context.Context) error {
+func (c CrudWithDB) Delete(ctx context.Context, opts ...gengorm.DeleteOption) error {
 	if c.x == nil {
 		return nil
 	}

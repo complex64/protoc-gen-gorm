@@ -10,6 +10,7 @@ import (
 	context "context"
 	fmt "fmt"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
+	gengorm "github.com/complex64/protoc-gen-gorm/pkg/gengorm"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	gorm "gorm.io/gorm"
 )
@@ -74,7 +75,7 @@ func (x *CRUDImpliesModel) WithDB(db *gorm.DB) CRUDImpliesModelWithDB {
 	return CRUDImpliesModelWithDB{x: x, db: db}
 }
 
-func (c CRUDImpliesModelWithDB) Create(ctx context.Context) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Create(ctx context.Context, opts ...gengorm.CreateOption) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -93,7 +94,7 @@ func (c CRUDImpliesModelWithDB) Create(ctx context.Context) (*CRUDImpliesModel, 
 	}
 }
 
-func (c CRUDImpliesModelWithDB) Get(ctx context.Context) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Get(ctx context.Context, opts ...gengorm.GetOption) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -117,7 +118,7 @@ func (c CRUDImpliesModelWithDB) Get(ctx context.Context) (*CRUDImpliesModel, err
 	}
 }
 
-func (c CRUDImpliesModelWithDB) List(ctx context.Context) ([]*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) List(ctx context.Context, opts ...gengorm.ListOption) ([]*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -137,7 +138,7 @@ func (c CRUDImpliesModelWithDB) List(ctx context.Context) ([]*CRUDImpliesModel, 
 	return xs, nil
 }
 
-func (c CRUDImpliesModelWithDB) Update(ctx context.Context) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Update(ctx context.Context, opts ...gengorm.UpdateOption) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -156,7 +157,7 @@ func (c CRUDImpliesModelWithDB) Update(ctx context.Context) (*CRUDImpliesModel, 
 	}
 }
 
-func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts ...gengorm.PatchOption) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -166,7 +167,7 @@ func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.Fie
 	if !mask.IsValid(c.x) {
 		return nil, fmt.Errorf("invalid field mask")
 	}
-	paths := mask.GetPaths()
+	paths := mask.Paths
 	if len(paths) == 0 {
 		return c.Update(ctx)
 	}
@@ -197,7 +198,7 @@ func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.Fie
 	}
 }
 
-func (c CRUDImpliesModelWithDB) Delete(ctx context.Context) error {
+func (c CRUDImpliesModelWithDB) Delete(ctx context.Context, opts ...gengorm.DeleteOption) error {
 	if c.x == nil {
 		return nil
 	}

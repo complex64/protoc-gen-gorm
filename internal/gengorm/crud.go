@@ -32,7 +32,7 @@ func (m *Message) genWithDBType() {
 }
 
 func (m *Message) genCreate() {
-	m.P("func (c ", m.withDBTypeName(), ") Create(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.withDBTypeName(), ") Create(ctx ", m.identCtx(), ", opts ...", m.identCreateOption(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -60,9 +60,8 @@ func (m *Message) genCreate() {
 	m.P()
 }
 
-// TODO: Field selection.
 func (m *Message) genGet() {
-	m.P("func (c ", m.withDBTypeName(), ") Get(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.withDBTypeName(), ") Get(ctx ", m.identCtx(), ", opts ...", m.identGetOption(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -108,9 +107,8 @@ func (m *Message) genGet() {
 	m.P()
 }
 
-// TODO: Filter, sort, paginate, field selection.
 func (m *Message) genList() {
-	m.P("func (c ", m.withDBTypeName(), ") List(ctx ", m.identCtx(), ") ([]*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.withDBTypeName(), ") List(ctx ", m.identCtx(), ", opts ...", m.identListOption(), ") ([]*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -138,7 +136,7 @@ func (m *Message) genList() {
 }
 
 func (m *Message) genUpdate() {
-	m.P("func (c ", m.withDBTypeName(), ") Update(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.withDBTypeName(), ") Update(ctx ", m.identCtx(), ", opts ...", m.identUpdateOption(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -168,7 +166,7 @@ func (m *Message) genUpdate() {
 
 func (m *Message) genPatch() {
 	m.P("func (c ", m.withDBTypeName(), ") "+
-		"Patch(ctx ", m.identCtx(), ", mask *", m.identFieldMask(), ") (*", m.ProtoName(), ", error) {")
+		"Patch(ctx ", m.identCtx(), ", mask *", m.identFieldMask(), ", opts ...", m.identPatchOption(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -181,7 +179,7 @@ func (m *Message) genPatch() {
 	m.P("return nil, ", m.identErrorf(), "(\"invalid field mask\")")
 	m.P("}")
 
-	m.P("paths := mask.GetPaths()")
+	m.P("paths := mask.Paths")
 	m.P("if len(paths) == 0 {")
 	m.P("return c.Update(ctx)")
 	m.P("}")
@@ -244,7 +242,7 @@ func (m *Message) genPatch() {
 
 // TODO: Soft delete, expiration?
 func (m *Message) genDelete() {
-	m.P("func (c ", m.withDBTypeName(), ") Delete(ctx ", m.identCtx(), ") error {")
+	m.P("func (c ", m.withDBTypeName(), ") Delete(ctx ", m.identCtx(), ", opts ...", m.identDeleteOption(), ") error {")
 	m.P("if c.x == nil {")
 	m.P("return nil")
 	m.P("}")
@@ -321,5 +319,19 @@ func (m *Message) identFieldMask() string {
 	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
 		GoName:       "FieldMask",
 		GoImportPath: "google.golang.org/protobuf/types/known/fieldmaskpb",
+	})
+}
+
+func (m *Message) identCreateOption() string { return m.identGenGorm("CreateOption") }
+func (m *Message) identGetOption() string    { return m.identGenGorm("GetOption") }
+func (m *Message) identListOption() string   { return m.identGenGorm("ListOption") }
+func (m *Message) identUpdateOption() string { return m.identGenGorm("UpdateOption") }
+func (m *Message) identPatchOption() string  { return m.identGenGorm("PatchOption") }
+func (m *Message) identDeleteOption() string { return m.identGenGorm("DeleteOption") }
+
+func (m *Message) identGenGorm(goName string) string {
+	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       goName,
+		GoImportPath: "github.com/complex64/protoc-gen-gorm/pkg/gengorm",
 	})
 }
