@@ -21,59 +21,32 @@ func (m *Message) genCRUD() {
 	m.genDelete()
 
 	m.genGetOptions()
+	m.genListOptions()
 
 	m.genColForPath()
 	m.genColsForPaths()
 }
 
 func (m *Message) genWithDBType() {
-	m.P("type ", m.withDBTypeName(), " struct {")
+	m.P("type ", m.typeNameWithDB(), " struct {")
 	m.P("x *", m.ProtoName())
 	m.P("db *", m.identGormDB())
 	m.P("}")
 	m.P()
-	m.P("func (x *", m.ProtoName(), ") WithDB(db *", m.identGormDB(), ") ", m.withDBTypeName(), " {")
-	m.P("return ", m.withDBTypeName(), "{x: x, db: db}")
+	m.P("func (x *", m.ProtoName(), ") WithDB(db *", m.identGormDB(), ") ", m.typeNameWithDB(), " {")
+	m.P("return ", m.typeNameWithDB(), "{x: x, db: db}")
 	m.P("}") // func
 	m.P()
 }
 
 func (m *Message) genOptionTypes() {
-	m.P("type ", m.withDBTypeName(), "GetOption func(tx *gorm.DB) *gorm.DB")
-	m.P("type ", m.withDBTypeName(), "ListOption func(tx *gorm.DB) *gorm.DB")
-	m.P("type ", m.withDBTypeName(), "PatchOption func(tx *gorm.DB) *gorm.DB")
-	m.P()
-}
-
-func (m *Message) genColForPath() {
-	m.P("func (c ", m.withDBTypeName(), ") column(path string) string {")
-	m.P("switch path {")
-	for _, field := range m.fields {
-		m.P("case \"", field.proto.Desc.Name(), "\":")
-		if col := field.opts.Column; col != "" {
-			m.P("return \"", col, "\"")
-		} else {
-			m.P("return \"", field.Name(), "\"")
-		}
-	}
-	m.P("}") // switch
-	m.P("panic(path)")
-	m.P("}") // func
-	m.P()
-}
-
-func (m *Message) genColsForPaths() {
-	m.P("func (c ", m.withDBTypeName(), ") columns(paths []string) (cols []string) {")
-	m.P("for _, p := range paths {")
-	m.P("cols = append(cols, c.column(p))")
-	m.P("}") // for
-	m.P("return")
-	m.P("}") // func
+	m.P("type ", m.typeNameGetOption(), " func(tx *gorm.DB) *gorm.DB")
+	m.P("type ", m.typeNameListOption(), " func(tx *gorm.DB) *gorm.DB")
 	m.P()
 }
 
 func (m *Message) genCreate() {
-	m.P("func (c ", m.withDBTypeName(), ") Create(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.typeNameWithDB(), ") Create(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -102,7 +75,7 @@ func (m *Message) genCreate() {
 }
 
 func (m *Message) genGet() {
-	m.P("func (c ", m.withDBTypeName(), ") Get(ctx ", m.identCtx(), ", opts ...", m.withDBTypeName(), "GetOption", ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.typeNameWithDB(), ") Get(ctx ", m.identCtx(), ", opts ...", m.typeNameGetOption(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -153,7 +126,7 @@ func (m *Message) genGet() {
 }
 
 func (m *Message) genList() {
-	m.P("func (c ", m.withDBTypeName(), ") List(ctx ", m.identCtx(), ", opts ...", m.withDBTypeName(), "ListOption) ([]*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.typeNameWithDB(), ") List(ctx ", m.identCtx(), ", opts ...", m.typeNameListOption(), ") ([]*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -181,7 +154,7 @@ func (m *Message) genList() {
 }
 
 func (m *Message) genUpdate() {
-	m.P("func (c ", m.withDBTypeName(), ") Update(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.typeNameWithDB(), ") Update(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -204,7 +177,7 @@ func (m *Message) genUpdate() {
 }
 
 func (m *Message) genPatch() {
-	m.P("func (c ", m.withDBTypeName(), ") "+
+	m.P("func (c ", m.typeNameWithDB(), ") "+
 		"Patch(ctx ", m.identCtx(), ", mask *", m.identFieldMask(), ") error {")
 	m.P("if c.x == nil {")
 	m.P("return nil")
@@ -251,7 +224,7 @@ func (m *Message) genPatch() {
 	m.P("target := ", m.ModelName(), "{", pk.Name(), ": m.", pk.Name(), "}")
 
 	// UPDATE ... SET ...
-	m.P("cols := c.columns(paths)")
+	m.P("cols := ", m.funcLookupCols(), "(paths)")
 	m.P("db := c.db.WithContext(ctx)")
 	m.P("if err := db.Model(&target).Select(cols).Updates(m).Error; err != nil {")
 	m.P("return err")
@@ -264,7 +237,7 @@ func (m *Message) genPatch() {
 
 // TODO: Soft delete, expiration?
 func (m *Message) genDelete() {
-	m.P("func (c ", m.withDBTypeName(), ") Delete(ctx ", m.identCtx(), ") error {")
+	m.P("func (c ", m.typeNameWithDB(), ") Delete(ctx ", m.identCtx(), ") error {")
 	m.P("if c.x == nil {")
 	m.P("return nil")
 	m.P("}")
@@ -308,15 +281,58 @@ func (m *Message) genGetOptions() {
 }
 
 func (m *Message) genWithGetFieldMask() {
-	m.P("func (c ", m.withDBTypeName(), ") "+
-		"WithGetFieldMask(mask *", m.identFieldMask(), ") ", m.withDBTypeName(), "GetOption {")
+	m.P("func With", m.proto.GoIdent.GoName, "GetFieldMask(mask *", m.identFieldMask(), ") ", m.typeNameGetOption(), " {")
 
 	m.P("return func(tx *gorm.DB) *gorm.DB {")
-	m.P("cols := c.columns(mask.Paths)")
+	m.P("cols := ", m.funcLookupCols(), "(mask.Paths)")
 	m.P("tx = tx.Select(cols)")
 	m.P("return tx")
 	m.P("}")
 
+	m.P("}") // func
+	m.P()
+}
+
+func (m *Message) genListOptions() {
+	m.genWithListFieldMask()
+}
+
+func (m *Message) genWithListFieldMask() {
+	m.P("func With", m.proto.GoIdent.GoName, "ListFieldMask(mask *", m.identFieldMask(), ") ", m.typeNameListOption(), " {")
+
+	m.P("return func(tx *gorm.DB) *gorm.DB {")
+	m.P("cols := ", m.funcLookupCols(), "(mask.Paths)")
+	m.P("tx = tx.Select(cols)")
+	m.P("return tx")
+	m.P("}")
+
+	m.P("}") // func
+	m.P()
+}
+
+func (m *Message) genColForPath() {
+	m.P("func ", m.funcLookupCol(), "(path string) string {")
+	m.P("switch path {")
+	for _, field := range m.fields {
+		m.P("case \"", field.proto.Desc.Name(), "\":")
+		if col := field.opts.Column; col != "" {
+			m.P("return \"", col, "\"")
+		} else {
+			m.P("return \"", field.Name(), "\"")
+		}
+	}
+	m.P("}") // switch
+	m.P("panic(path)")
+	m.P("}") // func
+	m.P()
+}
+
+func (m *Message) genColsForPaths() {
+	m.P("func ", m.funcLookupCols(), "(paths []string) (cols []string) {")
+	m.P("for _, p := range paths {")
+	m.P("cols = append(cols, ", m.funcLookupCol(), "(p))")
+	m.P("}") // for
+	m.P("return")
 	m.P("}") // func
 	m.P()
 }
@@ -330,7 +346,23 @@ func (m *Message) primaryKey() *Field {
 	return nil
 }
 
-func (m Message) withDBTypeName() string {
+func (m Message) funcLookupCol() string {
+	return "Lookup" + m.ModelName() + "Column"
+}
+
+func (m Message) funcLookupCols() string {
+	return "Lookup" + m.ModelName() + "Columns"
+}
+
+func (m Message) typeNameGetOption() string {
+	return m.proto.GoIdent.GoName + "GetOption"
+}
+
+func (m Message) typeNameListOption() string {
+	return m.proto.GoIdent.GoName + "ListOption"
+}
+
+func (m Message) typeNameWithDB() string {
 	return m.ProtoName() + "WithDB"
 }
 

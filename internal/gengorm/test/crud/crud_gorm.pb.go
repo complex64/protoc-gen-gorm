@@ -9,6 +9,7 @@ package crud
 import (
 	context "context"
 	fmt "fmt"
+
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	gorm "gorm.io/gorm"
@@ -42,9 +43,8 @@ func (x *Crud) AsModel() (*CrudModel, error) {
 	return m, nil
 }
 
-type CrudWithDBGetOption func(tx *gorm.DB) *gorm.DB
-type CrudWithDBListOption func(tx *gorm.DB) *gorm.DB
-type CrudWithDBPatchOption func(tx *gorm.DB) *gorm.DB
+type CrudGetOption func(tx *gorm.DB) *gorm.DB
+type CrudListOption func(tx *gorm.DB) *gorm.DB
 
 type CrudWithDB struct {
 	x  *Crud
@@ -74,7 +74,7 @@ func (c CrudWithDB) Create(ctx context.Context) (*Crud, error) {
 	}
 }
 
-func (c CrudWithDB) Get(ctx context.Context, opts ...CrudWithDBGetOption) (*Crud, error) {
+func (c CrudWithDB) Get(ctx context.Context, opts ...CrudGetOption) (*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -101,7 +101,7 @@ func (c CrudWithDB) Get(ctx context.Context, opts ...CrudWithDBGetOption) (*Crud
 	}
 }
 
-func (c CrudWithDB) List(ctx context.Context, opts ...CrudWithDBListOption) ([]*Crud, error) {
+func (c CrudWithDB) List(ctx context.Context, opts ...CrudListOption) ([]*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -161,7 +161,7 @@ func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask) erro
 		return err
 	}
 	target := CrudModel{Uuid: m.Uuid}
-	cols := c.columns(paths)
+	cols := LookupCrudModelColumns(paths)
 	db := c.db.WithContext(ctx)
 	if err := db.Model(&target).Select(cols).Updates(m).Error; err != nil {
 		return err
@@ -188,15 +188,23 @@ func (c CrudWithDB) Delete(ctx context.Context) error {
 	return nil
 }
 
-func (c CrudWithDB) WithGetFieldMask(mask *fieldmaskpb.FieldMask) CrudWithDBGetOption {
+func WithCrudGetFieldMask(mask *fieldmaskpb.FieldMask) CrudGetOption {
 	return func(tx *gorm.DB) *gorm.DB {
-		cols := c.columns(mask.Paths)
+		cols := LookupCrudModelColumns(mask.Paths)
 		tx = tx.Select(cols)
 		return tx
 	}
 }
 
-func (c CrudWithDB) column(path string) string {
+func WithCrudListFieldMask(mask *fieldmaskpb.FieldMask) CrudListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		cols := LookupCrudModelColumns(mask.Paths)
+		tx = tx.Select(cols)
+		return tx
+	}
+}
+
+func LookupCrudModelColumn(path string) string {
 	switch path {
 	case "uuid":
 		return "Uuid"
@@ -210,9 +218,9 @@ func (c CrudWithDB) column(path string) string {
 	panic(path)
 }
 
-func (c CrudWithDB) columns(paths []string) (cols []string) {
+func LookupCrudModelColumns(paths []string) (cols []string) {
 	for _, p := range paths {
-		cols = append(cols, c.column(p))
+		cols = append(cols, LookupCrudModelColumn(p))
 	}
 	return
 }

@@ -65,9 +65,8 @@ func (x *CRUDImpliesModel) AsModel() (*CRUDImpliesModelModel, error) {
 	return m, nil
 }
 
-type CRUDImpliesModelWithDBGetOption func(tx *gorm.DB) *gorm.DB
-type CRUDImpliesModelWithDBListOption func(tx *gorm.DB) *gorm.DB
-type CRUDImpliesModelWithDBPatchOption func(tx *gorm.DB) *gorm.DB
+type CRUDImpliesModelGetOption func(tx *gorm.DB) *gorm.DB
+type CRUDImpliesModelListOption func(tx *gorm.DB) *gorm.DB
 
 type CRUDImpliesModelWithDB struct {
 	x  *CRUDImpliesModel
@@ -97,7 +96,7 @@ func (c CRUDImpliesModelWithDB) Create(ctx context.Context) (*CRUDImpliesModel, 
 	}
 }
 
-func (c CRUDImpliesModelWithDB) Get(ctx context.Context, opts ...CRUDImpliesModelWithDBGetOption) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Get(ctx context.Context, opts ...CRUDImpliesModelGetOption) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -124,7 +123,7 @@ func (c CRUDImpliesModelWithDB) Get(ctx context.Context, opts ...CRUDImpliesMode
 	}
 }
 
-func (c CRUDImpliesModelWithDB) List(ctx context.Context, opts ...CRUDImpliesModelWithDBListOption) ([]*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) List(ctx context.Context, opts ...CRUDImpliesModelListOption) ([]*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -184,7 +183,7 @@ func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.Fie
 		return err
 	}
 	target := CRUDImpliesModelModel{Uuid: m.Uuid}
-	cols := c.columns(paths)
+	cols := LookupCRUDImpliesModelModelColumns(paths)
 	db := c.db.WithContext(ctx)
 	if err := db.Model(&target).Select(cols).Updates(m).Error; err != nil {
 		return err
@@ -211,15 +210,23 @@ func (c CRUDImpliesModelWithDB) Delete(ctx context.Context) error {
 	return nil
 }
 
-func (c CRUDImpliesModelWithDB) WithGetFieldMask(mask *fieldmaskpb.FieldMask) CRUDImpliesModelWithDBGetOption {
+func WithCRUDImpliesModelGetFieldMask(mask *fieldmaskpb.FieldMask) CRUDImpliesModelGetOption {
 	return func(tx *gorm.DB) *gorm.DB {
-		cols := c.columns(mask.Paths)
+		cols := LookupCRUDImpliesModelModelColumns(mask.Paths)
 		tx = tx.Select(cols)
 		return tx
 	}
 }
 
-func (c CRUDImpliesModelWithDB) column(path string) string {
+func WithCRUDImpliesModelListFieldMask(mask *fieldmaskpb.FieldMask) CRUDImpliesModelListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		cols := LookupCRUDImpliesModelModelColumns(mask.Paths)
+		tx = tx.Select(cols)
+		return tx
+	}
+}
+
+func LookupCRUDImpliesModelModelColumn(path string) string {
 	switch path {
 	case "uuid":
 		return "Uuid"
@@ -227,9 +234,9 @@ func (c CRUDImpliesModelWithDB) column(path string) string {
 	panic(path)
 }
 
-func (c CRUDImpliesModelWithDB) columns(paths []string) (cols []string) {
+func LookupCRUDImpliesModelModelColumns(paths []string) (cols []string) {
 	for _, p := range paths {
-		cols = append(cols, c.column(p))
+		cols = append(cols, LookupCRUDImpliesModelModelColumn(p))
 	}
 	return
 }

@@ -78,7 +78,7 @@ func TestCrudWithDB_Get(t *testing.T) {
 					"string_field",
 					"bool_field",
 				}}
-				out, err := model.Get(ctx, model.WithGetFieldMask(mask))
+				out, err := model.Get(ctx, crud.WithCrudGetFieldMask(mask))
 				require.NoError(t, err)
 				expected := &crud.Crud{
 					StringField: x.StringField,
