@@ -3,12 +3,12 @@ module github.com/complex64/protoc-gen-gorm
 go 1.17
 
 require (
-	github.com/complex64/protoc-gen-gorm/gormpb v0.0.0-20220207160738-54be24b53c98
+	github.com/complex64/protoc-gen-gorm/gormpb v0.0.0-20220302152125-82165c8212f0
 	github.com/google/go-cmp v0.5.7
 	github.com/stretchr/testify v1.7.0
 	google.golang.org/protobuf v1.27.1
-	gorm.io/driver/sqlite v1.2.6
-	gorm.io/gorm v1.22.5
+	gorm.io/driver/sqlite v1.3.1
+	gorm.io/gorm v1.23.2
 )
 
 require (
