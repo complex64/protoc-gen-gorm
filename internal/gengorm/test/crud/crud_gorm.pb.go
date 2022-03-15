@@ -19,6 +19,8 @@ import (
 type CrudModel struct {
 	Uuid        string `gorm:"primaryKey"`
 	StringField string
+	Int32Field  int32
+	BoolField   bool `gorm:"column:enabled"`
 }
 
 // AsProto converts a CrudModel to its protobuf representation.
@@ -26,6 +28,8 @@ func (m *CrudModel) AsProto() (*Crud, error) {
 	x := new(Crud)
 	x.Uuid = m.Uuid
 	x.StringField = m.StringField
+	x.Int32Field = m.Int32Field
+	x.BoolField = m.BoolField
 	return x, nil
 }
 
@@ -34,6 +38,8 @@ func (x *Crud) AsModel() (*CrudModel, error) {
 	m := new(CrudModel)
 	m.Uuid = x.Uuid
 	m.StringField = x.StringField
+	m.Int32Field = x.Int32Field
+	m.BoolField = x.BoolField
 	return m, nil
 }
 
@@ -44,6 +50,20 @@ type CrudWithDB struct {
 
 func (x *Crud) WithDB(db *gorm.DB) CrudWithDB {
 	return CrudWithDB{x: x, db: db}
+}
+
+func (c CrudWithDB) column(path string) string {
+	switch path {
+	case "uuid":
+		return "Uuid"
+	case "string_field":
+		return "StringField"
+	case "int32_field":
+		return "Int32Field"
+	case "bool_field":
+		return "enabled"
+	}
+	panic(path)
 }
 
 func (c CrudWithDB) Create(ctx context.Context, opts ...gengorm.CreateOption) (*Crud, error) {
@@ -121,11 +141,7 @@ func (c CrudWithDB) Update(ctx context.Context, opts ...gengorm.UpdateOption) (*
 	if err := db.Save(m).Error; err != nil {
 		return nil, err
 	}
-	if y, err := m.AsProto(); err != nil {
-		return nil, err
-	} else {
-		return y, nil
-	}
+	return c.Get(ctx)
 }
 
 func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts ...gengorm.PatchOption) error {
@@ -150,12 +166,7 @@ func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts
 	}
 	var cols []string
 	for _, path := range paths {
-		switch path {
-		case "uuid":
-			cols = append(cols, "Uuid")
-		case "string_field":
-			cols = append(cols, "StringField")
-		}
+		cols = append(cols, c.column(path))
 	}
 	m, err := c.x.AsModel()
 	if err != nil {

@@ -130,9 +130,10 @@ func TestCrudWithDB_Update(t *testing.T) {
 
 func TestCrudWithDB_Patch(t *testing.T) {
 	var (
-		record = &crud.Crud{Uuid: "abc", StringField: "foo"}
-		update = &crud.Crud{Uuid: "abc", StringField: "bar"}
-		target = &crud.Crud{Uuid: "abc"}
+		record   = &crud.Crud{Uuid: "abc", StringField: "foo", Int32Field: 10, BoolField: true}
+		update   = &crud.Crud{Uuid: "abc", StringField: "bar", BoolField: false}
+		expected = &crud.Crud{Uuid: "abc", StringField: "bar", Int32Field: 10, BoolField: false}
+		target   = &crud.Crud{Uuid: "abc"}
 	)
 
 	t.Run("updates selected fields for existing records", func(t *testing.T) {
@@ -143,19 +144,17 @@ func TestCrudWithDB_Patch(t *testing.T) {
 				require.NoError(t, err)
 			}
 			{
-				mask := &fieldmaskpb.FieldMask{Paths: []string{"string_field"}}
+				mask := &fieldmaskpb.FieldMask{Paths: []string{
+					"string_field",
+					"bool_field",
+				}}
 				err := update.WithDB(db).Patch(ctx, mask)
 				require.NoError(t, err)
-
-				out, err := target.WithDB(db).Get(ctx)
-				require.NoError(t, err)
-				require.NotNil(t, out)
-				ireq.EqualProtos(t, update, out)
 			}
 			{
 				out, err := target.WithDB(db).Get(ctx)
 				require.NoError(t, err)
-				ireq.EqualProtos(t, update, out)
+				ireq.EqualProtos(t, expected, out)
 			}
 		})
 	})

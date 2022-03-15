@@ -75,6 +75,14 @@ func (x *CRUDImpliesModel) WithDB(db *gorm.DB) CRUDImpliesModelWithDB {
 	return CRUDImpliesModelWithDB{x: x, db: db}
 }
 
+func (c CRUDImpliesModelWithDB) column(path string) string {
+	switch path {
+	case "uuid":
+		return "Uuid"
+	}
+	panic(path)
+}
+
 func (c CRUDImpliesModelWithDB) Create(ctx context.Context, opts ...gengorm.CreateOption) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
@@ -150,11 +158,7 @@ func (c CRUDImpliesModelWithDB) Update(ctx context.Context, opts ...gengorm.Upda
 	if err := db.Save(m).Error; err != nil {
 		return nil, err
 	}
-	if y, err := m.AsProto(); err != nil {
-		return nil, err
-	} else {
-		return y, nil
-	}
+	return c.Get(ctx)
 }
 
 func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts ...gengorm.PatchOption) error {
@@ -179,10 +183,7 @@ func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.Fie
 	}
 	var cols []string
 	for _, path := range paths {
-		switch path {
-		case "uuid":
-			cols = append(cols, "Uuid")
-		}
+		cols = append(cols, c.column(path))
 	}
 	m, err := c.x.AsModel()
 	if err != nil {

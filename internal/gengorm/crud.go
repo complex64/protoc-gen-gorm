@@ -11,6 +11,7 @@ func (m *Message) genCRUD() {
 		return
 	}
 	m.genWithDBType()
+	m.genColumnByPath()
 	m.genCreate()
 	m.genGet()
 	m.genList()
@@ -27,6 +28,23 @@ func (m *Message) genWithDBType() {
 	m.P()
 	m.P("func (x *", m.ProtoName(), ") WithDB(db *", m.identGormDB(), ") ", m.withDBTypeName(), " {")
 	m.P("return ", m.withDBTypeName(), "{x: x, db: db}")
+	m.P("}") // func
+	m.P()
+}
+
+func (m *Message) genColumnByPath() {
+	m.P("func (c ", m.withDBTypeName(), ") column(path string) string {")
+	m.P("switch path {")
+	for _, field := range m.fields {
+		m.P("case \"", field.proto.Desc.Name(), "\":")
+		if col := field.opts.Column; col != "" {
+			m.P("return \"", col, "\"")
+		} else {
+			m.P("return \"", field.Name(), "\"")
+		}
+	}
+	m.P("}") // switch
+	m.P("panic(path)")
 	m.P("}") // func
 	m.P()
 }
@@ -153,13 +171,7 @@ func (m *Message) genUpdate() {
 	m.P("return nil, err")
 	m.P("}") // if
 
-	// GORM -> proto
-	m.P("if y, err := m.AsProto(); err != nil {")
-	m.P("return nil, err")
-	m.P("} else {")
-	m.P("return y, nil")
-	m.P("}")
-
+	m.P("return c.Get(ctx)")
 	m.P("}") // func
 	m.P()
 }
@@ -205,16 +217,7 @@ func (m *Message) genPatch() {
 
 	m.P("var cols []string")
 	m.P("for _, path := range paths {")
-	m.P("switch path {")
-	for _, field := range m.fields {
-		m.P("case \"", field.proto.Desc.Name(), "\":")
-		if col := field.opts.Column; col != "" {
-			m.P("cols = append(cols, \"", col, "\")")
-		} else {
-			m.P("cols = append(cols, \"", field.Name(), "\")")
-		}
-	}
-	m.P("}") // switch
+	m.P("cols = append(cols, c.column(path))")
 	m.P("}") // for
 
 	// proto -> GORM
