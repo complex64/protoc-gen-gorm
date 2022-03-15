@@ -131,9 +131,13 @@ func (m *Message) genList() {
 	m.P("return nil, nil")
 	m.P("}")
 
+	m.P("db := c.db.WithContext(ctx)")
+	m.P("for _, opt := range opts {")
+	m.P("db = opt(db)")
+	m.P("}")
+
 	// SELECT * FROM ...
 	m.P("var ms []", m.ModelName())
-	m.P("db := c.db.WithContext(ctx)")
 	m.P("if err := db.Find(&ms).Error; err != nil {")
 	m.P("return nil, err")
 	m.P("}")

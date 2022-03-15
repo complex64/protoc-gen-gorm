@@ -127,8 +127,11 @@ func (c CRUDImpliesModelWithDB) List(ctx context.Context, opts ...CRUDImpliesMod
 	if c.x == nil {
 		return nil, nil
 	}
-	var ms []CRUDImpliesModelModel
 	db := c.db.WithContext(ctx)
+	for _, opt := range opts {
+		db = opt(db)
+	}
+	var ms []CRUDImpliesModelModel
 	if err := db.Find(&ms).Error; err != nil {
 		return nil, err
 	}

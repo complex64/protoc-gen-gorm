@@ -9,7 +9,6 @@ package crud
 import (
 	context "context"
 	fmt "fmt"
-
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	gorm "gorm.io/gorm"
@@ -105,8 +104,11 @@ func (c CrudWithDB) List(ctx context.Context, opts ...CrudListOption) ([]*Crud, 
 	if c.x == nil {
 		return nil, nil
 	}
-	var ms []CrudModel
 	db := c.db.WithContext(ctx)
+	for _, opt := range opts {
+		db = opt(db)
+	}
+	var ms []CrudModel
 	if err := db.Find(&ms).Error; err != nil {
 		return nil, err
 	}

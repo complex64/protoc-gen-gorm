@@ -91,7 +91,8 @@ func TestCrudWithDB_Get(t *testing.T) {
 }
 
 func TestCrudWithDB_List(t *testing.T) {
-	x := &crud.Crud{Uuid: "abc"}
+	x := &crud.Crud{Uuid: "abc", BoolField: false}
+	y := &crud.Crud{Uuid: "def", BoolField: true}
 
 	t.Run("returns empty list", func(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
@@ -115,6 +116,28 @@ func TestCrudWithDB_List(t *testing.T) {
 				require.NoError(t, err)
 				require.Len(t, out, 1)
 				ireq.EqualProtos(t, x, out[0])
+			}
+		})
+	})
+
+	t.Run("respects field mask", func(t *testing.T) {
+		withDB(t, func(db *gorm.DB) {
+			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
+			{
+				_, err := x.WithDB(db).Create(ctx)
+				require.NoError(t, err)
+			}
+			{
+				_, err := y.WithDB(db).Create(ctx)
+				require.NoError(t, err)
+			}
+			{
+				mask := &fieldmaskpb.FieldMask{Paths: []string{"bool_field"}}
+				out, err := x.WithDB(db).List(ctx, crud.WithCrudListFieldMask(mask))
+				require.NoError(t, err)
+				require.Len(t, out, 2)
+				ireq.EqualProtos(t, &crud.Crud{BoolField: false}, out[0])
+				ireq.EqualProtos(t, &crud.Crud{BoolField: true}, out[1])
 			}
 		})
 	})
