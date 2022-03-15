@@ -166,22 +166,24 @@ func (m *Message) genUpdate() {
 
 func (m *Message) genPatch() {
 	m.P("func (c ", m.withDBTypeName(), ") "+
-		"Patch(ctx ", m.identCtx(), ", mask *", m.identFieldMask(), ", opts ...", m.identPatchOption(), ") (*", m.ProtoName(), ", error) {")
+		"Patch(ctx ", m.identCtx(), ", mask *", m.identFieldMask(), ", opts ...", m.identPatchOption(), ") error {")
 	m.P("if c.x == nil {")
-	m.P("return nil, nil")
+	m.P("return nil")
 	m.P("}")
 
 	m.P("if mask == nil {")
-	m.P("return c.Update(ctx)")
+	m.P("_, err := c.Update(ctx)")
+	m.P("return err")
 	m.P("}")
 
 	m.P("if !mask.IsValid(c.x) {")
-	m.P("return nil, ", m.identErrorf(), "(\"invalid field mask\")")
+	m.P("return ", m.identErrorf(), "(\"invalid field mask\")")
 	m.P("}")
 
 	m.P("paths := mask.Paths")
 	m.P("if len(paths) == 0 {")
-	m.P("return c.Update(ctx)")
+	m.P("_, err := c.Update(ctx)")
+	m.P("return err")
 	m.P("}")
 
 	pk := m.primaryKey()
@@ -192,12 +194,12 @@ func (m *Message) genPatch() {
 
 	if pk.types.Pointer {
 		m.P("if c.x.", pk.Name(), " == nil {")
-		m.P("return nil, ", m.identErrorf(), "(\"nil primary key\")")
+		m.P("return ", m.identErrorf(), "(\"nil primary key\")")
 		m.P("}")
 	} else {
 		m.P("var zero ", pk.types.String())
 		m.P("if c.x.", pk.Name(), " == zero {")
-		m.P("return nil, ", m.identErrorf(), "(\"empty primary key\")")
+		m.P("return ", m.identErrorf(), "(\"empty primary key\")")
 		m.P("}")
 	}
 
@@ -207,10 +209,11 @@ func (m *Message) genPatch() {
 	for _, field := range m.fields {
 		m.P("case \"", field.proto.Desc.Name(), "\":")
 		m.P("cols = append(cols, \"", field.Name(), "\")")
-		// if col := field.opts.Column; col != "" {
-		// 	m.P("cols = append(cols, \"", col, "\")")
-		// } else {
-		// }
+
+		if col := field.opts.Column; col != "" {
+			m.P("cols = append(cols, \"", col, "\")")
+		} else {
+		}
 	}
 	m.P("}") // switch
 	m.P("}") // for
@@ -218,7 +221,7 @@ func (m *Message) genPatch() {
 	// proto -> GORM
 	m.P("m, err := c.x.AsModel()")
 	m.P("if err != nil {")
-	m.P("return nil, err")
+	m.P("return err")
 	m.P("}")
 
 	m.P("target := ", m.ModelName(), "{", pk.Name(), ": m.", pk.Name(), "}")
@@ -226,16 +229,10 @@ func (m *Message) genPatch() {
 	// UPDATE ... SET ...
 	m.P("db := c.db.WithContext(ctx)")
 	m.P("if err := db.Model(&target).Select(cols).Updates(m).Error; err != nil {")
-	m.P("return nil, err")
+	m.P("return err")
 	m.P("}") // if
 
-	// GORM -> proto
-	m.P("if y, err := m.AsProto(); err != nil {")
-	m.P("return nil, err")
-	m.P("} else {")
-	m.P("return y, nil")
-	m.P("}")
-
+	m.P("return nil")
 	m.P("}") // func
 	m.P()
 }
@@ -332,6 +329,13 @@ func (m *Message) identDeleteOption() string { return m.identGenGorm("DeleteOpti
 func (m *Message) identGenGorm(goName string) string {
 	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
 		GoName:       goName,
-		GoImportPath: "github.com/complex64/protoc-gen-gorm/pkg/gengorm",
+		GoImportPath: "github.com/complex64/protoc-gen-gorm/gengorm",
+	})
+}
+
+func (m *Message) identAipGoFieldmask(goName string) string {
+	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       goName,
+		GoImportPath: "github.com/einride/aip-go/fieldmask",
 	})
 }

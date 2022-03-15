@@ -9,8 +9,8 @@ package modelflags
 import (
 	context "context"
 	fmt "fmt"
+	gengorm "github.com/complex64/protoc-gen-gorm/gengorm"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
-	gengorm "github.com/complex64/protoc-gen-gorm/pkg/gengorm"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	gorm "gorm.io/gorm"
 )
@@ -157,23 +157,25 @@ func (c CRUDImpliesModelWithDB) Update(ctx context.Context, opts ...gengorm.Upda
 	}
 }
 
-func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts ...gengorm.PatchOption) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts ...gengorm.PatchOption) error {
 	if c.x == nil {
-		return nil, nil
+		return nil
 	}
 	if mask == nil {
-		return c.Update(ctx)
+		_, err := c.Update(ctx)
+		return err
 	}
 	if !mask.IsValid(c.x) {
-		return nil, fmt.Errorf("invalid field mask")
+		return fmt.Errorf("invalid field mask")
 	}
 	paths := mask.Paths
 	if len(paths) == 0 {
-		return c.Update(ctx)
+		_, err := c.Update(ctx)
+		return err
 	}
 	var zero string
 	if c.x.Uuid == zero {
-		return nil, fmt.Errorf("empty primary key")
+		return fmt.Errorf("empty primary key")
 	}
 	var cols []string
 	for _, path := range paths {
@@ -184,18 +186,14 @@ func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.Fie
 	}
 	m, err := c.x.AsModel()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	target := CRUDImpliesModelModel{Uuid: m.Uuid}
 	db := c.db.WithContext(ctx)
 	if err := db.Model(&target).Select(cols).Updates(m).Error; err != nil {
-		return nil, err
+		return err
 	}
-	if y, err := m.AsProto(); err != nil {
-		return nil, err
-	} else {
-		return y, nil
-	}
+	return nil
 }
 
 func (c CRUDImpliesModelWithDB) Delete(ctx context.Context, opts ...gengorm.DeleteOption) error {

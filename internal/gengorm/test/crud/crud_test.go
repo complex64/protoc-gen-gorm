@@ -130,9 +130,9 @@ func TestCrudWithDB_Update(t *testing.T) {
 
 func TestCrudWithDB_Patch(t *testing.T) {
 	var (
-		target = &crud.Crud{Uuid: "abc"}
 		record = &crud.Crud{Uuid: "abc", StringField: "foo"}
 		update = &crud.Crud{Uuid: "abc", StringField: "bar"}
+		target = &crud.Crud{Uuid: "abc"}
 	)
 
 	t.Run("updates selected fields for existing records", func(t *testing.T) {
@@ -144,7 +144,10 @@ func TestCrudWithDB_Patch(t *testing.T) {
 			}
 			{
 				mask := &fieldmaskpb.FieldMask{Paths: []string{"string_field"}}
-				out, err := update.WithDB(db).Patch(ctx, mask)
+				err := update.WithDB(db).Patch(ctx, mask)
+				require.NoError(t, err)
+
+				out, err := target.WithDB(db).Get(ctx)
 				require.NoError(t, err)
 				require.NotNil(t, out)
 				ireq.EqualProtos(t, update, out)
