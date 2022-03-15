@@ -208,11 +208,10 @@ func (m *Message) genPatch() {
 	m.P("switch path {")
 	for _, field := range m.fields {
 		m.P("case \"", field.proto.Desc.Name(), "\":")
-		m.P("cols = append(cols, \"", field.Name(), "\")")
-
 		if col := field.opts.Column; col != "" {
 			m.P("cols = append(cols, \"", col, "\")")
 		} else {
+			m.P("cols = append(cols, \"", field.Name(), "\")")
 		}
 	}
 	m.P("}") // switch
