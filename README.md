@@ -20,7 +20,7 @@ Existing or planned:
 - [x] Generates Gorm Models
 - [x] Generates methods to convert between proto and Gorm
 - [x] Generates CRUD methods (on demand)
-- [ ] Support for inline-JSON encoding (on demand)
+- [x] Support for inline-JSON encoding (on demand)
 - [ ] Support for record lifecycle hooks (on demand)
 - [ ] Support for associations
 - [ ] Support for custom types
@@ -36,4 +36,5 @@ Existing or planned:
 
 - [ ] Documented proto options with examples
 - [ ] Documented code
+- [ ] Comments on generated code
 - [ ] Extensive documentation with examples
