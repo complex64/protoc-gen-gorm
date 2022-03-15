@@ -33,7 +33,12 @@ func TestCrudWithGorm_Create(t *testing.T) {
 }
 
 func TestCrudWithDB_Get(t *testing.T) {
-	x := &crud.Crud{Uuid: "abc"}
+	x := &crud.Crud{
+		Uuid:        "abc",
+		StringField: "a string",
+		Int32Field:  123,
+		BoolField:   true,
+	}
 
 	t.Run("returns an error when not found", func(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
@@ -56,6 +61,30 @@ func TestCrudWithDB_Get(t *testing.T) {
 				out, err := x.WithDB(db).Get(ctx)
 				require.NoError(t, err)
 				ireq.EqualProtos(t, x, out)
+			}
+		})
+	})
+
+	t.Run("respects field mask", func(t *testing.T) {
+		withDB(t, func(db *gorm.DB) {
+			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
+			{
+				_, err := x.WithDB(db).Create(ctx)
+				require.NoError(t, err)
+			}
+			{
+				model := x.WithDB(db)
+				mask := &fieldmaskpb.FieldMask{Paths: []string{
+					"string_field",
+					"bool_field",
+				}}
+				out, err := model.Get(ctx, model.WithGetFieldMask(mask))
+				require.NoError(t, err)
+				expected := &crud.Crud{
+					StringField: x.StringField,
+					BoolField:   x.BoolField,
+				}
+				ireq.EqualProtos(t, expected, out)
 			}
 		})
 	})

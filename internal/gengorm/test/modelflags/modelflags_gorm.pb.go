@@ -9,7 +9,6 @@ package modelflags
 import (
 	context "context"
 	fmt "fmt"
-	gengorm "github.com/complex64/protoc-gen-gorm/gengorm"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	gorm "gorm.io/gorm"
@@ -66,6 +65,10 @@ func (x *CRUDImpliesModel) AsModel() (*CRUDImpliesModelModel, error) {
 	return m, nil
 }
 
+type CRUDImpliesModelWithDBGetOption func(tx *gorm.DB) *gorm.DB
+type CRUDImpliesModelWithDBListOption func(tx *gorm.DB) *gorm.DB
+type CRUDImpliesModelWithDBPatchOption func(tx *gorm.DB) *gorm.DB
+
 type CRUDImpliesModelWithDB struct {
 	x  *CRUDImpliesModel
 	db *gorm.DB
@@ -75,15 +78,7 @@ func (x *CRUDImpliesModel) WithDB(db *gorm.DB) CRUDImpliesModelWithDB {
 	return CRUDImpliesModelWithDB{x: x, db: db}
 }
 
-func (c CRUDImpliesModelWithDB) column(path string) string {
-	switch path {
-	case "uuid":
-		return "Uuid"
-	}
-	panic(path)
-}
-
-func (c CRUDImpliesModelWithDB) Create(ctx context.Context, opts ...gengorm.CreateOption) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Create(ctx context.Context) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -102,7 +97,7 @@ func (c CRUDImpliesModelWithDB) Create(ctx context.Context, opts ...gengorm.Crea
 	}
 }
 
-func (c CRUDImpliesModelWithDB) Get(ctx context.Context, opts ...gengorm.GetOption) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Get(ctx context.Context, opts ...CRUDImpliesModelWithDBGetOption) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -114,19 +109,22 @@ func (c CRUDImpliesModelWithDB) Get(ctx context.Context, opts ...gengorm.GetOpti
 	if err != nil {
 		return nil, err
 	}
-	n := CRUDImpliesModelModel{}
 	db := c.db.WithContext(ctx)
-	if err := db.Where(m).First(&n).Error; err != nil {
+	for _, opt := range opts {
+		db = opt(db)
+	}
+	out := CRUDImpliesModelModel{}
+	if err := db.Where(m).First(&out).Error; err != nil {
 		return nil, err
 	}
-	if y, err := n.AsProto(); err != nil {
+	if y, err := out.AsProto(); err != nil {
 		return nil, err
 	} else {
 		return y, nil
 	}
 }
 
-func (c CRUDImpliesModelWithDB) List(ctx context.Context, opts ...gengorm.ListOption) ([]*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) List(ctx context.Context, opts ...CRUDImpliesModelWithDBListOption) ([]*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -146,7 +144,7 @@ func (c CRUDImpliesModelWithDB) List(ctx context.Context, opts ...gengorm.ListOp
 	return xs, nil
 }
 
-func (c CRUDImpliesModelWithDB) Update(ctx context.Context, opts ...gengorm.UpdateOption) (*CRUDImpliesModel, error) {
+func (c CRUDImpliesModelWithDB) Update(ctx context.Context) (*CRUDImpliesModel, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -161,7 +159,7 @@ func (c CRUDImpliesModelWithDB) Update(ctx context.Context, opts ...gengorm.Upda
 	return c.Get(ctx)
 }
 
-func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts ...gengorm.PatchOption) error {
+func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask) error {
 	if c.x == nil {
 		return nil
 	}
@@ -181,15 +179,12 @@ func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.Fie
 	if c.x.Uuid == zero {
 		return fmt.Errorf("empty primary key")
 	}
-	var cols []string
-	for _, path := range paths {
-		cols = append(cols, c.column(path))
-	}
 	m, err := c.x.AsModel()
 	if err != nil {
 		return err
 	}
 	target := CRUDImpliesModelModel{Uuid: m.Uuid}
+	cols := c.columns(paths)
 	db := c.db.WithContext(ctx)
 	if err := db.Model(&target).Select(cols).Updates(m).Error; err != nil {
 		return err
@@ -197,7 +192,7 @@ func (c CRUDImpliesModelWithDB) Patch(ctx context.Context, mask *fieldmaskpb.Fie
 	return nil
 }
 
-func (c CRUDImpliesModelWithDB) Delete(ctx context.Context, opts ...gengorm.DeleteOption) error {
+func (c CRUDImpliesModelWithDB) Delete(ctx context.Context) error {
 	if c.x == nil {
 		return nil
 	}
@@ -214,4 +209,27 @@ func (c CRUDImpliesModelWithDB) Delete(ctx context.Context, opts ...gengorm.Dele
 		return err
 	}
 	return nil
+}
+
+func (c CRUDImpliesModelWithDB) WithGetFieldMask(mask *fieldmaskpb.FieldMask) CRUDImpliesModelWithDBGetOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		cols := c.columns(mask.Paths)
+		tx = tx.Select(cols)
+		return tx
+	}
+}
+
+func (c CRUDImpliesModelWithDB) column(path string) string {
+	switch path {
+	case "uuid":
+		return "Uuid"
+	}
+	panic(path)
+}
+
+func (c CRUDImpliesModelWithDB) columns(paths []string) (cols []string) {
+	for _, p := range paths {
+		cols = append(cols, c.column(p))
+	}
+	return
 }

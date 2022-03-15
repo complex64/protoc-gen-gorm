@@ -9,7 +9,6 @@ package crud
 import (
 	context "context"
 	fmt "fmt"
-	gengorm "github.com/complex64/protoc-gen-gorm/gengorm"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	gorm "gorm.io/gorm"
@@ -43,6 +42,10 @@ func (x *Crud) AsModel() (*CrudModel, error) {
 	return m, nil
 }
 
+type CrudWithDBGetOption func(tx *gorm.DB) *gorm.DB
+type CrudWithDBListOption func(tx *gorm.DB) *gorm.DB
+type CrudWithDBPatchOption func(tx *gorm.DB) *gorm.DB
+
 type CrudWithDB struct {
 	x  *Crud
 	db *gorm.DB
@@ -52,21 +55,7 @@ func (x *Crud) WithDB(db *gorm.DB) CrudWithDB {
 	return CrudWithDB{x: x, db: db}
 }
 
-func (c CrudWithDB) column(path string) string {
-	switch path {
-	case "uuid":
-		return "Uuid"
-	case "string_field":
-		return "StringField"
-	case "int32_field":
-		return "Int32Field"
-	case "bool_field":
-		return "enabled"
-	}
-	panic(path)
-}
-
-func (c CrudWithDB) Create(ctx context.Context, opts ...gengorm.CreateOption) (*Crud, error) {
+func (c CrudWithDB) Create(ctx context.Context) (*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -85,7 +74,7 @@ func (c CrudWithDB) Create(ctx context.Context, opts ...gengorm.CreateOption) (*
 	}
 }
 
-func (c CrudWithDB) Get(ctx context.Context, opts ...gengorm.GetOption) (*Crud, error) {
+func (c CrudWithDB) Get(ctx context.Context, opts ...CrudWithDBGetOption) (*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -97,19 +86,22 @@ func (c CrudWithDB) Get(ctx context.Context, opts ...gengorm.GetOption) (*Crud, 
 	if err != nil {
 		return nil, err
 	}
-	n := CrudModel{}
 	db := c.db.WithContext(ctx)
-	if err := db.Where(m).First(&n).Error; err != nil {
+	for _, opt := range opts {
+		db = opt(db)
+	}
+	out := CrudModel{}
+	if err := db.Where(m).First(&out).Error; err != nil {
 		return nil, err
 	}
-	if y, err := n.AsProto(); err != nil {
+	if y, err := out.AsProto(); err != nil {
 		return nil, err
 	} else {
 		return y, nil
 	}
 }
 
-func (c CrudWithDB) List(ctx context.Context, opts ...gengorm.ListOption) ([]*Crud, error) {
+func (c CrudWithDB) List(ctx context.Context, opts ...CrudWithDBListOption) ([]*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -129,7 +121,7 @@ func (c CrudWithDB) List(ctx context.Context, opts ...gengorm.ListOption) ([]*Cr
 	return xs, nil
 }
 
-func (c CrudWithDB) Update(ctx context.Context, opts ...gengorm.UpdateOption) (*Crud, error) {
+func (c CrudWithDB) Update(ctx context.Context) (*Crud, error) {
 	if c.x == nil {
 		return nil, nil
 	}
@@ -144,7 +136,7 @@ func (c CrudWithDB) Update(ctx context.Context, opts ...gengorm.UpdateOption) (*
 	return c.Get(ctx)
 }
 
-func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts ...gengorm.PatchOption) error {
+func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask) error {
 	if c.x == nil {
 		return nil
 	}
@@ -164,15 +156,12 @@ func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts
 	if c.x.Uuid == zero {
 		return fmt.Errorf("empty primary key")
 	}
-	var cols []string
-	for _, path := range paths {
-		cols = append(cols, c.column(path))
-	}
 	m, err := c.x.AsModel()
 	if err != nil {
 		return err
 	}
 	target := CrudModel{Uuid: m.Uuid}
+	cols := c.columns(paths)
 	db := c.db.WithContext(ctx)
 	if err := db.Model(&target).Select(cols).Updates(m).Error; err != nil {
 		return err
@@ -180,7 +169,7 @@ func (c CrudWithDB) Patch(ctx context.Context, mask *fieldmaskpb.FieldMask, opts
 	return nil
 }
 
-func (c CrudWithDB) Delete(ctx context.Context, opts ...gengorm.DeleteOption) error {
+func (c CrudWithDB) Delete(ctx context.Context) error {
 	if c.x == nil {
 		return nil
 	}
@@ -197,4 +186,33 @@ func (c CrudWithDB) Delete(ctx context.Context, opts ...gengorm.DeleteOption) er
 		return err
 	}
 	return nil
+}
+
+func (c CrudWithDB) WithGetFieldMask(mask *fieldmaskpb.FieldMask) CrudWithDBGetOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		cols := c.columns(mask.Paths)
+		tx = tx.Select(cols)
+		return tx
+	}
+}
+
+func (c CrudWithDB) column(path string) string {
+	switch path {
+	case "uuid":
+		return "Uuid"
+	case "string_field":
+		return "StringField"
+	case "int32_field":
+		return "Int32Field"
+	case "bool_field":
+		return "enabled"
+	}
+	panic(path)
+}
+
+func (c CrudWithDB) columns(paths []string) (cols []string) {
+	for _, p := range paths {
+		cols = append(cols, c.column(p))
+	}
+	return
 }

@@ -10,14 +10,20 @@ func (m *Message) genCRUD() {
 	if !m.opts.Crud {
 		return
 	}
+	m.genOptionTypes()
 	m.genWithDBType()
-	m.genColumnByPath()
+
 	m.genCreate()
 	m.genGet()
 	m.genList()
 	m.genUpdate()
 	m.genPatch()
 	m.genDelete()
+
+	m.genGetOptions()
+
+	m.genColForPath()
+	m.genColsForPaths()
 }
 
 func (m *Message) genWithDBType() {
@@ -32,7 +38,14 @@ func (m *Message) genWithDBType() {
 	m.P()
 }
 
-func (m *Message) genColumnByPath() {
+func (m *Message) genOptionTypes() {
+	m.P("type ", m.withDBTypeName(), "GetOption func(tx *gorm.DB) *gorm.DB")
+	m.P("type ", m.withDBTypeName(), "ListOption func(tx *gorm.DB) *gorm.DB")
+	m.P("type ", m.withDBTypeName(), "PatchOption func(tx *gorm.DB) *gorm.DB")
+	m.P()
+}
+
+func (m *Message) genColForPath() {
 	m.P("func (c ", m.withDBTypeName(), ") column(path string) string {")
 	m.P("switch path {")
 	for _, field := range m.fields {
@@ -49,8 +62,18 @@ func (m *Message) genColumnByPath() {
 	m.P()
 }
 
+func (m *Message) genColsForPaths() {
+	m.P("func (c ", m.withDBTypeName(), ") columns(paths []string) (cols []string) {")
+	m.P("for _, p := range paths {")
+	m.P("cols = append(cols, c.column(p))")
+	m.P("}") // for
+	m.P("return")
+	m.P("}") // func
+	m.P()
+}
+
 func (m *Message) genCreate() {
-	m.P("func (c ", m.withDBTypeName(), ") Create(ctx ", m.identCtx(), ", opts ...", m.identCreateOption(), ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.withDBTypeName(), ") Create(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -79,7 +102,7 @@ func (m *Message) genCreate() {
 }
 
 func (m *Message) genGet() {
-	m.P("func (c ", m.withDBTypeName(), ") Get(ctx ", m.identCtx(), ", opts ...", m.identGetOption(), ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.withDBTypeName(), ") Get(ctx ", m.identCtx(), ", opts ...", m.withDBTypeName(), "GetOption", ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -107,15 +130,19 @@ func (m *Message) genGet() {
 	m.P("return nil, err")
 	m.P("}")
 
-	// SELECT ... WHERE ...
-	m.P("n := ", m.ModelName(), "{}")
 	m.P("db := c.db.WithContext(ctx)")
-	m.P("if err := db.Where(m).First(&n).Error; err != nil {")
+	m.P("for _, opt := range opts {")
+	m.P("db = opt(db)")
+	m.P("}")
+
+	// SELECT ... WHERE ...
+	m.P("out := ", m.ModelName(), "{}")
+	m.P("if err := db.Where(m).First(&out).Error; err != nil {")
 	m.P("return nil, err")
 	m.P("}")
 
 	// GORM -> proto
-	m.P("if y, err := n.AsProto(); err != nil {")
+	m.P("if y, err := out.AsProto(); err != nil {")
 	m.P("return nil, err")
 	m.P("} else {")
 	m.P("return y, nil")
@@ -126,7 +153,7 @@ func (m *Message) genGet() {
 }
 
 func (m *Message) genList() {
-	m.P("func (c ", m.withDBTypeName(), ") List(ctx ", m.identCtx(), ", opts ...", m.identListOption(), ") ([]*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.withDBTypeName(), ") List(ctx ", m.identCtx(), ", opts ...", m.withDBTypeName(), "ListOption) ([]*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -154,7 +181,7 @@ func (m *Message) genList() {
 }
 
 func (m *Message) genUpdate() {
-	m.P("func (c ", m.withDBTypeName(), ") Update(ctx ", m.identCtx(), ", opts ...", m.identUpdateOption(), ") (*", m.ProtoName(), ", error) {")
+	m.P("func (c ", m.withDBTypeName(), ") Update(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
 	m.P("if c.x == nil {")
 	m.P("return nil, nil")
 	m.P("}")
@@ -178,7 +205,7 @@ func (m *Message) genUpdate() {
 
 func (m *Message) genPatch() {
 	m.P("func (c ", m.withDBTypeName(), ") "+
-		"Patch(ctx ", m.identCtx(), ", mask *", m.identFieldMask(), ", opts ...", m.identPatchOption(), ") error {")
+		"Patch(ctx ", m.identCtx(), ", mask *", m.identFieldMask(), ") error {")
 	m.P("if c.x == nil {")
 	m.P("return nil")
 	m.P("}")
@@ -215,11 +242,6 @@ func (m *Message) genPatch() {
 		m.P("}")
 	}
 
-	m.P("var cols []string")
-	m.P("for _, path := range paths {")
-	m.P("cols = append(cols, c.column(path))")
-	m.P("}") // for
-
 	// proto -> GORM
 	m.P("m, err := c.x.AsModel()")
 	m.P("if err != nil {")
@@ -229,6 +251,7 @@ func (m *Message) genPatch() {
 	m.P("target := ", m.ModelName(), "{", pk.Name(), ": m.", pk.Name(), "}")
 
 	// UPDATE ... SET ...
+	m.P("cols := c.columns(paths)")
 	m.P("db := c.db.WithContext(ctx)")
 	m.P("if err := db.Model(&target).Select(cols).Updates(m).Error; err != nil {")
 	m.P("return err")
@@ -241,7 +264,7 @@ func (m *Message) genPatch() {
 
 // TODO: Soft delete, expiration?
 func (m *Message) genDelete() {
-	m.P("func (c ", m.withDBTypeName(), ") Delete(ctx ", m.identCtx(), ", opts ...", m.identDeleteOption(), ") error {")
+	m.P("func (c ", m.withDBTypeName(), ") Delete(ctx ", m.identCtx(), ") error {")
 	m.P("if c.x == nil {")
 	m.P("return nil")
 	m.P("}")
@@ -276,6 +299,24 @@ func (m *Message) genDelete() {
 	m.P("}")
 
 	m.P("return nil")
+	m.P("}") // func
+	m.P()
+}
+
+func (m *Message) genGetOptions() {
+	m.genWithGetFieldMask()
+}
+
+func (m *Message) genWithGetFieldMask() {
+	m.P("func (c ", m.withDBTypeName(), ") "+
+		"WithGetFieldMask(mask *", m.identFieldMask(), ") ", m.withDBTypeName(), "GetOption {")
+
+	m.P("return func(tx *gorm.DB) *gorm.DB {")
+	m.P("cols := c.columns(mask.Paths)")
+	m.P("tx = tx.Select(cols)")
+	m.P("return tx")
+	m.P("}")
+
 	m.P("}") // func
 	m.P()
 }
@@ -318,20 +359,6 @@ func (m *Message) identFieldMask() string {
 	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
 		GoName:       "FieldMask",
 		GoImportPath: "google.golang.org/protobuf/types/known/fieldmaskpb",
-	})
-}
-
-func (m *Message) identCreateOption() string { return m.identGenGorm("CreateOption") }
-func (m *Message) identGetOption() string    { return m.identGenGorm("GetOption") }
-func (m *Message) identListOption() string   { return m.identGenGorm("ListOption") }
-func (m *Message) identUpdateOption() string { return m.identGenGorm("UpdateOption") }
-func (m *Message) identPatchOption() string  { return m.identGenGorm("PatchOption") }
-func (m *Message) identDeleteOption() string { return m.identGenGorm("DeleteOption") }
-
-func (m *Message) identGenGorm(goName string) string {
-	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
-		GoName:       goName,
-		GoImportPath: "github.com/complex64/protoc-gen-gorm/gengorm",
 	})
 }
 
