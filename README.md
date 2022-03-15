@@ -28,10 +28,12 @@ Existing or planned:
 - [ ] Support for embedded structs
 - [x] All features covered by tests
 - [x] Minimal dependencies
-      - 0 baseline
-      - 1 when using hooks (Gorm)
-      - 2 when using CRUD (Gorm, fieldmaskpb)
-      - 1 implicit for validation (expects methods from protoc-gen-validate)
+
+    - 0 baseline
+    - 1 when using hooks (Gorm)
+    - 3 when using CRUD (aip-go, Gorm, fieldmaskpb)
+    - 1 implicit for validation (expects methods from protoc-gen-validate)
+
 - [ ] Documented proto options with examples
 - [ ] Documented code
 - [ ] Extensive documentation with examples
