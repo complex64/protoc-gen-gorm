@@ -227,6 +227,12 @@ func WithCRUDImpliesModelListFilter(filter string) CRUDImpliesModelListOption {
 	}
 }
 
+func WithCRUDImpliesModelListLimit(n int) CRUDImpliesModelListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		return tx.Limit(n)
+	}
+}
+
 func WithCRUDImpliesModelListFieldMask(mask *fieldmaskpb.FieldMask) CRUDImpliesModelListOption {
 	return func(tx *gorm.DB) *gorm.DB {
 		cols := LookupCRUDImpliesModelModelColumns(mask.Paths)
@@ -235,26 +241,28 @@ func WithCRUDImpliesModelListFieldMask(mask *fieldmaskpb.FieldMask) CRUDImpliesM
 	}
 }
 
-func WithCRUDImpliesModelListOrder(orderBy string) CRUDImpliesModelListOption {
+func WithCRUDImpliesModelListOffset(n int) CRUDImpliesModelListOption {
 	return func(tx *gorm.DB) *gorm.DB {
-		return tx
+		return tx.Offset(n)
 	}
 }
 
-func WithCRUDImpliesModelListPagination(page, size int) CRUDImpliesModelListOption {
+func WithCRUDImpliesModelListOrder(order string) CRUDImpliesModelListOption {
 	return func(tx *gorm.DB) *gorm.DB {
-		tx = tx.Limit(size)
-		tx = tx.Offset((page - 1) * size)
-		return tx
+		return tx.Order(order)
 	}
 }
 
-func LookupCRUDImpliesModelModelColumn(path string) string {
-	switch path {
-	case "uuid":
-		return "Uuid"
+var fieldColumnsCRUDImpliesModelModel = map[string]string{
+	"uuid": "Uuid",
+}
+
+func LookupCRUDImpliesModelModelColumn(field string) string {
+	if col, ok := fieldColumnsCRUDImpliesModelModel[field]; ok {
+		return col
+	} else {
+		panic(field)
 	}
-	panic(path)
 }
 
 func LookupCRUDImpliesModelModelColumns(paths []string) (cols []string) {

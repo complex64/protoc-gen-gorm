@@ -141,6 +141,72 @@ func TestCrudWithDB_List(t *testing.T) {
 			}
 		})
 	})
+
+	t.Run("paginates", func(t *testing.T) {
+		withDB(t, func(db *gorm.DB) {
+			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
+			{
+				_, err := x.WithDB(db).Create(ctx)
+				require.NoError(t, err)
+			}
+			{
+				_, err := y.WithDB(db).Create(ctx)
+				require.NoError(t, err)
+			}
+			{
+				out, err := x.WithDB(db).List(ctx,
+					crud.WithCrudListOffset(0),
+					crud.WithCrudListLimit(1),
+				)
+				require.NoError(t, err)
+				require.Len(t, out, 1)
+				ireq.EqualProtos(t, x, out[0])
+			}
+			{
+				out, err := x.WithDB(db).List(ctx,
+					crud.WithCrudListOffset(1),
+					crud.WithCrudListLimit(1),
+				)
+				require.NoError(t, err)
+				require.Len(t, out, 1)
+				ireq.EqualProtos(t, y, out[0])
+			}
+		})
+	})
+
+	t.Run("paginates", func(t *testing.T) {
+		sortCol := crud.LookupCrudModelColumn("uuid")
+
+		withDB(t, func(db *gorm.DB) {
+			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
+			{
+				_, err := x.WithDB(db).Create(ctx)
+				require.NoError(t, err)
+			}
+			{
+				_, err := y.WithDB(db).Create(ctx)
+				require.NoError(t, err)
+			}
+			{
+				out, err := x.WithDB(db).List(ctx,
+					crud.WithCrudListOrder(sortCol),
+				)
+				require.NoError(t, err)
+				require.Len(t, out, 2)
+				ireq.EqualProtos(t, x, out[0])
+				ireq.EqualProtos(t, y, out[1])
+			}
+			{
+				out, err := x.WithDB(db).List(ctx,
+					crud.WithCrudListOrder(sortCol+" desc"),
+				)
+				require.NoError(t, err)
+				require.Len(t, out, 2)
+				ireq.EqualProtos(t, y, out[0])
+				ireq.EqualProtos(t, x, out[1])
+			}
+		})
+	})
 }
 
 func TestCrudWithDB_Update(t *testing.T) {

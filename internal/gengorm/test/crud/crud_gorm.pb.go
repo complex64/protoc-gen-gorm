@@ -204,6 +204,12 @@ func WithCrudListFilter(filter string) CrudListOption {
 	}
 }
 
+func WithCrudListLimit(n int) CrudListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		return tx.Limit(n)
+	}
+}
+
 func WithCrudListFieldMask(mask *fieldmaskpb.FieldMask) CrudListOption {
 	return func(tx *gorm.DB) *gorm.DB {
 		cols := LookupCrudModelColumns(mask.Paths)
@@ -212,32 +218,31 @@ func WithCrudListFieldMask(mask *fieldmaskpb.FieldMask) CrudListOption {
 	}
 }
 
-func WithCrudListOrder(orderBy string) CrudListOption {
+func WithCrudListOffset(n int) CrudListOption {
 	return func(tx *gorm.DB) *gorm.DB {
-		return tx
+		return tx.Offset(n)
 	}
 }
 
-func WithCrudListPagination(page, size int) CrudListOption {
+func WithCrudListOrder(order string) CrudListOption {
 	return func(tx *gorm.DB) *gorm.DB {
-		tx = tx.Limit(size)
-		tx = tx.Offset((page - 1) * size)
-		return tx
+		return tx.Order(order)
 	}
 }
 
-func LookupCrudModelColumn(path string) string {
-	switch path {
-	case "uuid":
-		return "Uuid"
-	case "string_field":
-		return "StringField"
-	case "int32_field":
-		return "Int32Field"
-	case "bool_field":
-		return "enabled"
+var fieldColumnsCrudModel = map[string]string{
+	"uuid":         "Uuid",
+	"string_field": "StringField",
+	"int32_field":  "Int32Field",
+	"bool_field":   "enabled",
+}
+
+func LookupCrudModelColumn(field string) string {
+	if col, ok := fieldColumnsCrudModel[field]; ok {
+		return col
+	} else {
+		panic(field)
 	}
-	panic(path)
 }
 
 func LookupCrudModelColumns(paths []string) (cols []string) {

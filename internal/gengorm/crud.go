@@ -296,9 +296,10 @@ func (m *Message) genWithGetFieldMask() {
 
 func (m *Message) genListOptions() {
 	m.genWithFilter()
+	m.genWithLimit()
 	m.genWithListFieldMask()
+	m.genWithOffset()
 	m.genWithOrder()
-	m.genWithPagination()
 }
 
 func (m *Message) genWithFilter() {
@@ -327,41 +328,51 @@ func (m *Message) genWithListFieldMask() {
 }
 
 func (m *Message) genWithOrder() {
-	m.P("func With", m.proto.GoIdent.GoName, "ListOrder(orderBy string) ", m.typeNameListOption(), " {")
-
+	m.P("func With", m.proto.GoIdent.GoName, "ListOrder(order string) ", m.typeNameListOption(), " {")
 	m.P("return func(tx *gorm.DB) *gorm.DB {")
-	// TODO
-	m.P("return tx")
+	m.P("return tx.Order(order)")
 	m.P("}") // inner func
-
 	m.P("}") // func
 	m.P()
 }
 
-func (m *Message) genWithPagination() {
-	m.P("func With", m.proto.GoIdent.GoName, "ListPagination(page, size int) ", m.typeNameListOption(), " {")
+func (m *Message) genWithOffset() {
+	m.P("func With", m.proto.GoIdent.GoName, "ListOffset(n int) ", m.typeNameListOption(), " {")
 	m.P("return func(tx *gorm.DB) *gorm.DB {")
-	m.P("tx = tx.Limit(size)")
-	m.P("tx = tx.Offset((page-1)*size)")
-	m.P("return tx")
+	m.P("return tx.Offset(n)")
+	m.P("}") // inner func
+	m.P("}") // func
+	m.P()
+}
+
+func (m *Message) genWithLimit() {
+	m.P("func With", m.proto.GoIdent.GoName, "ListLimit(n int) ", m.typeNameListOption(), " {")
+	m.P("return func(tx *gorm.DB) *gorm.DB {")
+	m.P("return tx.Limit(n)")
 	m.P("}") // inner func
 	m.P("}") // func
 	m.P()
 }
 
 func (m *Message) genColForPath() {
-	m.P("func ", m.funcLookupCol(), "(path string) string {")
-	m.P("switch path {")
+	m.P("var fieldColumns", m.ModelName(), " = map[string]string{")
 	for _, field := range m.fields {
-		m.P("case \"", field.proto.Desc.Name(), "\":")
+		name := field.Name()
 		if col := field.opts.Column; col != "" {
-			m.P("return \"", col, "\"")
-		} else {
-			m.P("return \"", field.Name(), "\"")
+			name = col
 		}
+		m.P(`"`, field.proto.Desc.Name(), `": "`, name, `",`)
 	}
-	m.P("}") // switch
-	m.P("panic(path)")
+	m.P("}")
+	m.P()
+
+	m.P("func ", m.funcLookupCol(), "(field string) string {")
+	m.P("if col, ok := fieldColumns", m.ModelName(), "[field]; ok {")
+	m.P("return col")
+	m.P("} else {")
+	m.P("panic(field)")
+	m.P("}")
+
 	m.P("}") // func
 	m.P()
 }
@@ -433,9 +444,9 @@ func (m *Message) identFieldMask() string {
 	})
 }
 
-func (m *Message) identAipGo(pkg, goName string) string {
-	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
-		GoName:       goName,
-		GoImportPath: protogen.GoImportPath("go.einride.tech/aip/" + pkg),
-	})
-}
+// func (m *Message) identAipGo(pkg, goName string) string {
+// 	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
+// 		GoName:       goName,
+// 		GoImportPath: protogen.GoImportPath("go.einride.tech/aip/" + pkg),
+// 	})
+// }
