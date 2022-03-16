@@ -12,17 +12,14 @@ func (m *Message) genCRUD() {
 	}
 	m.genOptionTypes()
 	m.genWithDBType()
-
 	m.genCreate()
 	m.genGet()
 	m.genList()
 	m.genUpdate()
 	m.genPatch()
 	m.genDelete()
-
 	m.genGetOptions()
 	m.genListOptions()
-
 	m.genColForPath()
 	m.genColsForPaths()
 }
@@ -291,14 +288,29 @@ func (m *Message) genWithGetFieldMask() {
 	m.P("cols := ", m.funcLookupCols(), "(mask.Paths)")
 	m.P("tx = tx.Select(cols)")
 	m.P("return tx")
-	m.P("}")
+	m.P("}") // inner func
 
 	m.P("}") // func
 	m.P()
 }
 
 func (m *Message) genListOptions() {
+	m.genWithFilter()
 	m.genWithListFieldMask()
+	m.genWithOrder()
+	m.genWithPagination()
+}
+
+func (m *Message) genWithFilter() {
+	m.P("func With", m.proto.GoIdent.GoName, "ListFilter(filter string) ", m.typeNameListOption(), " {")
+
+	m.P("return func(tx *gorm.DB) *gorm.DB {")
+	// TODO
+	m.P("return tx")
+	m.P("}") // inner func
+
+	m.P("}") // func
+	m.P()
 }
 
 func (m *Message) genWithListFieldMask() {
@@ -308,8 +320,31 @@ func (m *Message) genWithListFieldMask() {
 	m.P("cols := ", m.funcLookupCols(), "(mask.Paths)")
 	m.P("tx = tx.Select(cols)")
 	m.P("return tx")
-	m.P("}")
+	m.P("}") // inner func
 
+	m.P("}") // func
+	m.P()
+}
+
+func (m *Message) genWithOrder() {
+	m.P("func With", m.proto.GoIdent.GoName, "ListOrder(orderBy string) ", m.typeNameListOption(), " {")
+
+	m.P("return func(tx *gorm.DB) *gorm.DB {")
+	// TODO
+	m.P("return tx")
+	m.P("}") // inner func
+
+	m.P("}") // func
+	m.P()
+}
+
+func (m *Message) genWithPagination() {
+	m.P("func With", m.proto.GoIdent.GoName, "ListPagination(page, size int) ", m.typeNameListOption(), " {")
+	m.P("return func(tx *gorm.DB) *gorm.DB {")
+	m.P("tx = tx.Limit(size)")
+	m.P("tx = tx.Offset((page-1)*size)")
+	m.P("return tx")
+	m.P("}") // inner func
 	m.P("}") // func
 	m.P()
 }
@@ -398,9 +433,9 @@ func (m *Message) identFieldMask() string {
 	})
 }
 
-func (m *Message) identAipGoFieldmask(goName string) string {
+func (m *Message) identAipGo(pkg, goName string) string {
 	return m.file.out.QualifiedGoIdent(protogen.GoIdent{
 		GoName:       goName,
-		GoImportPath: "github.com/einride/aip-go/fieldmask",
+		GoImportPath: protogen.GoImportPath("go.einride.tech/aip/" + pkg),
 	})
 }

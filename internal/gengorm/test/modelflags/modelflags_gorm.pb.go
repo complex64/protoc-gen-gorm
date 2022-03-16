@@ -221,10 +221,30 @@ func WithCRUDImpliesModelGetFieldMask(mask *fieldmaskpb.FieldMask) CRUDImpliesMo
 	}
 }
 
+func WithCRUDImpliesModelListFilter(filter string) CRUDImpliesModelListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		return tx
+	}
+}
+
 func WithCRUDImpliesModelListFieldMask(mask *fieldmaskpb.FieldMask) CRUDImpliesModelListOption {
 	return func(tx *gorm.DB) *gorm.DB {
 		cols := LookupCRUDImpliesModelModelColumns(mask.Paths)
 		tx = tx.Select(cols)
+		return tx
+	}
+}
+
+func WithCRUDImpliesModelListOrder(orderBy string) CRUDImpliesModelListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		return tx
+	}
+}
+
+func WithCRUDImpliesModelListPagination(page, size int) CRUDImpliesModelListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		tx = tx.Limit(size)
+		tx = tx.Offset((page - 1) * size)
 		return tx
 	}
 }

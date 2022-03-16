@@ -198,10 +198,30 @@ func WithCrudGetFieldMask(mask *fieldmaskpb.FieldMask) CrudGetOption {
 	}
 }
 
+func WithCrudListFilter(filter string) CrudListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		return tx
+	}
+}
+
 func WithCrudListFieldMask(mask *fieldmaskpb.FieldMask) CrudListOption {
 	return func(tx *gorm.DB) *gorm.DB {
 		cols := LookupCrudModelColumns(mask.Paths)
 		tx = tx.Select(cols)
+		return tx
+	}
+}
+
+func WithCrudListOrder(orderBy string) CrudListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		return tx
+	}
+}
+
+func WithCrudListPagination(page, size int) CrudListOption {
+	return func(tx *gorm.DB) *gorm.DB {
+		tx = tx.Limit(size)
+		tx = tx.Offset((page - 1) * size)
 		return tx
 	}
 }
