@@ -8,7 +8,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	google.golang.org/protobuf v1.27.1
 	gorm.io/driver/sqlite v1.3.1
-	gorm.io/gorm v1.23.2
+	gorm.io/gorm v1.23.3
 )
 
 require (
