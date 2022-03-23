@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/complex64/protoc-gen-gorm/gormpb v0.0.0-20220302152125-82165c8212f0
 	github.com/google/go-cmp v0.5.7
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.1
 	google.golang.org/protobuf v1.27.1
 	gorm.io/driver/sqlite v1.3.1
 	gorm.io/gorm v1.23.3
