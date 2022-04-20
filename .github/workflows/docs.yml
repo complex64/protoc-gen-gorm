@@ -5,8 +5,7 @@ on:
       - main
     paths:
       - ".github/workflows/docs.yml"
-      - "docs/**.md"
-      - "docs/mkdocs.yaml"
+      - "docs/**.*"
 jobs:
   docs:
     concurrency: ci-${{ github.ref }}
