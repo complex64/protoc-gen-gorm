@@ -63,4 +63,4 @@ markdown_extensions:
 nav:
   - Introduction: index.md
   - Annotations: annotations.md
-  - "Automate with GitHub Actions and `buf`": automation.md
+  - Automate with GitHub Actions and buf: automation.md
