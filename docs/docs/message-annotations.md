@@ -1,3 +1,0 @@
-# Message Annotations
-
-TBD

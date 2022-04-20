@@ -64,6 +64,5 @@ markdown_extensions:
       permalink: true
 nav:
   - Introduction: index.md
-  - File Annotations: file-annotations.md
-  - Message Annotations: message-annotations.md
+  - Annotations: annotations.md
   - 'Automate with GitHub Actions and buf': automation.md
