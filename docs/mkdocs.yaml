@@ -23,8 +23,8 @@ theme:
       toggle:
         icon: material/weather-night
         name: Dark Mode
-      primary: indigo
-      accent: light blue
+      primary: grey
+      accent: blue
   features:
     - search.suggest
     - search.highlight
