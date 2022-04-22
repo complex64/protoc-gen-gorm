@@ -12,6 +12,8 @@ TODO
 
 Sets `model` for **all** messages in the file. [See `model` below](#model_1).
 
+**Default:** `false`
+
 #### Example
 
 ```protobuf
@@ -26,6 +28,8 @@ option (gorm.file).model = true;
 
 Sets `validate` for **all** messages in the file. [See `validate` below](#validate_1).
 
+**Default:** `false`
+
 #### Example
 
 ```protobuf
@@ -39,6 +43,8 @@ option (gorm.file).validate = true;
 ### `crud`
 
 Sets `crud` for **all** messages in the file. [See `crud` below](#crud_1).
+
+**Default:** `false`
 
 #### Example
 
@@ -56,6 +62,10 @@ TODO
 
 ### `model`
 
+TODO
+
+**Default:** `false`
+
 #### Example
 
 ```protobuf
@@ -68,6 +78,8 @@ package mypackage;
 
 TODO
 
+**Default:** `false`
+
 #### Example
 
 ```protobuf
@@ -79,6 +91,8 @@ package mypackage;
 ### `crud`
 
 TODO
+
+**Default:** `false`
 
 #### Example
 
