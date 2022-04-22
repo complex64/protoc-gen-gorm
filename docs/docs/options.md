@@ -10,7 +10,7 @@ TODO: Note that nothing is generated unless at least one message is flagged as a
 
 TODO
 
-### `model`
+### model
 
 Sets `model` for **all** messages in the file. [See `model` below](#model_1).
 
@@ -28,7 +28,7 @@ option (gorm.file).model = true;
 
 ---
 
-### `validate`
+### validate
 
 Sets `validate` for **all** messages in the file. [See `validate` below](#validate_1).
 
@@ -46,7 +46,7 @@ option (gorm.file).validate = true;
 
 ---
 
-### `crud`
+### crud
 
 Sets `crud` for **all** messages in the file. [See `crud` below](#crud_1).
 
@@ -66,7 +66,7 @@ option (gorm.file).crud = true;
 
 TODO
 
-### `model`
+### model
 
 TODO
 
@@ -80,7 +80,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `validate`
+---
+
+### validate
 
 TODO
 
@@ -94,7 +96,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `crud`
+---
+
+### crud
 
 TODO
 
@@ -108,7 +112,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `table`
+---
+
+### table
 
 TODO
 
@@ -124,7 +130,7 @@ package mypackage;
 
 TODO
 
-### `column`
+### column
 
 TODO
 
@@ -136,7 +142,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `not_null`
+---
+
+### not_null
 
 TODO
 
@@ -148,7 +156,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `default`
+---
+
+### default
 
 TODO
 
@@ -160,7 +170,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `unique`
+---
+
+### unique
 
 TODO
 
@@ -172,7 +184,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `primary_key`
+---
+
+### primary_key
 
 TODO
 
@@ -184,7 +198,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `index`
+---
+
+### index
 
 TODO
 
@@ -196,7 +212,7 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-#### `default`
+#### default
 
 TODO
 
@@ -208,7 +224,7 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-#### `name`
+#### name
 
 TODO
 
@@ -220,7 +236,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `unique_index`
+---
+
+### unique_index
 
 TODO
 
@@ -232,7 +250,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `auto_create_time`
+---
+
+### auto_create_time
 
 TODO
 
@@ -244,7 +264,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `auto_update_time`
+---
+
+### auto_update_time
 
 TODO
 
@@ -256,7 +278,7 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `permissions`
+### permissions
 
 TODO
 
@@ -268,7 +290,7 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-#### `create`
+#### create
 
 TODO
 
@@ -280,7 +302,7 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-#### `update`
+#### update
 
 TODO
 
@@ -292,7 +314,7 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-#### `read`
+#### read
 
 TODO
 
@@ -304,7 +326,9 @@ import "gorm/options.proto";
 package mypackage;
 ```
 
-### `json`
+---
+
+### json
 
 TODO
 
