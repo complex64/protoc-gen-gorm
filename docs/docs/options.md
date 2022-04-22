@@ -4,6 +4,8 @@ TODO
 
 TODO: `.prop` notation vs `= { prop: ... }`.
 
+TODO: Note that nothing is generated unless at least one message is flagged as a model.
+
 ## File Options
 
 TODO
