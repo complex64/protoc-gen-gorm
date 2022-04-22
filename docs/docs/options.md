@@ -14,7 +14,7 @@ Sets `model` for **all** messages in the file. [See `model` below](#model_1).
 
 **Default:** `false`
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -30,7 +30,7 @@ Sets `validate` for **all** messages in the file. [See `validate` below](#valida
 
 **Default:** `false`
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -46,7 +46,7 @@ Sets `crud` for **all** messages in the file. [See `crud` below](#crud_1).
 
 **Default:** `false`
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -66,7 +66,7 @@ TODO
 
 **Default:** `false`
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -80,7 +80,7 @@ TODO
 
 **Default:** `false`
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -94,7 +94,7 @@ TODO
 
 **Default:** `false`
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -106,7 +106,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -118,7 +118,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -130,7 +130,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -142,7 +142,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -154,7 +154,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -166,7 +166,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -178,7 +178,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -190,7 +190,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -202,7 +202,7 @@ package mypackage;
 
 TODO
 
-##### Example
+#**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -214,7 +214,7 @@ package mypackage;
 
 TODO
 
-##### Example
+#**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -226,7 +226,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -238,7 +238,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -250,7 +250,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -262,7 +262,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -274,7 +274,7 @@ package mypackage;
 
 TODO
 
-##### Example
+#**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -286,7 +286,7 @@ package mypackage;
 
 TODO
 
-##### Example
+#**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -298,7 +298,7 @@ package mypackage;
 
 TODO
 
-##### Example
+#**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -310,7 +310,7 @@ package mypackage;
 
 TODO
 
-#### Example
+**Example:**
 
 ```protobuf
 syntax = "proto3";
