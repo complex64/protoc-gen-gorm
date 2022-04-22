@@ -120,14 +120,6 @@ package mypackage;
 
 TODO
 
-**Example:**
-
-```protobuf
-syntax = "proto3";
-import "gorm/options.proto";
-package mypackage;
-```
-
 ### `column`
 
 TODO
