@@ -202,7 +202,7 @@ package mypackage;
 
 TODO
 
-#**Example:**
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -214,7 +214,7 @@ package mypackage;
 
 TODO
 
-#**Example:**
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -274,7 +274,7 @@ package mypackage;
 
 TODO
 
-#**Example:**
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -286,7 +286,7 @@ package mypackage;
 
 TODO
 
-#**Example:**
+**Example:**
 
 ```protobuf
 syntax = "proto3";
@@ -298,7 +298,7 @@ package mypackage;
 
 TODO
 
-#**Example:**
+**Example:**
 
 ```protobuf
 syntax = "proto3";
