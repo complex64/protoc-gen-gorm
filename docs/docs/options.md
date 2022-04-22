@@ -2,6 +2,8 @@
 
 TODO
 
+TODO: `.prop` notation vs `= { prop: ... }`.
+
 ## File Options
 
 TODO
