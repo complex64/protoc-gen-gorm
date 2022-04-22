@@ -26,6 +26,8 @@ package mypackage;
 option (gorm.file).model = true;
 ```
 
+---
+
 ### `validate`
 
 Sets `validate` for **all** messages in the file. [See `validate` below](#validate_1).
@@ -41,6 +43,8 @@ package mypackage;
 
 option (gorm.file).validate = true;
 ```
+
+---
 
 ### `crud`
 
