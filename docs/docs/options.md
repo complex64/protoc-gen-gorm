@@ -78,6 +78,10 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+}
 ```
 
 ---
@@ -94,6 +98,10 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).validate = true;
+}
 ```
 
 ---
@@ -110,6 +118,10 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).crud = true;
+}
 ```
 
 ---
@@ -124,6 +136,13 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message) = {
+    model: true,
+    table: "mytable"
+  };
+}
 ```
 
 ## Field Options
@@ -140,6 +159,14 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).column = "my_column"
+  ];
+}
 ```
 
 ---
@@ -154,6 +181,14 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).not_null = true
+  ];
+}
 ```
 
 ---
@@ -168,6 +203,14 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).default = "a default value"
+  ];
+}
 ```
 
 ---
@@ -182,6 +225,14 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).unique = true
+  ];
+}
 ```
 
 ---
@@ -196,6 +247,14 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string uuid = 1 [
+    (gorm.field).primary_key = true
+  ];
+}
 ```
 
 ---
@@ -203,14 +262,6 @@ package mypackage;
 ### index
 
 TODO
-
-**Example:**
-
-```protobuf
-syntax = "proto3";
-import "gorm/options.proto";
-package mypackage;
-```
 
 #### default
 
@@ -222,6 +273,14 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).index = {default: true}
+  ];
+}
 ```
 
 #### name
@@ -234,11 +293,23 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).index = {name: "my_index_name"}
+  ];
+}
 ```
 
 ---
 
 ### unique_index
+
+TODO
+
+#### default
 
 TODO
 
@@ -248,6 +319,34 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).unique_index = {default: true}
+  ];
+}
+```
+
+#### name
+
+TODO
+
+**Example:**
+
+```protobuf
+syntax = "proto3";
+import "gorm/options.proto";
+package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).unique_index = {name: "my_index_name"}
+  ];
+}
 ```
 
 ---
@@ -262,6 +361,14 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).auto_create_time = true
+  ];
+}
 ```
 
 ---
@@ -276,21 +383,23 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).auto_update_time = true
+  ];
+}
 ```
+
+---
 
 ### permissions
 
 TODO
 
-**Example:**
-
-```protobuf
-syntax = "proto3";
-import "gorm/options.proto";
-package mypackage;
-```
-
-#### create
+#### ignore
 
 TODO
 
@@ -300,9 +409,21 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_ignored_field = 1 [
+    (gorm.field).ignore = true
+  ];
+}
 ```
 
-#### update
+#### deny
+
+TODO
+
+##### create
 
 TODO
 
@@ -312,9 +433,17 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).deny = {create: true}
+  ];
+}
 ```
 
-#### read
+##### update
 
 TODO
 
@@ -324,6 +453,34 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).deny = {update: true}
+  ];
+}
+```
+
+##### read
+
+TODO
+
+**Example:**
+
+```protobuf
+syntax = "proto3";
+import "gorm/options.proto";
+package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  string my_field = 1 [
+    (gorm.field).deny = {read: true}
+  ];
+}
 ```
 
 ---
@@ -338,4 +495,12 @@ TODO
 syntax = "proto3";
 import "gorm/options.proto";
 package mypackage;
+
+message MyMessage {
+  option (gorm.message).model = true;
+
+  map<string, string> my_map = 1 [
+    (gorm.field).json = true
+  ];
+}
 ```
