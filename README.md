@@ -4,6 +4,10 @@
 
 Generate GORM v2 Models and APIs from your .proto files.
 
+## [Documentation Index](https://complex64.github.io/protoc-gen-gorm/)
+
+The [documentation with examples](https://complex64.github.io/protoc-gen-gorm/) is hosted on GitHub pages.
+
 ```
 go install github.com/complex64/protoc-gen-gorm@latest
 ```
