@@ -6,6 +6,10 @@ The plugin generates [GORM v2](https://gorm.io/) [models](https://gorm.io/docs/m
 
 ## Install
 
+```
+go install github.com/complex64/protoc-gen-gorm@latest
+```
+
 - TODO: Point to Usage for GHA/containerized
 
 ## Usage

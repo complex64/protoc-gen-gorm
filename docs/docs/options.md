@@ -3,7 +3,7 @@
 Options control what `protoc-gen-gorm` does. You set them in your `.proto` files, as regular  
 [Protocol Buffer Options](https://developers.google.com/protocol-buffers/docs/proto3#options).
 
-By default `protoc-gen-gorm` does nothing, you'll have to flag some of your messages to be models first, e.g. set [`model`](#model_1) to `true`.
+The plugin does nothing by default, you'll have to flag some of your messages to be models first, e.g. set [`model`](#model_1) to `true`.
 
 ## File Options
 
@@ -31,9 +31,9 @@ option (gorm.file).model = true;
 
 Sets `validate` for **all** messages in the file. [See `validate` below](#validate_1).
 
-Implies `model = true` when set to `true`.
-
 **Default:** `false`
+
+Implies `model = true` when set to `true`.
 
 **Example:**
 
@@ -51,9 +51,9 @@ option (gorm.file).validate = true;
 
 Sets `crud` for **all** messages in the file. [See `crud` below](#crud_1).
 
-Implies `model = true` when set to `true`.
-
 **Default:** `false`
+
+Implies `model = true` when set to `true`.
 
 **Example:**
 
@@ -67,13 +67,13 @@ option (gorm.file).crud = true;
 
 ## Message Options
 
-Message options control generation of model and supporting code for your message type.
+Message options control generation of model and supporting code for your message types.
 
 ### model
 
-Marks a message as a model and have `protoc-gen-gorm` generate a Go struct for use with GORM v2.
+Marks a message as a _model_ so `protoc-gen-gorm` generates a Go struct and converter methods for use with GORM v2.
 
-The struct type name is the message name with "Model" appended.
+The struct type name is the message's name with "Model" appended.
 
 **Default:** `false`
 
@@ -94,9 +94,10 @@ Generates:
 ```go
 package mypackage
 
-type MyMessageModel struct {
-	// ...
-}
+type MyMessageModel struct{ /* ... */ }
+
+func (m *MyMessageModel) AsProto() (*MyMessage, error) { /* ... */ }
+func (x *MyMessage) AsModel() (*MyMessageModel, error) { /* ... */ }
 ```
 
 ---
@@ -105,9 +106,9 @@ type MyMessageModel struct {
 
 **TODO**
 
-Implies `model = true` when set to `true`.
-
 **Default:** `false`
+
+Implies `model = true` when set to `true`.
 
 **Example:**
 
@@ -125,11 +126,11 @@ message MyMessage {
 
 ### crud
 
-TODO
-
-Implies `model = true` when set to `true`.
+Generates supporting types and methods to implement [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) for your model.
 
 **Default:** `false`
+
+Implies `model = true` when set to `true`.
 
 **Example:**
 
@@ -141,6 +142,25 @@ package mypackage;
 message MyMessage {
   option (gorm.message).crud = true;
 }
+```
+
+Generates:
+
+```go
+type MyMessageWithDB struct { /* ... */ }
+type CrudGetOption
+type CrudListOption
+
+// Attach a GORM DB handle to your message.
+func (x *MyMessage) WithDB(db *gorm.DB) MyMessageWithDB
+
+// CRUD support without need to convert to model type and back.
+func (c MyMessageWithDB) Create(context.Context) (*MyMessage, error)
+func (c MyMessageWithDB) Get(context.Context, opts ...MyMessageGetOption) (*MyMessage, error)
+func (c MyMessageWithDB) List(context.Context, opts ...MyMessageListOption) ([]*MyMessage, error)
+func (c MyMessageWithDB) Update(context.Context) (*MyMessage, error)
+func (c MyMessageWithDB) Patch(context.Context, mask *fieldmaskpb.FieldMask) error
+func (c MyMessageWithDB) Delete(context.Context) error 
 ```
 
 ---
