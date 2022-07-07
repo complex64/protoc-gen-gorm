@@ -147,7 +147,9 @@ message MyMessage {
 Generates:
 
 ```go
-type MyMessageWithDB struct { /* ... */ }
+package mypackage
+
+type MyMessageWithDB struct{ /* ... */ }
 type CrudGetOption
 type CrudListOption
 
@@ -238,7 +240,7 @@ type MyMessageModel struct {
 
 ### not_null
 
-TODO
+Specifies the column as "NOT NULL". See "not null" under [GORM: Field Tags](https://gorm.io/docs/models.html#Fields-Tags).
 
 **Example:**
 
@@ -259,13 +261,18 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"not null"`
+}
 ```
 
 ---
 
 ### default
 
-TODO
+Sets the default value for the column. See "default" under [GORM: Field Tags](https://gorm.io/docs/models.html#Fields-Tags).
 
 **Example:**
 
@@ -286,6 +293,11 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"default:\"a default value\""`
+}
 ```
 
 ---
