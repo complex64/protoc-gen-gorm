@@ -12,6 +12,14 @@ go install github.com/complex64/protoc-gen-gorm@latest
 
 - TODO: Point to Usage for GHA/containerized
 
+## Features
+
+- Targets Gorm v2 (`gorm.io/gorm`)
+- Generates GORM-compatible model struct types for your message types: `UserModel` for your `User` message
+- Generates methods to convert from proto message to model: `ToModel()` on the proto message, and `ToProto()` on the model
+- Generates [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) helper methods for rapid and convenient implementation of APIs: `Create()`, `Get()`, `List()`, `Update()`, `Patch()`, and `Delete()`
+- Can encode fields as JSON strings when instructed to
+
 ## Usage
 
 - TODO: protoc
