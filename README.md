@@ -4,41 +4,38 @@
 
 Generate GORM v2 Models and APIs from your .proto files.
 
+**Under active development as of July 2022.**
+
 ## [Documentation Index](https://complex64.github.io/protoc-gen-gorm/)
 
 The [documentation with examples](https://complex64.github.io/protoc-gen-gorm/) is hosted on GitHub pages.
+
+## Install
 
 ```
 go install github.com/complex64/protoc-gen-gorm@latest
 ```
 
-**Under active development as of July 2022.**
+## Features
 
----
+- Targets Gorm v2 (`gorm.io/gorm`)
+- Generates GORM-compatible model struct types for your message types: `UserModel` for your `User` message
+- Generates methods to convert from proto message to model: `ToModel()` on the proto message, and `ToProto()` on the model
+- Generates [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) helper methods for rapid and convenient implementation of APIs: `Create()`, `Get()`, `List()`, `Update()`, `Patch()`, and `Delete()`
+- Can encode fields as JSON strings when instructed to
 
-**Features:**
+Additionally:
 
-Existing or planned:
+- All features are covered by tests
+- Minimal external dependencies
 
-- [x] Uses Gorm v2 (`gorm.io/gorm`)
-- [x] Generates Gorm Models
-- [x] Generates methods to convert between proto and Gorm
-- [x] Generates CRUD methods (on demand)
-- [x] Support for inline-JSON encoding (on demand)
+**Planned Features:**
+
 - [ ] Support for record lifecycle hooks (on demand)
 - [ ] Support for associations
 - [ ] Support for custom types
 - [ ] Support for database-specific types
 - [ ] Support for embedded structs
-- [x] All features covered by tests
-- [x] Minimal dependencies
-
-    - 0 baseline
-    - 1 when using hooks (Gorm)
-    - 3 when using CRUD (aip-go, Gorm, fieldmaskpb)
-    - 1 implicit for validation (expects methods from protoc-gen-validate)
-
-- [ ] Documented proto options with examples
-- [ ] Documented code
+- [ ] Code examples
+- [ ] Helpful code comments
 - [ ] Comments on generated code
-- [ ] Extensive documentation with examples
