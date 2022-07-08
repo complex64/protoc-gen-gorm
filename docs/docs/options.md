@@ -240,7 +240,7 @@ type MyMessageModel struct {
 
 ### not_null
 
-Specifies the column as "NOT NULL". See "not null" under [GORM: Field Tags](https://gorm.io/docs/models.html#Fields-Tags).
+Specifies the field's column as "NOT NULL". See "not null" under [GORM: Field Tags](https://gorm.io/docs/models.html#Fields-Tags).
 
 **Example:**
 
@@ -272,7 +272,7 @@ type MyMessageModel struct {
 
 ### default
 
-Sets the default value for the column. See "default" under [GORM: Field Tags](https://gorm.io/docs/models.html#Fields-Tags).
+Sets the default value for the field's column. See "default" under [GORM: Field Tags](https://gorm.io/docs/models.html#Fields-Tags).
 
 **Example:**
 
@@ -304,7 +304,7 @@ type MyMessageModel struct {
 
 ### unique
 
-TODO
+Flags the field's column to be indexed with a unique index. See [GORM: Indexes](https://gorm.io/docs/indexes.html#uniqueIndex).
 
 **Example:**
 
@@ -325,13 +325,23 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"uniqueIndex"`
+}
 ```
 
 ---
 
 ### primary_key
 
-TODO
+Makes the field a primary key.
+
+Also see:
+
+- [GORM: ID as Primary Key](https://gorm.io/docs/conventions.html#ID-as-Primary-Key)
+- [GORM: Composite Primary Key](https://gorm.io/docs/composite_primary_key.html#content-inner)
 
 **Example:**
 
@@ -352,17 +362,22 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	Uuid string `gorm:"primaryKey"`
+}
 ```
 
 ---
 
 ### index
 
-**TODO**
+Adds an index to a field. [Composite](https://gorm.io/docs/indexes.html#Composite-Indexes) and [multiple indexes](https://gorm.io/docs/indexes.html#Multiple-indexes) are possible.
 
 #### default
 
-**TODO**
+Use defaults for the index, e.g. name, type, etc.
 
 **Example:**
 
@@ -383,11 +398,16 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"index"`
+}
 ```
 
 #### name
 
-TODO
+Gives the index a custom name.
 
 **Example:**
 
@@ -408,17 +428,22 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"index:my_index_name"`
+}
 ```
 
 ---
 
 ### unique_index
 
-TODO
+Same as [`index`](#index) above except that the index is unique.
 
 #### default
 
-TODO
+Use defaults for the unique index, e.g. name, type, etc.
 
 **Example:**
 
@@ -439,11 +464,16 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"uniqueIndex"`
+}
 ```
 
 #### name
 
-TODO
+Gives the unique index a custom name.
 
 **Example:**
 
@@ -464,6 +494,11 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"uniqueIndex:my_index_name"`
+}
 ```
 
 ---
@@ -540,11 +575,11 @@ type MyMessageModel struct {
 
 ### permissions
 
-**TODO**
+Sets the [field level permissions](https://gorm.io/docs/models.html#Field-Level-Permission) to turn columns into read-only, write-only, create-only, update-only or to ignore a column entirely.
 
 #### ignore
 
-TODO
+Ignores the column entirely.
 
 **Example:**
 
@@ -565,15 +600,20 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"-"`
+}
 ```
 
 #### deny
 
-**TODO**
+Restricts access to a field. Multiple "denys" can be combined to the desired effect.
 
 ##### create
 
-TODO
+Prevent creation, still allows reads and updates.
 
 **Example:**
 
@@ -594,11 +634,16 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"<-:update"`
+}
 ```
 
 ##### update
 
-TODO
+Prevent updates, still allows creation and reads.
 
 **Example:**
 
@@ -619,11 +664,16 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"<-:create"`
+}
 ```
 
 ##### read
 
-TODO
+Prevent reads, still allows writes.
 
 **Example:**
 
@@ -644,13 +694,20 @@ message MyMessage {
 Equivalent GORM struct field tag:
 
 ```go
+package mypackage
+
+type MyMessageModel struct {
+	MyField string `gorm:"->:false;<-"`
+}
 ```
 
 ---
 
 ### json
 
-TODO
+Encode and decode the field as JSON strings.
+
+The converter methods, `MyMessageModel.AsProto()` and `MyMessage.AsModel()` in this case, call `json.Unmarshal` and `json.Marshal` respectively to decode the field's contents.
 
 **Example:**
 
