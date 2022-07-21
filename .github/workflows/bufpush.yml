@@ -1,0 +1,18 @@
+name: Buf Registry Push
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "proto/**.proto"
+jobs:
+  push:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+      - uses: bufbuild/buf-push-action@v1
+        with:
+          buf_token: ${{ secrets.BUF_API_TOKEN }}
+          input: proto

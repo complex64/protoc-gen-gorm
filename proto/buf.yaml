@@ -1,5 +1,6 @@
 # Module of plugin options to use in your .proto files.
 version: v1
+name: buf.build/complex64/protoc-gen-gorm
 lint:
   use:
     - DEFAULT
