@@ -5,7 +5,7 @@ on:
       - main
     paths:
       - ".github/workflows/docs.yml"
-      - "docs/**.*"
+      - "mkdocs/**.*"
 jobs:
   docs:
     concurrency: ci-${{ github.ref }}
@@ -16,9 +16,9 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install mkdocs-material mkdocs-git-revision-date-plugin
-      - run: mkdocs build --config-file docs/mkdocs.yaml
+      - run: mkdocs build --config-file mkdocs/mkdocs.yaml
       - uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
           branch: gh-pages
-          folder: docs/site
+          folder: mkdocs/site
           single-commit: true
