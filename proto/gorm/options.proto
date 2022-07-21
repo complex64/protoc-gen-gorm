@@ -165,7 +165,7 @@ message FieldOptions {
   reserved "comment";
   reserved 24;
 
-  // Custom types: Encode the field inline as JSON.
+  // Custom types: Inline as JSON.
   bool json = 25;
 }
 

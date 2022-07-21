@@ -248,7 +248,7 @@ type FieldOptions struct {
 	//	*FieldOptions_Ignore
 	//	*FieldOptions_Deny
 	Permissions isFieldOptions_Permissions `protobuf_oneof:"permissions"`
-	// Custom types: Encode the field inline as JSON.
+	// Custom types: Inline as JSON.
 	Json bool `protobuf:"varint,25,opt,name=json,proto3" json:"json,omitempty"`
 }
 
