@@ -29,11 +29,11 @@ func main() {
 			if err := db.Create(alice).Error; err != nil {
 				panic(err)
 			}
-			fmt.Printf("Created first user: %s", alice.Name)
+			fmt.Printf("Created first user: %s\n", alice.Name)
 		} else {
 			panic(err)
 		}
 	} else {
-		fmt.Printf("The first user is: %s", first.Name)
+		fmt.Printf("The first user is: %s\n", first.Name)
 	}
 }

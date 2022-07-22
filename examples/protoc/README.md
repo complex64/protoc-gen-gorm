@@ -6,7 +6,7 @@ For this example we invoke (`go generate`):
 
 ```protoc -Iprotos --go_out=./ --gorm_out=./ protos/models.proto```
 
-This compiles our [GORM v2 model](/examples/protoc/pb/models_gorm.pb.go) (and [Go bindings](/examples/protoc/pb/models.pb.go)) we make use of in [main.go](/examples/protoc/main.go):
+This compiles our [GORM v2 model](/examples/protoc/pb/models_gorm.pb.go) (and [Go bindings](/examples/protoc/pb/models.pb.go)) that we make use of in [main.go](/examples/protoc/main.go):
 
 ```go
 alice := &pb.UserModel{Name: "Alice"}
@@ -16,6 +16,7 @@ db.Create(alice)
 When run:
 
 ```shell
+$ go generate
 $ go run main.go
 ...
 Created first user: Alice
@@ -23,4 +24,3 @@ Created first user: Alice
 $ go run main.go
 The first user is: Alice
 ```
-protos
