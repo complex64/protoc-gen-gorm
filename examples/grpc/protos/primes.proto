@@ -1,0 +1,32 @@
+syntax = "proto3";
+import "gorm/options.proto";
+import "google/protobuf/timestamp.proto";
+
+package options;
+option go_package = "./pb";
+
+service PrimesService {
+  rpc CreatePrime(Prime) returns (Prime) {}
+}
+
+message Prime {
+  option (gorm.message).model = true;
+
+  int64 ordinal = 1 [
+    (gorm.field) = {
+      not_null: true,
+      primary_key: true
+    }];
+
+  string value = 2 [
+    (gorm.field) = {
+      not_null: true
+    }];
+
+  google.protobuf.Timestamp created = 4 [
+    (gorm.field) = {
+      not_null: true
+      auto_create_time: true
+      deny: {update: true}
+    }];
+}

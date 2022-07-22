@@ -10,9 +10,11 @@ Generate [GORM v2 Models](https://gorm.io/docs/models.html) and APIs from your .
 
 Used in production at [GameAnalytics](https://github.com/GameAnalytics) in 2022.
 
-## [Documentation Index](https://complex64.github.io/protoc-gen-gorm/)
+## [Documentation](https://complex64.github.io/protoc-gen-gorm/)
 
-The [documentation with examples](https://complex64.github.io/protoc-gen-gorm/) is hosted on GitHub pages.
+Please find the documentation [here](https://complex64.github.io/protoc-gen-gorm/).
+
+Additionally, there are several [code examples](/examples), including a full [gRPC/REST/CRUD service](/examples/grpc).
 
 ## Install
 
