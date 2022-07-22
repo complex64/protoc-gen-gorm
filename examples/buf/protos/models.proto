@@ -1,0 +1,39 @@
+syntax = "proto3";
+import "gorm/options.proto";
+import "google/protobuf/timestamp.proto";
+
+package options;
+option go_package = "./pb";
+
+option (gorm.file).model = true;
+
+message File {
+  option (gorm.message) = {
+    table: "localfiles"
+  };
+
+  string uuid = 1 [(gorm.field) = {
+    primary_key: true,
+    unique: true,
+    not_null: true,
+  }];
+
+  string name = 2 [(gorm.field) = {
+    not_null: true
+    index: {default: true}
+  }];
+
+  int64 bytes = 3 [(gorm.field) = {
+    not_null: true
+  }];
+
+  google.protobuf.Timestamp created = 4 [(gorm.field) = {
+    not_null: true
+    auto_create_time: true
+    deny: {update: true}
+  }];
+
+  google.protobuf.Timestamp updated = 5 [(gorm.field) = {
+    auto_update_time: true
+  }];
+}

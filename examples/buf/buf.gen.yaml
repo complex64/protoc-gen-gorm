@@ -1,0 +1,10 @@
+version: v1
+plugins:
+  - name: go
+    out: pb
+    opt:
+      - paths=source_relative
+  - name: gorm
+    out: pb
+    opt:
+      - paths=source_relative
