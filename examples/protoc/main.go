@@ -2,7 +2,7 @@ package main
 
 //go:generate rm -f gorm.db
 //go:generate rm -f pb/*.pb.go
-//go:generate protoc -I. --go_out=./ --gorm_out=./ models.proto
+//go:generate protoc -Iprotos --go_out=./ --gorm_out=./ protos/models.proto
 
 import (
 	"fmt"

@@ -4,7 +4,7 @@ To use protoc-gen-gorm with [protoc](https://grpc.io/docs/protoc-installation/),
 
 For this example we invoke (`go generate`):
 
-```protoc -I. --go_out=./ --gorm_out=./ models.proto```
+```protoc -Iprotos --go_out=./ --gorm_out=./ protos/models.proto```
 
 This compiles our [GORM v2 model](/examples/protoc/pb/models_gorm.pb.go) (and [Go bindings](/examples/protoc/pb/models.pb.go)) we make use of in [main.go](/examples/protoc/main.go):
 
@@ -23,3 +23,4 @@ Created first user: Alice
 $ go run main.go
 The first user is: Alice
 ```
+protos
