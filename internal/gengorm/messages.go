@@ -120,7 +120,7 @@ func (m *Message) ModelName() string {
 
 func (m *Message) crud() bool     { return m.opts.Crud || m.file.CRUD() }
 func (m *Message) validate() bool { return m.opts.Validate || m.file.Validate() }
-func (m *Message) model() bool    { return m.crud() || m.validate() || m.opts.Model }
+func (m *Message) model() bool    { return m.crud() || m.validate() || m.opts.Model || m.file.Model() }
 
 func (m *Message) Annotate(symbol string, loc protogen.Location) { m.file.Annotate(symbol, loc) }
 func (m *Message) P(v ...interface{})                            { m.file.P(v...) }
