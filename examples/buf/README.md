@@ -2,11 +2,11 @@
 
 This example uses [buf](https://docs.buf.build/introduction) instead of [protoc](https://grpc.io/docs/protoc-installation/) for compilation.
 
-Since buf is a drop-in replacement for protoc, `protoc-gen-gorm` is fully compatible with buf. 
+Since buf is a drop-in replacement for protoc, `protoc-gen-gorm` is fully compatible with buf.
 
+To use protoc-gen-gorm with buf:
 
-To use protoc-gen-gorm with [buf](https://docs.buf.build/introduction):
-- Make sure `buf` and `protoc-gen-gorm` is in your path (see [Install](https://complex64.github.io/protoc-gen-gorm/#install), as well as [how to install buf](https://docs.buf.build/installation))
+- Make sure `buf` and `protoc-gen-gorm` are in your path (see [Install](https://complex64.github.io/protoc-gen-gorm/#install), as well as [how to install buf](https://docs.buf.build/installation))
 - [Specify the plugins](/examples/buf/buf.gen.yaml) you'd like to use
 - Invoke `buf generate`
 
