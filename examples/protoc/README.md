@@ -6,7 +6,7 @@ For this example we invoke (`go generate`):
 
 ```protoc -I. --go_out=./ --gorm_out=./ models.proto```
 
-This compiles our [Go bindings](/examples/protoc/pb/models.pb.go) and a [GORM v2 model](/examples/protoc/pb/models_gorm.pb.go) we make use of in [main.go](/examples/protoc/main.go):
+This compiles our [GORM v2 model](/examples/protoc/pb/models_gorm.pb.go) (and [Go bindings](/examples/protoc/pb/models.pb.go)) we make use of in [main.go](/examples/protoc/main.go):
 
 ```go
 alice := &pb.UserModel{Name: "Alice"}
