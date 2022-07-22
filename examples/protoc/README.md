@@ -12,3 +12,14 @@ This compiles our [Go bindings](/examples/protoc/pb/models.pb.go) and a [GORM v2
 alice := &pb.UserModel{Name: "Alice"}
 db.Create(alice)
 ```
+
+When run:
+
+```shell
+$ go run main.go
+...
+Created first user: Alice
+
+$ go run main.go
+The first user is: Alice
+```
