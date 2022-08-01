@@ -37,6 +37,11 @@ generate: gormpb install
 	# Files used by tests of the internal packages.
 	cd internal/require && buf generate
 
+	# Generated examples
+	cd examples/buf && go generate
+	cd examples/grpc && go generate
+	cd examples/protoc && go generate
+
 .PHONY: gormpb
 gormpb:
 	# Generate the standalone module and update/lock dependencies.
