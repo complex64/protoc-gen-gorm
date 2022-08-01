@@ -1,0 +1,15 @@
+# See https://docs.buf.build/configuration/v1/buf-gen-yaml for reference
+version: v1
+plugins:
+  - name: go
+    out: pb
+    opt:
+      - paths=source_relative
+  - name: go-grpc
+    out: pb
+    opt:
+      - paths=source_relative
+  - name: gorm
+    out: pb
+    opt:
+      - paths=source_relative

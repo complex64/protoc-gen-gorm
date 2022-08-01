@@ -1,0 +1,81 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "gorm/options.proto";
+
+package options;
+option go_package = "./pb";
+
+service UsersService {
+  rpc GetUser(GetUserRequest) returns (User) {}
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
+  rpc CreateUser(CreateUserRequest) returns (User) {}
+  rpc UpdateUser(UpdateUserRequest) returns (User) {}
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
+}
+
+message User {
+  option (gorm.message) = {
+    model: true,
+    crud: true,
+    table: "users"
+  };
+
+  string name = 1 [
+    (gorm.field) = {
+      not_null: true,
+      unique: true,
+      primary_key: true,
+      index: {default: true},
+      deny: {update: true}
+    }
+  ];
+
+  google.protobuf.Timestamp create_time = 2 [
+    (gorm.field) = {
+      not_null: true,
+      auto_create_time: true
+    }
+  ];
+
+  google.protobuf.Timestamp update_time = 3 [
+    (gorm.field) = {
+      auto_update_time: true
+    }
+  ];
+
+  string given_name = 4;
+  string family_name = 5;
+
+  string email = 6 [
+    (gorm.field) = {
+      not_null: true
+    }
+  ];
+}
+
+message GetUserRequest {
+  string name = 1 ;
+}
+
+message ListUsersRequest {
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+  string next_page_token = 2;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  User user = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteUserRequest {
+  string name = 1 ;
+}
