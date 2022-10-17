@@ -17,7 +17,7 @@ jobs:
           python-version: 3.x
       - run: pip install mkdocs-material mkdocs-git-revision-date-plugin
       - run: mkdocs build --config-file mkdocs/mkdocs.yaml
-      - uses: JamesIves/github-pages-deploy-action@v4.4.0
+      - uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages
           folder: mkdocs/site
