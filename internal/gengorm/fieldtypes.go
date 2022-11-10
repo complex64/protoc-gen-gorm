@@ -68,6 +68,43 @@ func (t *FieldType) init() error {
 			t.Gorm.GoImportPath = "time"
 			return nil
 		}
+		if t.isDobuleValueWrapper() {
+			t.Gorm.GoName = "float64"
+			return nil
+		}
+		if t.isFloatValueWrapper() {
+			t.Gorm.GoName = "float32"
+			return nil
+		}
+		if t.isInt64ValueWrapper() {
+			t.Gorm.GoName = "int64"
+			return nil
+		}
+		if t.isUInt64ValueWrapper() {
+			t.Gorm.GoName = "uint64"
+			return nil
+		}
+		if t.isInt32ValueWrapper() {
+			t.Gorm.GoName = "int32"
+			return nil
+		}
+		if t.isUInt32ValueWrapper() {
+			t.Gorm.GoName = "uint32"
+			return nil
+		}
+		if t.isBoolValueWrapper() {
+			t.Gorm.GoName = "bool"
+			return nil
+		}
+		if t.isStringValueWrapper() {
+			t.Gorm.GoName = "string"
+			return nil
+		}
+		if t.isBytesValueWrapper() {
+			t.Gorm.GoName = "[]byte"
+			return nil
+		}
+
 		nested := t.field.proto.Message
 		t.Go = nested.GoIdent
 
@@ -117,6 +154,114 @@ func (t *FieldType) isTimestamp() bool {
 	)
 	return path == "google.golang.org/protobuf/types/known/timestamppb" &&
 		name == "Timestamp"
+}
+
+func (t *FieldType) isDobuleValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "DoubleValue"
+}
+
+func (t *FieldType) isFloatValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "FloatValue"
+}
+
+func (t *FieldType) isInt64ValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "Int64Value"
+}
+
+func (t *FieldType) isUInt64ValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "UInt64Value"
+}
+
+func (t *FieldType) isInt32ValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "Int32Value"
+}
+
+func (t *FieldType) isUInt32ValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "UInt32Value"
+}
+
+func (t *FieldType) isBoolValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "BoolValue"
+}
+
+func (t *FieldType) isStringValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "StringValue"
+}
+
+func (t *FieldType) isBytesValueWrapper() bool {
+	if t.field.proto.Message == nil {
+		return false
+	}
+	var (
+		path = t.field.proto.Message.GoIdent.GoImportPath
+		name = t.field.proto.Message.GoIdent.GoName
+	)
+	return path == "google.golang.org/protobuf/types/known/wrapperspb" &&
+		name == "BytesValue"
 }
 
 func (t *FieldType) Gen() {

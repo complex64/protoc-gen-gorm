@@ -34,6 +34,24 @@ func (f *Field) genConvertAsProto() {
 		f.genEnumAsProto()
 	case f.types.isTimestamp():
 		f.genConvertTimeAsProto()
+	case f.types.isDobuleValueWrapper():
+		f.genConvertDoubleValueWrapperAsProto()
+	case f.types.isFloatValueWrapper():
+		f.genConvertFloatValueWrapperAsProto()
+	case f.types.isInt64ValueWrapper():
+		f.genConvertInt64ValueWrapperAsProto()
+	case f.types.isUInt64ValueWrapper():
+		f.genConvertUInt64ValueWrapperAsProto()
+	case f.types.isInt32ValueWrapper():
+		f.genConvertInt32ValueWrapperAsProto()
+	case f.types.isUInt32ValueWrapper():
+		f.genConvertUInt32ValueWrapperAsProto()
+	case f.types.isBoolValueWrapper():
+		f.genConvertBoolValueWrapperAsProto()
+	case f.types.isStringValueWrapper():
+		f.genConvertStringValueWrapperAsProto()
+	case f.types.isBytesValueWrapper():
+		f.genConvertBytesValueWrapperAsProto()
 	case f.types.Pointer:
 		f.P("x.", f.Name(), " = *m.", f.Name())
 	default:
@@ -61,6 +79,78 @@ func (f *Field) genConvertTimeAsProto() {
 	f.P("if m.", f.Name(), " != (time.Time{}) {")
 	f.P("x.", f.Name(), " = ", newTimestamp, "(m.", f.Name(), ")")
 	f.P("}")
+}
+
+func (f *Field) genConvertDoubleValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "Double",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
+}
+
+func (f *Field) genConvertFloatValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "Float",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
+}
+
+func (f *Field) genConvertInt64ValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "Int64",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
+}
+
+func (f *Field) genConvertUInt64ValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "UInt64",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
+}
+
+func (f *Field) genConvertInt32ValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "Int32",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
+}
+
+func (f *Field) genConvertUInt32ValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "UInt32",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
+}
+
+func (f *Field) genConvertBoolValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "Bool",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
+}
+
+func (f *Field) genConvertStringValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "String",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
+}
+
+func (f *Field) genConvertBytesValueWrapperAsProto() {
+	newWrapper := f.msg.file.out.QualifiedGoIdent(protogen.GoIdent{
+		GoName:       "Bytes",
+		GoImportPath: "google.golang.org/protobuf/types/known/wrapperspb",
+	})
+	f.P("x.", f.Name(), " = ", newWrapper, "(m.", f.Name(), ")")
 }
 
 func (f *Field) genEnumAsProto() {
@@ -96,6 +186,12 @@ func (f *Field) genConvertAsModel() {
 		f.genEnumAsModel()
 	case f.types.isTimestamp():
 		f.genConvertTimestampAsModel()
+	case f.types.isDobuleValueWrapper(), f.types.isFloatValueWrapper(),
+		f.types.isInt64ValueWrapper(), f.types.isUInt64ValueWrapper(),
+		f.types.isInt32ValueWrapper(), f.types.isUInt32ValueWrapper(),
+		f.types.isBoolValueWrapper(), f.types.isStringValueWrapper(),
+		f.types.isBytesValueWrapper():
+		f.P("m.", f.Name(), " = x.", f.Name(), ".GetValue()")
 	case f.types.Pointer:
 		f.P("m.", f.Name(), " = *x.", f.Name())
 	default:

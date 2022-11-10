@@ -16,3 +16,4 @@ vendor/
 
 **/*.db
 /mkdocs/site
+.idea/
