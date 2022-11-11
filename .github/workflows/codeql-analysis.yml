@@ -9,7 +9,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '24 20 * * 2'
+    - cron: '24 20 * * 2' # At 20:24 on Tuesday
 jobs:
   analyze:
     name: Analyze
