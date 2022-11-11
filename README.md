@@ -48,8 +48,4 @@ Additionally:
 
 ## Contributing
 
-TODO
-
-## Notes
-
-TODO
+Please have a quick look at [CONTRIBUTING.md](/CONTRIBUTING.md)
