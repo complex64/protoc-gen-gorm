@@ -6,7 +6,7 @@ Generate [GORM v2 Models](https://gorm.io/docs/models.html) and APIs from your .
 
 `protoc-gen-gorm` is a plugin for [protoc](https://grpc.io/docs/protoc-installation/) (or [buf](https://docs.buf.build/introduction)), a [Protocol Buffer](https://developers.google.com/protocol-buffers) ("proto") compiler.
 
-**Under active development as of August 2022.**
+**Under active development as of November 2022.**
 
 Used in production at [GameAnalytics](https://github.com/GameAnalytics) in 2022.
 
@@ -48,8 +48,4 @@ Additionally:
 
 ## Contributing
 
-TODO
-
-## Notes
-
-TODO
+Please have a quick look at [CONTRIBUTING.md](/CONTRIBUTING.md)

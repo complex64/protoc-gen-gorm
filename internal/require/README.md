@@ -1,3 +1,3 @@
 # About
 
-Package of
+Package of test assertions.
