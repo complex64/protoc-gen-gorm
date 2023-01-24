@@ -1,13 +1,10 @@
 # https://github.com/complex64/protoc-gen-gorm/security/code-scanning
 name: "CodeQL"
 on:
-  push:
-    branches:
-      - main
   pull_request:
-    # Must be a subset of the branches above
     branches:
       - main
+      - release/*
   schedule:
     - cron: '24 20 * * 2' # At 20:24 on Tuesday
 jobs:

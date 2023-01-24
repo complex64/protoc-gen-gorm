@@ -1,10 +1,9 @@
 name: Buf Linter
 on:
-  push:
-    paths-ignore:
-      - '**.md'
-      - 'docs/mkdocs.yml'
   pull_request:
+    branches:
+      - main
+      - release/*
     paths-ignore:
       - '**.md'
       - 'docs/mkdocs.yml'

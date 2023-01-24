@@ -1,14 +1,9 @@
 name: Linters
 on:
-  push:
-    tags:
-      - v*
+  pull_request:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
-      - 'docs/mkdocs.yml'
-  pull_request:
+      - release/*
     paths-ignore:
       - '**.md'
       - 'docs/mkdocs.yml'
