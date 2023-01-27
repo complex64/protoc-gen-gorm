@@ -398,7 +398,7 @@ type Index struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Generate the default indep.
+	// Generate the default index.
 	// Equivalent to gorm:"index"`.
 	Default bool `protobuf:"varint,1,opt,name=default,proto3" json:"default,omitempty"`
 	// Set the index name.

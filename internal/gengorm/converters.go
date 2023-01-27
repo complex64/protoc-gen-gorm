@@ -76,7 +76,7 @@ func (f *Field) genConvertTimeToProto() {
 		GoName:       "New",
 		GoImportPath: KnownTypesTimestampPkg,
 	})
-	f.P("if m.", f.Name(), ".Valid {")
+	f.P("if m.", f.Name(), ".Valid && m.", f.Name(), ".Time != (time.Time{}) {")
 	f.P("p.", f.Name(), " = ", newTimestamp, "(m.", f.Name(), ".Time)")
 	f.P("}")
 }
