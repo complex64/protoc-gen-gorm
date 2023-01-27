@@ -10,6 +10,7 @@ import (
 	sql "database/sql"
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	time "time"
 )
 
 // FileModel is the GORM model for pb.File.

@@ -15,6 +15,7 @@ import (
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	gorm "gorm.io/gorm"
+	time "time"
 )
 
 // UserModel is the GORM model for pb.User.

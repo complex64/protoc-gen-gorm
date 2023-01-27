@@ -9,11 +9,10 @@ package converters
 import (
 	sql "database/sql"
 	json "encoding/json"
-	"time"
-
 	_ "github.com/complex64/protoc-gen-gorm/gormpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
+	time "time"
 )
 
 // ScalarsModel is the GORM model for converters.Scalars.
