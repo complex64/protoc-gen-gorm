@@ -174,7 +174,7 @@ https://gorm.io/docs/indexes.html
  */
 
 message Index {
-  // Generate the default index.
+  // Generate the default indep.
   // Equivalent to gorm:"index"`.
   bool default = 1;
 

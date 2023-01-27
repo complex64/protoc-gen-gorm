@@ -1,5 +1,6 @@
 syntax = "proto3";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 import "gorm/options.proto";
 package converters;
 option go_package = "github.com/complex64/protoc-gen-gorm/cmd/protoc-gen-gorm/test/converters";
@@ -30,6 +31,16 @@ message KnownTypes {
   option (gorm.message).model = true;
 
   google.protobuf.Timestamp timestamp_field = 1;
+
+  google.protobuf.DoubleValue wrapped_double = 2;
+  google.protobuf.FloatValue wrapped_float = 3;
+  google.protobuf.Int64Value wrapped_int64 = 4;
+  google.protobuf.UInt64Value wrapped_uin64 = 5;
+  google.protobuf.Int32Value wrapped_int32 = 6;
+  google.protobuf.UInt32Value wrapped_uint32 = 7;
+  google.protobuf.BoolValue wrapped_bool = 8;
+  google.protobuf.StringValue wrapped_string = 9;
+  google.protobuf.BytesValue wrapped_bytes = 10;
 }
 
 message Enum {

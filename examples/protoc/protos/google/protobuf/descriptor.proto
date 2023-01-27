@@ -793,7 +793,7 @@ message SourceCodeInfo {
   //   logically enclosed in a single code segment.  For example, an entire
   //   extend block (possibly containing multiple extension definitions) will
   //   have an outer location whose path refers to the "extensions" repeated
-  //   field without an index.
+  //   field without an indep.
   // - Multiple locations may have the same path.  This happens when a single
   //   logical declaration is spread out across multiple places.  The most
   //   obvious example is the "extend" block again -- there may be multiple
@@ -814,7 +814,7 @@ message SourceCodeInfo {
     // Identifies which part of the FileDescriptorProto was defined at this
     // location.
     //
-    // Each element is a field number or an index.  They form a path from
+    // Each element is a field number or an indep.  They form a path from
     // the root FileDescriptorProto to the place where the definition occurs.
     // For example, this path:
     //   [ 4, 3, 2, 7, 1 ]

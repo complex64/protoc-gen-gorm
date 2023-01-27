@@ -1,8 +1,8 @@
 package fieldtypes_test
 
 import (
+	"database/sql"
 	"testing"
-	"time"
 
 	"github.com/complex64/protoc-gen-gorm/internal/gengorm/test/fieldtypes"
 	"github.com/complex64/protoc-gen-gorm/internal/require"
@@ -31,7 +31,7 @@ func TestWithScalarValues(t *testing.T) {
 
 func TestWithKnownTypes(t *testing.T) {
 	msg := &fieldtypes.WithKnownTypesModel{}
-	require.FieldType(t, msg, "TimestampField", time.Time{})
+	require.FieldType(t, msg, "TimestampField", sql.NullTime{})
 }
 
 func TestWithEnum(t *testing.T) {

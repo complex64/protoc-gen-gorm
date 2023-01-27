@@ -1,6 +1,7 @@
 package converters_test
 
 import (
+	"database/sql"
 	"testing"
 	"time"
 
@@ -10,27 +11,27 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func TestScalarsModel_AsProto(t *testing.T) {
+func TestScalarsModel_ToProto(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		m := new(converters.ScalarsModel)
-		x, err := m.AsProto()
+		p, err := m.ToProto()
 		require.NoError(t, err)
-		require.NotNil(t, x)
-		require.EqualValues(t, 0, x.DoubleField)
-		require.EqualValues(t, 0, x.FloatField)
-		require.EqualValues(t, 0, x.Int32Field)
-		require.EqualValues(t, 0, x.Int64Field)
-		require.EqualValues(t, 0, x.Uint32Field)
-		require.EqualValues(t, 0, x.Uint64Field)
-		require.EqualValues(t, 0, x.Sint32Field)
-		require.EqualValues(t, 0, x.Sint64Field)
-		require.EqualValues(t, 0, x.Fixed32Field)
-		require.EqualValues(t, 0, x.Fixed64Field)
-		require.EqualValues(t, 0, x.Sfixed32Field)
-		require.EqualValues(t, 0, x.Sfixed64Field)
-		require.False(t, x.BoolField)
-		require.EqualValues(t, "", x.StringField)
-		require.EqualValues(t, []byte(nil), x.BytesField)
+		require.NotNil(t, p)
+		require.EqualValues(t, 0, p.DoubleField)
+		require.EqualValues(t, 0, p.FloatField)
+		require.EqualValues(t, 0, p.Int32Field)
+		require.EqualValues(t, 0, p.Int64Field)
+		require.EqualValues(t, 0, p.Uint32Field)
+		require.EqualValues(t, 0, p.Uint64Field)
+		require.EqualValues(t, 0, p.Sint32Field)
+		require.EqualValues(t, 0, p.Sint64Field)
+		require.EqualValues(t, 0, p.Fixed32Field)
+		require.EqualValues(t, 0, p.Fixed64Field)
+		require.EqualValues(t, 0, p.Sfixed32Field)
+		require.EqualValues(t, 0, p.Sfixed64Field)
+		require.False(t, p.BoolField)
+		require.EqualValues(t, "", p.StringField)
+		require.EqualValues(t, []byte(nil), p.BytesField)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
@@ -51,52 +52,52 @@ func TestScalarsModel_AsProto(t *testing.T) {
 			StringField:   "abc",
 			BytesField:    []byte("def"),
 		}
-		x, err := m.AsProto()
+		p, err := m.ToProto()
 		require.NoError(t, err)
-		require.NotNil(t, x)
-		require.EqualValues(t, 1, x.DoubleField)
-		require.EqualValues(t, 2, x.FloatField)
-		require.EqualValues(t, 3, x.Int32Field)
-		require.EqualValues(t, 4, x.Int64Field)
-		require.EqualValues(t, 5, x.Uint32Field)
-		require.EqualValues(t, 6, x.Uint64Field)
-		require.EqualValues(t, 7, x.Sint32Field)
-		require.EqualValues(t, 8, x.Sint64Field)
-		require.EqualValues(t, 9, x.Fixed32Field)
-		require.EqualValues(t, 10, x.Fixed64Field)
-		require.EqualValues(t, 11, x.Sfixed32Field)
-		require.EqualValues(t, 12, x.Sfixed64Field)
-		require.True(t, x.BoolField)
-		require.EqualValues(t, "abc", x.StringField)
-		require.EqualValues(t, []byte("def"), x.BytesField)
+		require.NotNil(t, p)
+		require.EqualValues(t, 1, p.DoubleField)
+		require.EqualValues(t, 2, p.FloatField)
+		require.EqualValues(t, 3, p.Int32Field)
+		require.EqualValues(t, 4, p.Int64Field)
+		require.EqualValues(t, 5, p.Uint32Field)
+		require.EqualValues(t, 6, p.Uint64Field)
+		require.EqualValues(t, 7, p.Sint32Field)
+		require.EqualValues(t, 8, p.Sint64Field)
+		require.EqualValues(t, 9, p.Fixed32Field)
+		require.EqualValues(t, 10, p.Fixed64Field)
+		require.EqualValues(t, 11, p.Sfixed32Field)
+		require.EqualValues(t, 12, p.Sfixed64Field)
+		require.True(t, p.BoolField)
+		require.EqualValues(t, "abc", p.StringField)
+		require.EqualValues(t, []byte("def"), p.BytesField)
 	})
 }
 
-func TestScalars_AsModel(t *testing.T) {
+func TestScalars_ToModel(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
-		x := new(converters.Scalars)
-		m, err := x.AsModel()
+		p := new(converters.Scalars)
+		m, err := p.ToModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
-		require.EqualValues(t, 0, x.DoubleField)
-		require.EqualValues(t, 0, x.FloatField)
-		require.EqualValues(t, 0, x.Int32Field)
-		require.EqualValues(t, 0, x.Int64Field)
-		require.EqualValues(t, 0, x.Uint32Field)
-		require.EqualValues(t, 0, x.Uint64Field)
-		require.EqualValues(t, 0, x.Sint32Field)
-		require.EqualValues(t, 0, x.Sint64Field)
-		require.EqualValues(t, 0, x.Fixed32Field)
-		require.EqualValues(t, 0, x.Fixed64Field)
-		require.EqualValues(t, 0, x.Sfixed32Field)
-		require.EqualValues(t, 0, x.Sfixed64Field)
-		require.False(t, x.BoolField)
-		require.Equal(t, "", x.StringField)
-		require.Equal(t, []byte(nil), x.BytesField)
+		require.EqualValues(t, 0, p.DoubleField)
+		require.EqualValues(t, 0, p.FloatField)
+		require.EqualValues(t, 0, p.Int32Field)
+		require.EqualValues(t, 0, p.Int64Field)
+		require.EqualValues(t, 0, p.Uint32Field)
+		require.EqualValues(t, 0, p.Uint64Field)
+		require.EqualValues(t, 0, p.Sint32Field)
+		require.EqualValues(t, 0, p.Sint64Field)
+		require.EqualValues(t, 0, p.Fixed32Field)
+		require.EqualValues(t, 0, p.Fixed64Field)
+		require.EqualValues(t, 0, p.Sfixed32Field)
+		require.EqualValues(t, 0, p.Sfixed64Field)
+		require.False(t, p.BoolField)
+		require.Equal(t, "", p.StringField)
+		require.Equal(t, []byte(nil), p.BytesField)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
-		x := &converters.Scalars{
+		p := &converters.Scalars{
 			DoubleField:   1,
 			FloatField:    2,
 			Int32Field:    3,
@@ -113,86 +114,134 @@ func TestScalars_AsModel(t *testing.T) {
 			StringField:   "abc",
 			BytesField:    []byte("def"),
 		}
-		m, err := x.AsModel()
+		m, err := p.ToModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
-		require.EqualValues(t, 1, x.DoubleField)
-		require.EqualValues(t, 2, x.FloatField)
-		require.EqualValues(t, 3, x.Int32Field)
-		require.EqualValues(t, 4, x.Int64Field)
-		require.EqualValues(t, 5, x.Uint32Field)
-		require.EqualValues(t, 6, x.Uint64Field)
-		require.EqualValues(t, 7, x.Sint32Field)
-		require.EqualValues(t, 8, x.Sint64Field)
-		require.EqualValues(t, 9, x.Fixed32Field)
-		require.EqualValues(t, 10, x.Fixed64Field)
-		require.EqualValues(t, 11, x.Sfixed32Field)
-		require.EqualValues(t, 12, x.Sfixed64Field)
-		require.True(t, x.BoolField)
-		require.Equal(t, "abc", x.StringField)
-		require.Equal(t, []byte("def"), x.BytesField)
+		require.EqualValues(t, 1, p.DoubleField)
+		require.EqualValues(t, 2, p.FloatField)
+		require.EqualValues(t, 3, p.Int32Field)
+		require.EqualValues(t, 4, p.Int64Field)
+		require.EqualValues(t, 5, p.Uint32Field)
+		require.EqualValues(t, 6, p.Uint64Field)
+		require.EqualValues(t, 7, p.Sint32Field)
+		require.EqualValues(t, 8, p.Sint64Field)
+		require.EqualValues(t, 9, p.Fixed32Field)
+		require.EqualValues(t, 10, p.Fixed64Field)
+		require.EqualValues(t, 11, p.Sfixed32Field)
+		require.EqualValues(t, 12, p.Sfixed64Field)
+		require.True(t, p.BoolField)
+		require.Equal(t, "abc", p.StringField)
+		require.Equal(t, []byte("def"), p.BytesField)
 	})
 }
 
-func TestKnownTypes_AsModel(t *testing.T) {
+func TestKnownTypes_ToModel(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
-		x := new(converters.KnownTypes)
-		m, err := x.AsModel()
+		p := new(converters.KnownTypes)
+		m, err := p.ToModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
-		require.Equal(t, time.Time{}, m.TimestampField)
+		require.Equal(t, sql.NullTime{}, m.TimestampField)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
 		now := time.Now().UTC()
-		nowpb := timestamppb.New(now)
-		x := &converters.KnownTypes{
-			TimestampField: nowpb,
+		p := &converters.KnownTypes{
+			TimestampField: timestamppb.New(now),
 		}
-		m, err := x.AsModel()
+		m, err := p.ToModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
-		require.Equal(t, now, m.TimestampField)
+		require.Equal(t, sql.NullTime{
+			Time:  now,
+			Valid: true,
+		}, m.TimestampField)
 	})
 }
 
-func TestKnownTypesModel_AsProto(t *testing.T) {
+func TestKnownTypesModel_ToProto(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		m := new(converters.KnownTypesModel)
-		x, err := m.AsProto()
+		p, err := m.ToProto()
 		require.NoError(t, err)
-		require.NotNil(t, x)
-		require.Nil(t, x.TimestampField)
+		require.NotNil(t, p)
+
+		require.Nil(t, p.TimestampField)
+		require.Equal(t, sql.NullFloat64{Float64: 0, Valid: false}, m.WrappedDouble)
+		require.Equal(t, sql.NullFloat64{Float64: 0, Valid: false}, m.WrappedFloat)
+		require.Equal(t, sql.NullInt64{Int64: 0, Valid: false}, m.WrappedInt64)
+		require.Equal(t, sql.NullInt64{Int64: 0, Valid: false}, m.WrappedUin64)
+		require.Equal(t, sql.NullInt32{Int32: 0, Valid: false}, m.WrappedInt32)
+		require.Equal(t, sql.NullInt64{Int64: 0, Valid: false}, m.WrappedUint32)
+		require.Equal(t, sql.NullBool{Bool: false, Valid: false}, m.WrappedBool)
+		require.Equal(t, sql.NullString{String: "", Valid: false}, m.WrappedString)
+		require.Nil(t, m.WrappedBytes)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
 		now := time.Now().UTC()
 		nowpb := timestamppb.New(now)
 		m := &converters.KnownTypesModel{
-			TimestampField: now,
+			TimestampField: sql.NullTime{
+				Time:  now,
+				Valid: true,
+			},
+			WrappedDouble: sql.NullFloat64{
+				Float64: 1.0,
+				Valid:   true,
+			},
+			WrappedFloat: sql.NullFloat64{
+				Float64: 1.0,
+				Valid:   true,
+			},
+			WrappedInt64: sql.NullInt64{
+				Int64: 1,
+				Valid: true,
+			},
+			WrappedUin64: sql.NullInt64{
+				Int64: 1,
+				Valid: true,
+			},
+			WrappedInt32: sql.NullInt32{
+				Int32: 1,
+				Valid: true,
+			},
+			WrappedUint32: sql.NullInt64{
+				Int64: 1,
+				Valid: true,
+			},
+			WrappedBool: sql.NullBool{
+				Bool:  true,
+				Valid: true,
+			},
+			WrappedString: sql.NullString{
+				String: "",
+				Valid:  false,
+			},
+			WrappedBytes: []byte("s"),
 		}
-		x, err := m.AsProto()
+		p, err := m.ToProto()
 		require.NoError(t, err)
-		require.NotNil(t, x)
-		requirepb.EqualProtos(t, nowpb, x.TimestampField)
+		require.NotNil(t, p)
+		requirepb.EqualProtos(t, nowpb, p.TimestampField)
 	})
 }
 
-func TestEnum_AsModel(t *testing.T) {
+func TestEnum_ToModel(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
-		x := new(converters.Enum)
-		m, err := x.AsModel()
+		p := new(converters.Enum)
+		m, err := p.ToModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, 0, m.EnumField)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
-		x := &converters.Enum{
+		p := &converters.Enum{
 			EnumField:       converters.AnEnum_AN_ENUM_VALUE,
 			NestedEnumField: converters.Enum_A_NESTED_ENUM_VALUE,
 		}
-		m, err := x.AsModel()
+		m, err := p.ToModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, converters.AnEnum_AN_ENUM_VALUE, m.EnumField)
@@ -200,14 +249,14 @@ func TestEnum_AsModel(t *testing.T) {
 	})
 }
 
-func TestEnumModel_AsProto(t *testing.T) {
+func TestEnumModel_ToProto(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		m := new(converters.EnumModel)
-		x, err := m.AsProto()
+		p, err := m.ToProto()
 		require.NoError(t, err)
-		require.NotNil(t, x)
-		require.Equal(t, converters.AnEnum_AN_ENUM_UNSPECIFIED, x.EnumField)
-		require.Equal(t, converters.Enum_A_NESTED_ENUM_UNSPECIFIED, x.NestedEnumField)
+		require.NotNil(t, p)
+		require.Equal(t, converters.AnEnum_AN_ENUM_UNSPECIFIED, p.EnumField)
+		require.Equal(t, converters.Enum_A_NESTED_ENUM_UNSPECIFIED, p.NestedEnumField)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
@@ -215,50 +264,50 @@ func TestEnumModel_AsProto(t *testing.T) {
 			EnumField:       int32(converters.AnEnum_AN_ENUM_VALUE),
 			NestedEnumField: int32(converters.Enum_A_NESTED_ENUM_VALUE),
 		}
-		x, err := m.AsProto()
+		p, err := m.ToProto()
 		require.NoError(t, err)
-		require.NotNil(t, x)
-		require.EqualValues(t, converters.AnEnum_AN_ENUM_VALUE, x.EnumField)
-		require.EqualValues(t, converters.Enum_A_NESTED_ENUM_VALUE, x.NestedEnumField)
+		require.NotNil(t, p)
+		require.EqualValues(t, converters.AnEnum_AN_ENUM_VALUE, p.EnumField)
+		require.EqualValues(t, converters.Enum_A_NESTED_ENUM_VALUE, p.NestedEnumField)
 	})
 }
 
-func TestJson_AsModel(t *testing.T) {
+func TestJson_ToModel(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
-		x := new(converters.Json)
-		m, err := x.AsModel()
+		p := new(converters.Json)
+		m, err := p.ToModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.EqualValues(t, []byte("null"), m.MapField)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
-		x := &converters.Json{
+		p := &converters.Json{
 			MapField: map[string]string{"foo": "bar"},
 		}
-		m, err := x.AsModel()
+		m, err := p.ToModel()
 		require.NoError(t, err)
 		require.NotNil(t, m)
 		require.Equal(t, []byte(`{"foo":"bar"}`), m.MapField)
 	})
 }
 
-func TestJsonModel_AsProto(t *testing.T) {
+func TestJsonModel_ToProto(t *testing.T) {
 	t.Run("with defaults", func(t *testing.T) {
 		m := new(converters.JsonModel)
-		x, err := m.AsProto()
+		p, err := m.ToProto()
 		require.NoError(t, err)
-		require.NotNil(t, x)
-		require.Nil(t, x.MapField)
+		require.NotNil(t, p)
+		require.Nil(t, p.MapField)
 	})
 
 	t.Run("with values set", func(t *testing.T) {
 		m := &converters.JsonModel{
 			MapField: []byte(`{"foo":"bar"}`),
 		}
-		x, err := m.AsProto()
+		p, err := m.ToProto()
 		require.NoError(t, err)
-		require.NotNil(t, x)
-		require.Equal(t, map[string]string{"foo": "bar"}, x.MapField)
+		require.NotNil(t, p)
+		require.Equal(t, map[string]string{"foo": "bar"}, p.MapField)
 	})
 }

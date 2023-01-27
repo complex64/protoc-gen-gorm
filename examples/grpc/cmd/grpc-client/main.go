@@ -17,7 +17,7 @@ func main() {
 		panic(err)
 	}
 
-	ctx := context.Background()
+	ctp := context.Background()
 	client := pb.NewUsersServiceClient(conn)
 
 	{

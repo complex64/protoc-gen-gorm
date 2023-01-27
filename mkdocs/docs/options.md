@@ -96,8 +96,8 @@ package mypackage
 
 type MyMessageModel struct{ /* ... */ }
 
-func (m *MyMessageModel) AsProto() (*MyMessage, error) { /* ... */ }
-func (x *MyMessage) AsModel() (*MyMessageModel, error) { /* ... */ }
+func (m *MyMessageModel) ToProto() (*MyMessage, error) { /* ... */ }
+func (p *MyMessage) ToModel() (*MyMessageModel, error) { /* ... */ }
 ```
 
 ---
@@ -154,7 +154,7 @@ type CrudGetOption
 type CrudListOption
 
 // Attach a GORM DB handle to your message.
-func (x *MyMessage) WithDB(db *gorm.DB) MyMessageWithDB
+func (p *MyMessage) WithDB(db *gorm.DB) MyMessageWithDB
 
 // CRUD support without need to convert to model type and back.
 func (c MyMessageWithDB) Create(context.Context) (*MyMessage, error)
@@ -304,7 +304,7 @@ type MyMessageModel struct {
 
 ### unique
 
-Flags the field's column to be indexed with a unique index. See [GORM: Indexes](https://gorm.io/docs/indexes.html#uniqueIndex).
+Flags the field's column to be indexed with a unique indep. See [GORM: Indexes](https://gorm.io/docs/indexes.html#uniqueIndex).
 
 **Example:**
 
@@ -707,7 +707,7 @@ type MyMessageModel struct {
 
 Encode and decode the field as JSON strings.
 
-The converter methods, `MyMessageModel.AsProto()` and `MyMessage.AsModel()` in this case, call `json.Unmarshal` and `json.Marshal` respectively to decode the field's contents.
+The converter methods, `MyMessageModel.ToProto()` and `MyMessage.ToModel()` in this case, call `json.Unmarshal` and `json.Marshal` respectively to decode the field's contents.
 
 **Example:**
 

@@ -1,6 +1,6 @@
 module github.com/complex64/protoc-gen-gorm/examples/protoc
 
-go 1.18
+go 1.19
 
 require (
 	github.com/complex64/protoc-gen-gorm/gormpb v0.0.0-20220721131944-ca133cfc50b3

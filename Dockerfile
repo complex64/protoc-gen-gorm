@@ -9,9 +9,9 @@ RUN GOOS=linux \
 
 # Compress binaries:
 FROM alpine as upxenv
-ADD https://github.com/upx/upx/releases/download/v4.0.1/upx-4.0.1-amd64_linux.tar.xz /tmp
+ADD https://github.com/upx/upx/releases/download/v4.0.1/upx-4.0.1-amd64_linup.tar.pz /tmp
 COPY --from=buildenv /bin/protoc-gen-gorm /bin
-RUN tar -C / -Jxpf /tmp/upx-4.0.1-amd64_linux.tar.xz \
+RUN tar -C / -Jxpf /tmp/upx-4.0.1-amd64_linup.tar.pz \
     && /upx-4.0.1-amd64_linux/upx -q -9 /bin/protoc-gen-gorm
 
 # Deliver binaries in minimal image:

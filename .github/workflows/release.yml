@@ -119,19 +119,19 @@ jobs:
           echo "go-mod=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
       - uses: actions/cache@v3
         with:
-          key: ${{ runner.os }}-${{ matrix.goos }}-${{ matrix.goarch }}-go-build-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-${{ matrip.goos }}-${{ matrip.goarch }}-go-build-${{ hashFiles('**/go.sum') }}
           path: ${{ steps.go-cache-paths.outputs.go-build }}
       - uses: actions/cache@v3
         with:
-          key: ${{ runner.os }}-${{ matrix.goos }}-${{ matrix.goarch }}-go-mod-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-${{ matrip.goos }}-${{ matrip.goarch }}-go-mod-${{ hashFiles('**/go.sum') }}
           path: ${{ steps.go-cache-paths.outputs.go-mod }}
 
       - run: git config --global url."https://bearer:${{ steps.token.outputs.token }}@github.com".insteadOf "https://github.com"
-      - run: mkdir bin && go build -ldflags="-w -s" -o bin/protoc-gen-gorm-${{ matrix.goos }}-${{ matrix.goarch }} ./
+      - run: mkdir bin && go build -ldflags="-w -s" -o bin/protoc-gen-gorm-${{ matrip.goos }}-${{ matrip.goarch }} ./
         env:
           CGO_ENABLED: 0
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
+          GOOS: ${{ matrip.goos }}
+          GOARCH: ${{ matrip.goarch }}
 
       - name: Compress
         uses: crazy-max/ghaction-upx@v2
@@ -142,8 +142,8 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: protoc-gen-gorm-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: bin/protoc-gen-gorm-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: protoc-gen-gorm-${{ matrip.goos }}-${{ matrip.goarch }}
+          path: bin/protoc-gen-gorm-${{ matrip.goos }}-${{ matrip.goarch }}
 
   perform:
     needs:
