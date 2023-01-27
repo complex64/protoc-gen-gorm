@@ -529,10 +529,12 @@ Equivalent GORM struct field tag:
 ```go
 package mypackage
 
-import "time"
+import (
+	"database/sql"
+)
 
 type MyMessageModel struct {
-	MyTime time.Time `gorm:"autoCreateTime"`
+	MyTime sql.NullTime `gorm:"autoCreateTime"`
 }
 ```
 
@@ -564,10 +566,12 @@ Equivalent GORM struct field tag:
 ```go
 package mypackage
 
-import "time"
+import (
+	"database/sql"
+)
 
 type MyMessageModel struct {
-	MyTime time.Time `gorm:"autoUpdateTime"`
+	MyTime sql.NullTime `gorm:"autoUpdateTime"`
 }
 ```
 
