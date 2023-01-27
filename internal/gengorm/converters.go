@@ -34,7 +34,7 @@ func (f *Field) genConvertAsProto() {
 		f.genEnumAsProto()
 	case f.types.isTimestamp():
 		f.genConvertTimeAsProto()
-	case f.types.isDobuleValueWrapper():
+	case f.types.isDoubleValueWrapper():
 		f.genConvertDoubleValueWrapperAsProto()
 	case f.types.isFloatValueWrapper():
 		f.genConvertFloatValueWrapperAsProto()
@@ -186,7 +186,7 @@ func (f *Field) genConvertAsModel() {
 		f.genEnumAsModel()
 	case f.types.isTimestamp():
 		f.genConvertTimestampAsModel()
-	case f.types.isDobuleValueWrapper(), f.types.isFloatValueWrapper(),
+	case f.types.isDoubleValueWrapper(), f.types.isFloatValueWrapper(),
 		f.types.isInt64ValueWrapper(), f.types.isUInt64ValueWrapper(),
 		f.types.isInt32ValueWrapper(), f.types.isUInt32ValueWrapper(),
 		f.types.isBoolValueWrapper(), f.types.isStringValueWrapper(),

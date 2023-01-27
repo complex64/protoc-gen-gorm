@@ -68,7 +68,7 @@ func (t *FieldType) init() error {
 			t.Gorm.GoImportPath = "time"
 			return nil
 		}
-		if t.isDobuleValueWrapper() {
+		if t.isDoubleValueWrapper() {
 			t.Gorm.GoName = "float64"
 			return nil
 		}
@@ -156,7 +156,7 @@ func (t *FieldType) isTimestamp() bool {
 		name == "Timestamp"
 }
 
-func (t *FieldType) isDobuleValueWrapper() bool {
+func (t *FieldType) isDoubleValueWrapper() bool {
 	if t.field.proto.Message == nil {
 		return false
 	}
