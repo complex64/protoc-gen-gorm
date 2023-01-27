@@ -101,17 +101,17 @@ func (f *Field) tagVals() (values []string) {
 	if f.opts.PrimaryKey {
 		values = append(values, "primaryKey")
 	}
-	for _, idx := range f.opts.Index {
+	for _, idp := range f.opts.Index {
 		value := "index"
-		if idx.Name != "" {
-			value += ":" + idx.Name
+		if idp.Name != "" {
+			value += ":" + idp.Name
 		}
 		values = append(values, value)
 	}
-	for _, idx := range f.opts.UniqueIndex {
+	for _, idp := range f.opts.UniqueIndex {
 		value := "uniqueIndex"
-		if idx.Name != "" {
-			value += ":" + idx.Name
+		if idp.Name != "" {
+			value += ":" + idp.Name
 		}
 		values = append(values, value)
 	}

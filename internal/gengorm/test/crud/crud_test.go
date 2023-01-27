@@ -21,10 +21,10 @@ func TestCrudWithGorm_Create(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 
-			x := &crud.Crud{Uuid: "abc"}
-			y, err := x.WithDB(db).Create(ctx)
+			p := &crud.Crud{Uuid: "abc"}
+			y, err := p.WithDB(db).Create(ctx)
 			require.NoError(t, err)
-			ireq.EqualProtos(t, x, y)
+			ireq.EqualProtos(t, p, y)
 
 			var z crud.CrudModel
 			require.NoError(t, db.First(&z).Error)
@@ -33,7 +33,7 @@ func TestCrudWithGorm_Create(t *testing.T) {
 }
 
 func TestCrudWithDB_Get(t *testing.T) {
-	x := &crud.Crud{
+	p := &crud.Crud{
 		Uuid:        "abc",
 		StringField: "a string",
 		Int32Field:  123,
@@ -44,7 +44,7 @@ func TestCrudWithDB_Get(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 
-			out, err := x.WithDB(db).Get(ctx)
+			out, err := p.WithDB(db).Get(ctx)
 			require.Equal(t, gorm.ErrRecordNotFound, err)
 			require.Nil(t, out)
 		})
@@ -54,13 +54,13 @@ func TestCrudWithDB_Get(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 			{
-				_, err := x.WithDB(db).Create(ctx)
+				_, err := p.WithDB(db).Create(ctx)
 				require.NoError(t, err)
 			}
 			{
-				out, err := x.WithDB(db).Get(ctx)
+				out, err := p.WithDB(db).Get(ctx)
 				require.NoError(t, err)
-				ireq.EqualProtos(t, x, out)
+				ireq.EqualProtos(t, p, out)
 			}
 		})
 	})
@@ -69,11 +69,11 @@ func TestCrudWithDB_Get(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 			{
-				_, err := x.WithDB(db).Create(ctx)
+				_, err := p.WithDB(db).Create(ctx)
 				require.NoError(t, err)
 			}
 			{
-				model := x.WithDB(db)
+				model := p.WithDB(db)
 				mask := &fieldmaskpb.FieldMask{Paths: []string{
 					"string_field",
 					"bool_field",
@@ -81,8 +81,8 @@ func TestCrudWithDB_Get(t *testing.T) {
 				out, err := model.Get(ctx, crud.WithCrudGetFieldMask(mask))
 				require.NoError(t, err)
 				expected := &crud.Crud{
-					StringField: x.StringField,
-					BoolField:   x.BoolField,
+					StringField: p.StringField,
+					BoolField:   p.BoolField,
 				}
 				ireq.EqualProtos(t, expected, out)
 			}
@@ -91,14 +91,14 @@ func TestCrudWithDB_Get(t *testing.T) {
 }
 
 func TestCrudWithDB_List(t *testing.T) {
-	x := &crud.Crud{Uuid: "abc", BoolField: false}
+	p := &crud.Crud{Uuid: "abc", BoolField: false}
 	y := &crud.Crud{Uuid: "def", BoolField: true}
 
 	t.Run("returns empty list", func(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 
-			out, err := x.WithDB(db).List(ctx)
+			out, err := p.WithDB(db).List(ctx)
 			require.NoError(t, err)
 			require.Empty(t, out)
 		})
@@ -108,14 +108,14 @@ func TestCrudWithDB_List(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 			{
-				_, err := x.WithDB(db).Create(ctx)
+				_, err := p.WithDB(db).Create(ctx)
 				require.NoError(t, err)
 			}
 			{
-				out, err := x.WithDB(db).List(ctx)
+				out, err := p.WithDB(db).List(ctx)
 				require.NoError(t, err)
 				require.Len(t, out, 1)
-				ireq.EqualProtos(t, x, out[0])
+				ireq.EqualProtos(t, p, out[0])
 			}
 		})
 	})
@@ -124,7 +124,7 @@ func TestCrudWithDB_List(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 			{
-				_, err := x.WithDB(db).Create(ctx)
+				_, err := p.WithDB(db).Create(ctx)
 				require.NoError(t, err)
 			}
 			{
@@ -133,7 +133,7 @@ func TestCrudWithDB_List(t *testing.T) {
 			}
 			{
 				mask := &fieldmaskpb.FieldMask{Paths: []string{"bool_field"}}
-				out, err := x.WithDB(db).List(ctx, crud.WithCrudListFieldMask(mask))
+				out, err := p.WithDB(db).List(ctx, crud.WithCrudListFieldMask(mask))
 				require.NoError(t, err)
 				require.Len(t, out, 2)
 				ireq.EqualProtos(t, &crud.Crud{BoolField: false}, out[0])
@@ -146,7 +146,7 @@ func TestCrudWithDB_List(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 			{
-				_, err := x.WithDB(db).Create(ctx)
+				_, err := p.WithDB(db).Create(ctx)
 				require.NoError(t, err)
 			}
 			{
@@ -154,16 +154,16 @@ func TestCrudWithDB_List(t *testing.T) {
 				require.NoError(t, err)
 			}
 			{
-				out, err := x.WithDB(db).List(ctx,
+				out, err := p.WithDB(db).List(ctx,
 					crud.WithCrudListOffset(0),
 					crud.WithCrudListLimit(1),
 				)
 				require.NoError(t, err)
 				require.Len(t, out, 1)
-				ireq.EqualProtos(t, x, out[0])
+				ireq.EqualProtos(t, p, out[0])
 			}
 			{
-				out, err := x.WithDB(db).List(ctx,
+				out, err := p.WithDB(db).List(ctx,
 					crud.WithCrudListOffset(1),
 					crud.WithCrudListLimit(1),
 				)
@@ -180,7 +180,7 @@ func TestCrudWithDB_List(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 			{
-				_, err := x.WithDB(db).Create(ctx)
+				_, err := p.WithDB(db).Create(ctx)
 				require.NoError(t, err)
 			}
 			{
@@ -188,38 +188,38 @@ func TestCrudWithDB_List(t *testing.T) {
 				require.NoError(t, err)
 			}
 			{
-				out, err := x.WithDB(db).List(ctx,
+				out, err := p.WithDB(db).List(ctx,
 					crud.WithCrudListOrder(sortCol),
 				)
 				require.NoError(t, err)
 				require.Len(t, out, 2)
-				ireq.EqualProtos(t, x, out[0])
+				ireq.EqualProtos(t, p, out[0])
 				ireq.EqualProtos(t, y, out[1])
 			}
 			{
-				out, err := x.WithDB(db).List(ctx,
+				out, err := p.WithDB(db).List(ctx,
 					crud.WithCrudListOrder(sortCol+" desc"),
 				)
 				require.NoError(t, err)
 				require.Len(t, out, 2)
 				ireq.EqualProtos(t, y, out[0])
-				ireq.EqualProtos(t, x, out[1])
+				ireq.EqualProtos(t, p, out[1])
 			}
 		})
 	})
 }
 
 func TestCrudWithDB_Update(t *testing.T) {
-	x := &crud.Crud{Uuid: "abc"}
+	p := &crud.Crud{Uuid: "abc"}
 
 	t.Run("inserts missing records", func(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 
-			out, err := x.WithDB(db).Update(ctx)
+			out, err := p.WithDB(db).Update(ctx)
 			require.NoError(t, err)
 			require.NotNil(t, out)
-			ireq.EqualProtos(t, x, out)
+			ireq.EqualProtos(t, p, out)
 		})
 	})
 
@@ -227,20 +227,20 @@ func TestCrudWithDB_Update(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 			{
-				_, err := x.WithDB(db).Create(ctx)
+				_, err := p.WithDB(db).Create(ctx)
 				require.NoError(t, err)
 			}
 			{
-				x.Uuid = "new-uuid"
-				out, err := x.WithDB(db).Update(ctx)
+				p.Uuid = "new-uuid"
+				out, err := p.WithDB(db).Update(ctx)
 				require.NoError(t, err)
 				require.NotNil(t, out)
-				ireq.EqualProtos(t, x, out)
+				ireq.EqualProtos(t, p, out)
 			}
 			{
-				out, err := x.WithDB(db).Get(ctx)
+				out, err := p.WithDB(db).Get(ctx)
 				require.NoError(t, err)
-				ireq.EqualProtos(t, x, out)
+				ireq.EqualProtos(t, p, out)
 			}
 		})
 	})
@@ -279,13 +279,13 @@ func TestCrudWithDB_Patch(t *testing.T) {
 }
 
 func TestCrudWithDB_Delete(t *testing.T) {
-	x := &crud.Crud{Uuid: "abc"}
+	p := &crud.Crud{Uuid: "abc"}
 
 	t.Run("no effect on missing records", func(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 
-			err := x.WithDB(db).Delete(ctx)
+			err := p.WithDB(db).Delete(ctx)
 			require.NoError(t, err)
 		})
 	})
@@ -294,15 +294,15 @@ func TestCrudWithDB_Delete(t *testing.T) {
 		withDB(t, func(db *gorm.DB) {
 			require.NoError(t, db.AutoMigrate(&crud.CrudModel{}))
 			{
-				_, err := x.WithDB(db).Create(ctx)
+				_, err := p.WithDB(db).Create(ctx)
 				require.NoError(t, err)
 			}
 			{
-				err := x.WithDB(db).Delete(ctx)
+				err := p.WithDB(db).Delete(ctx)
 				require.NoError(t, err)
 			}
 			{
-				out, err := x.WithDB(db).Get(ctx)
+				out, err := p.WithDB(db).Get(ctx)
 				require.Equal(t, gorm.ErrRecordNotFound, err)
 				require.Nil(t, out)
 			}

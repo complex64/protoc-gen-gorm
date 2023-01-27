@@ -26,12 +26,12 @@ func (m *Message) genCRUD() {
 
 func (m *Message) genWithDBType() {
 	m.P("type ", m.typeNameWithDB(), " struct {")
-	m.P("x *", m.ProtoName())
+	m.P("p *", m.ProtoName())
 	m.P("db *", m.identGormDB())
 	m.P("}")
 	m.P()
-	m.P("func (x *", m.ProtoName(), ") WithDB(db *", m.identGormDB(), ") ", m.typeNameWithDB(), " {")
-	m.P("return ", m.typeNameWithDB(), "{x: x, db: db}")
+	m.P("func (p *", m.ProtoName(), ") WithDB(db *", m.identGormDB(), ") ", m.typeNameWithDB(), " {")
+	m.P("return ", m.typeNameWithDB(), "{p: p, db: db}")
 	m.P("}") // func
 	m.P()
 }
@@ -44,12 +44,12 @@ func (m *Message) genOptionTypes() {
 
 func (m *Message) genCreate() {
 	m.P("func (c ", m.typeNameWithDB(), ") Create(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
-	m.P("if c.x == nil {")
+	m.P("if c.p == nil {")
 	m.P("return nil, nil")
 	m.P("}")
 
 	// proto -> GORM
-	m.P("m, err := c.x.AsModel()")
+	m.P("m, err := c.p.ToModel()")
 	m.P("if err != nil {")
 	m.P("return nil, err")
 	m.P("}") // if
@@ -61,7 +61,7 @@ func (m *Message) genCreate() {
 	m.P("}") // if
 
 	// GORM -> proto
-	m.P("if y, err := m.AsProto(); err != nil {")
+	m.P("if y, err := m.ToProto(); err != nil {")
 	m.P("return nil, err")
 	m.P("} else {")
 	m.P("return y, nil")
@@ -73,7 +73,7 @@ func (m *Message) genCreate() {
 
 func (m *Message) genGet() {
 	m.P("func (c ", m.typeNameWithDB(), ") Get(ctx ", m.identCtx(), ", opts ...", m.typeNameGetOption(), ") (*", m.ProtoName(), ", error) {")
-	m.P("if c.x == nil {")
+	m.P("if c.p == nil {")
 	m.P("return nil, nil")
 	m.P("}")
 
@@ -84,18 +84,18 @@ func (m *Message) genGet() {
 	}
 
 	if pk.types.Pointer {
-		m.P("if c.x.", pk.Name(), " == nil {")
+		m.P("if c.p.", pk.Name(), " == nil {")
 		m.P("return nil, ", m.identErrorf(), "(\"nil primary key\")")
 		m.P("}")
 	} else {
 		m.P("var zero ", pk.types.String())
-		m.P("if c.x.", pk.Name(), " == zero {")
+		m.P("if c.p.", pk.Name(), " == zero {")
 		m.P("return nil, ", m.identErrorf(), "(\"empty primary key\")")
 		m.P("}")
 	}
 
 	// proto -> GORM
-	m.P("m, err := c.x.AsModel()")
+	m.P("m, err := c.p.ToModel()")
 	m.P("if err != nil {")
 	m.P("return nil, err")
 	m.P("}")
@@ -112,10 +112,10 @@ func (m *Message) genGet() {
 	m.P("}")
 
 	// GORM -> proto
-	m.P("if y, err := out.AsProto(); err != nil {")
+	m.P("if p, err := out.ToProto(); err != nil {")
 	m.P("return nil, err")
 	m.P("} else {")
-	m.P("return y, nil")
+	m.P("return p, nil")
 	m.P("}")
 
 	m.P("}") // func
@@ -124,7 +124,7 @@ func (m *Message) genGet() {
 
 func (m *Message) genList() {
 	m.P("func (c ", m.typeNameWithDB(), ") List(ctx ", m.identCtx(), ", opts ...", m.typeNameListOption(), ") ([]*", m.ProtoName(), ", error) {")
-	m.P("if c.x == nil {")
+	m.P("if c.p == nil {")
 	m.P("return nil, nil")
 	m.P("}")
 
@@ -140,28 +140,28 @@ func (m *Message) genList() {
 	m.P("}")
 
 	// []GORM -> []proto
-	m.P("xs := make([]*", m.ProtoName(), ", 0, len(ms))")
+	m.P("protos := make([]*", m.ProtoName(), ", 0, len(ms))")
 	m.P("for _, m := range ms {")
-	m.P("if x, err := m.AsProto(); err != nil {")
+	m.P("if p, err := m.ToProto(); err != nil {")
 	m.P("return nil, err")
 	m.P("} else {")
-	m.P("xs = append(xs, x)")
+	m.P("protos = append(protos, p)")
 	m.P("}") // if
 	m.P("}") // for
 
-	m.P("return xs, nil")
+	m.P("return protos, nil")
 	m.P("}") // func
 	m.P()
 }
 
 func (m *Message) genUpdate() {
 	m.P("func (c ", m.typeNameWithDB(), ") Update(ctx ", m.identCtx(), ") (*", m.ProtoName(), ", error) {")
-	m.P("if c.x == nil {")
+	m.P("if c.p == nil {")
 	m.P("return nil, nil")
 	m.P("}")
 
 	// proto -> GORM
-	m.P("m, err := c.x.AsModel()")
+	m.P("m, err := c.p.ToModel()")
 	m.P("if err != nil {")
 	m.P("return nil, err")
 	m.P("}")
@@ -180,7 +180,7 @@ func (m *Message) genUpdate() {
 func (m *Message) genPatch() {
 	m.P("func (c ", m.typeNameWithDB(), ") "+
 		"Patch(ctx ", m.identCtx(), ", mask *", m.identFieldMask(), ") error {")
-	m.P("if c.x == nil {")
+	m.P("if c.p == nil {")
 	m.P("return nil")
 	m.P("}")
 
@@ -189,7 +189,7 @@ func (m *Message) genPatch() {
 	m.P("return err")
 	m.P("}")
 
-	m.P("if !mask.IsValid(c.x) {")
+	m.P("if !mask.IsValid(c.p) {")
 	m.P("return ", m.identErrorf(), "(\"invalid field mask\")")
 	m.P("}")
 
@@ -206,18 +206,18 @@ func (m *Message) genPatch() {
 	}
 
 	if pk.types.Pointer {
-		m.P("if c.x.", pk.Name(), " == nil {")
+		m.P("if c.p.", pk.Name(), " == nil {")
 		m.P("return ", m.identErrorf(), "(\"nil primary key\")")
 		m.P("}")
 	} else {
 		m.P("var zero ", pk.types.String())
-		m.P("if c.x.", pk.Name(), " == zero {")
+		m.P("if c.p.", pk.Name(), " == zero {")
 		m.P("return ", m.identErrorf(), "(\"empty primary key\")")
 		m.P("}")
 	}
 
 	// proto -> GORM
-	m.P("m, err := c.x.AsModel()")
+	m.P("m, err := c.p.ToModel()")
 	m.P("if err != nil {")
 	m.P("return err")
 	m.P("}")
@@ -239,7 +239,7 @@ func (m *Message) genPatch() {
 // TODO: Soft delete, expiration?
 func (m *Message) genDelete() {
 	m.P("func (c ", m.typeNameWithDB(), ") Delete(ctx ", m.identCtx(), ") error {")
-	m.P("if c.x == nil {")
+	m.P("if c.p == nil {")
 	m.P("return nil")
 	m.P("}")
 
@@ -250,18 +250,18 @@ func (m *Message) genDelete() {
 	}
 
 	if pk.types.Pointer {
-		m.P("if c.x.", pk.Name(), " == nil {")
+		m.P("if c.p.", pk.Name(), " == nil {")
 		m.P("return ", m.identErrorf(), "(\"nil primary key\")")
 		m.P("}")
 	} else {
 		m.P("var zero ", pk.types.String())
-		m.P("if c.x.", pk.Name(), " == zero {")
+		m.P("if c.p.", pk.Name(), " == zero {")
 		m.P("return ", m.identErrorf(), "(\"empty primary key\")")
 		m.P("}")
 	}
 
 	// proto -> GORM
-	m.P("m, err := c.x.AsModel()")
+	m.P("m, err := c.p.ToModel()")
 	m.P("if err != nil {")
 	m.P("return err")
 	m.P("}")
@@ -396,23 +396,23 @@ func (m *Message) primaryKey() *Field {
 	return nil
 }
 
-func (m Message) funcLookupCol() string {
+func (m *Message) funcLookupCol() string {
 	return "Lookup" + m.ModelName() + "Column"
 }
 
-func (m Message) funcLookupCols() string {
+func (m *Message) funcLookupCols() string {
 	return "Lookup" + m.ModelName() + "Columns"
 }
 
-func (m Message) typeNameGetOption() string {
+func (m *Message) typeNameGetOption() string {
 	return m.proto.GoIdent.GoName + "GetOption"
 }
 
-func (m Message) typeNameListOption() string {
+func (m *Message) typeNameListOption() string {
 	return m.proto.GoIdent.GoName + "ListOption"
 }
 
-func (m Message) typeNameWithDB() string {
+func (m *Message) typeNameWithDB() string {
 	return m.ProtoName() + "WithDB"
 }
 
