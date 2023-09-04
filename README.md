@@ -8,8 +8,6 @@ Generate [GORM v2 Models](https://gorm.io/docs/models.html) and APIs from your .
 
 **Actively maintained as of September 2023.**
 
-Used in production at [GameAnalytics](https://github.com/GameAnalytics) in 2022.
-
 ## [Documentation](https://complex64.github.io/protoc-gen-gorm/)
 
 Please find the documentation [here](https://complex64.github.io/protoc-gen-gorm/).
