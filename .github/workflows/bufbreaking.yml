@@ -12,7 +12,7 @@ jobs:
     name: buf-breaking-action
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: bufbuild/buf-setup-action@v1.13.1
       - uses: bufbuild/buf-breaking-action@v1
         with:
