@@ -32,7 +32,7 @@ jobs:
             {"contents": "write", "pull_requests": "write"}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ steps.token.outputs.token }}
 
@@ -76,7 +76,7 @@ jobs:
           echo "VERSION=${VERSION##*/}" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ steps.token.outputs.token }}
           fetch-depth: 0
@@ -108,7 +108,7 @@ jobs:
           private_key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
           repository: ${{ github.repository }}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
           go-version: stable
@@ -162,7 +162,7 @@ jobs:
             {"contents": "write", "pull_requests": "write"}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
