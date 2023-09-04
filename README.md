@@ -42,7 +42,7 @@ Additionally:
 - [ ] Support for custom types
 - [ ] Support for database-specific types
 - [ ] Support for embedded structs
-- [ ] Code examples
+- [x] Code examples
 - [ ] Helpful code comments
 - [ ] Comments on generated code
 
