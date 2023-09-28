@@ -134,7 +134,7 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
 
       - name: Compress
-        uses: crazy-max/ghaction-upx@v2
+        uses: crazy-max/ghaction-upx@v3
         with:
           version: latest
           files: bin/*
