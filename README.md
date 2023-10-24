@@ -6,7 +6,7 @@ Generate [GORM v2 Models](https://gorm.io/docs/models.html) and APIs from your .
 
 `protoc-gen-gorm` is a plugin for [protoc](https://grpc.io/docs/protoc-installation/) (or [buf](https://docs.buf.build/introduction)), a [Protocol Buffer](https://developers.google.com/protocol-buffers) ("proto") compiler.
 
-**Actively maintained as of September 2023.**
+**Actively maintained as of October 2023.**
 
 ## [Documentation](https://complex64.github.io/protoc-gen-gorm/)
 
