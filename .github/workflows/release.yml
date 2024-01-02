@@ -140,7 +140,7 @@ jobs:
           files: bin/*
           args: -9q
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: protoc-gen-gorm-${{ matrix.goos }}-${{ matrix.goarch }}
           path: bin/protoc-gen-gorm-${{ matrix.goos }}-${{ matrix.goarch }}
