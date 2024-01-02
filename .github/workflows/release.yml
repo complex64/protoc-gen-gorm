@@ -171,7 +171,7 @@ jobs:
         run: |
           echo "VERSION=${{github.ref_name}}" >> $GITHUB_ENV
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: ${{github.workspace}}/bin
 
