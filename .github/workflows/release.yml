@@ -117,11 +117,11 @@ jobs:
         run: |-
           echo "go-build=$(go env GOCACHE)" >> $GITHUB_OUTPUT
           echo "go-mod=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-${{ matrix.goos }}-${{ matrix.goarch }}-go-build-${{ hashFiles('**/go.sum') }}
           path: ${{ steps.go-cache-paths.outputs.go-build }}
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-${{ matrix.goos }}-${{ matrix.goarch }}-go-mod-${{ hashFiles('**/go.sum') }}
           path: ${{ steps.go-cache-paths.outputs.go-mod }}
