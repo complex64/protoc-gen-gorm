@@ -187,7 +187,7 @@ jobs:
             ${{github.workspace}}/bin/**
 
       - name: Trigger action release
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           repository: complex64/protoc-gen-gorm
           token: ${{ steps.token.outputs.token }}
