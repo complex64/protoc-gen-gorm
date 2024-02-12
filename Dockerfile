@@ -1,5 +1,5 @@
 # Build static executable.
-FROM golang:1.21 as buildenv
+FROM golang:1.22 as buildenv
 WORKDIR /go/src/app
 ADD . .
 RUN GOOS=linux \
