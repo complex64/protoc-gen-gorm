@@ -6,7 +6,7 @@ require (
 	github.com/complex64/protoc-gen-gorm/gormpb v0.0.0-20230118151903-c16dc98323c5
 	github.com/google/go-cmp v0.6.0
 	github.com/stretchr/testify v1.8.4
-	google.golang.org/protobuf v1.32.0
+	google.golang.org/protobuf v1.35.1
 	gorm.io/driver/sqlite v1.5.5
 	gorm.io/gorm v1.25.8
 )
