@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/complex64/protoc-gen-gorm/gormpb v0.0.0-20220727132713-9d2a3a631763
 	google.golang.org/grpc v1.56.3
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/protobuf v1.33.0
 	gorm.io/driver/sqlite v1.3.6
 	gorm.io/gorm v1.23.8
 )
